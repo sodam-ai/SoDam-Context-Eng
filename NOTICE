@@ -1,0 +1,40 @@
+SoDamContext
+Copyright 2026 SoDam AI Studio
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+
+================================================================
+Trademarks
+================================================================
+"Claude" and "Claude Code" are trademarks of Anthropic, PBC.
+"Codex" is a trademark of OpenAI, OpenCommerce, or its affiliates.
+All other product names, logos, and brands are property of their
+respective owners.
+
+This product merely indicates compatibility (nominative use) with the
+above products. It is NOT affiliated with, endorsed by, or sponsored by
+Anthropic or OpenAI.
+
+================================================================
+Third-party code and materials
+================================================================
+This product does not bundle or copy third-party source code at this time.
+Its design draws on publicly available documentation and research as
+concepts/ideas only (e.g., Anthropic and OpenAI developer docs, and
+academic work on AGENTS.md / context-engineering configuration smells);
+no third-party code or text was copied verbatim.
+
+If any borrowed code, text, font, image, or other material is added in
+the future, its source and license MUST be attributed in this file, and
+its license MUST be compatible with redistribution (MIT/BSD/Apache OK;
+AGPL/GPL copyleft is not used).
+
+================================================================
+Disclaimer
+================================================================
+This software is provided "AS IS", without warranty of any kind.
+This NOTICE is for informational/attribution purposes only and is not
+legal advice. Final license confirmation, copyright-holder details, and
+any trademark clearance remain subject to the owner's review before
+public release.
