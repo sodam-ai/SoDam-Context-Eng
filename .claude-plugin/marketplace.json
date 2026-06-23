@@ -1,0 +1,14 @@
+{
+  "name": "sodamcontext-marketplace",
+  "owner": {
+    "name": "SoDam AI Studio"
+  },
+  "description": "SoDamContext — 초보자용 AI 사용설명서 건강검진 플러그인 마켓플레이스.",
+  "plugins": [
+    {
+      "name": "sodam-context",
+      "source": "./",
+      "description": "CLAUDE.md·AGENTS.md 건강검진(군더더기·비밀키) + 안전한 다듬기. 쉬운 한국어."
+    }
+  ]
+}

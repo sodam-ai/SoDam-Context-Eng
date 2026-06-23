@@ -1,0 +1,29 @@
+# SoDamContext
+node_modules/
+
+# 백업·리포트(런타임 산출물) — 비밀키 복사본이 git에 올라가는 사고 방지 (PRD 07 §2.3 C2)
+.sodamcontext/
+
+# 자가 테스트(배포 제외 — PRD 07_SECURITY §2.5)
+lib/_selftest.mjs
+
+# 개발 내부 문서
+DEVELOPMENT.md
+TESTING.md
+
+# 내부 기획·진행 문서 (공개 배포 제외 — 내부 전략 노출 방지, PRD 10·11)
+.PRD/
+CHECKPOINT.md
+tasks/
+
+# 로그
+*.log
+
+# 로컬 도구 상태·캐시·크래시덤프 (로컬 전용 — push 제외)
+.omc/
+.complexity-log.md
+.todos-report.md/
+*.stackdump
+
+# 절대 푸시 금지 메모(루트)
+.이 문서는 반드시 깃허브 저장소에 푸시 하지 않기.md
