@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "_comment": "검진 항목 정의. kind:rule=규칙으로 결정론 판정('확정'), kind:ai_suspect=AI가 판단('의심'). 새 검진 추가 = 이 배열에 객체 1개 추가(코드 변경 0). 수치는 thresholds.json. (PRD 02_DATA_MODEL §3, 08_DEEP C4, 09 §1)",
+  "checks": [
+    {
+      "id": "size",
+      "kind": "rule",
+      "metric": "size",
+      "name": "군더더기·크기(너무 김)",
+      "why": "설명서가 길수록 AI 성능이 떨어지고 비용이 늘어요. (Chroma 연구: 18개 모델 전부 길수록 저하 / Anthropic 200줄 권장)"
+    },
+    {
+      "id": "lint_leakage",
+      "kind": "rule",
+      "metric": "keyword",
+      "name": "중복 잔소리(린터가 할 일)",
+      "keywords": ["네이밍", "변수명", "들여쓰기", "세미콜론", "줄 길이", "import 순서", "임포트 순서", "포맷", "포매팅", "코드 스타일", "prettier", "eslint", "linter", "naming", "indent", "semicolon", "import order", "formatting", "trailing"],
+      "why": "코드 형식(띄어쓰기·줄 길이 등)은 린터(자동 형식 검사 도구)가 이미 해요. 설명서에 또 적으면 정작 중요한 지시가 묻혀요. (AGENTS.md smells 연구: 62%로 가장 흔함)"
+    },
+    {
+      "id": "skill_leakage",
+      "kind": "ai_suspect",
+      "name": "새는 전문지식(가끔 쓰는 게 상시)",
+      "hint_keywords": ["배포할 때", "릴리스", "프로덕션에서만", "deploy", "release"],
+      "why": "가끔만 필요한 지침이 항상 로딩되면 군더더기가 돼요. 스킬로 옮기면 필요할 때만 불러와요."
+    },
+    {
+      "id": "conflicting",
+      "kind": "ai_suspect",
+      "name": "앞뒤 모순",
+      "why": "서로 반대되는 규칙은 AI를 헷갈리게 해요. (정밀도가 낮아 '의심'으로만 알려드려요)"
+    },
+    {
+      "id": "init_fossilization",
+      "kind": "ai_suspect",
+      "name": "낡음(/init 그대로 둠)",
+      "why": "자동 생성 후 안 고친 설명서는 실제 프로젝트와 안 맞아요. (토큰 20%↑·성공률↓)"
+    },
+    {
+      "id": "blind_references",
+      "kind": "ai_suspect",
+      "name": "맥락 없는 참조",
+      "why": "설명 없이 파일·경로만 가리키면 AI가 왜 보는지 몰라요."
+    },
+    {
+      "id": "jit_violation",
+      "kind": "ai_suspect",
+      "name": "통째 붙여넣기(JIT 위반)",
+      "why": "코드·문서를 통째로 넣지 말고 '파일:줄'로 가리키면 가벼워져요."
+    },
+    {
+      "id": "no_examples",
+      "kind": "ai_suspect",
+      "name": "예시 없는 규칙",
+      "why": "좋은/나쁜 예시가 같이 있으면 AI가 더 정확히 따라요."
+    },
+    {
+      "id": "auto_unrefined",
+      "kind": "ai_suspect",
+      "name": "자동생성 미정제(일반론·빈칸 그대로)",
+      "hint_keywords": ["여기에", "프로젝트 설명", "예시 프로젝트", "TODO", "<프로젝트", "[프로젝트", "your project", "describe your", "project description"],
+      "why": "자동 생성된 일반적인 문구나 빈칸을 우리 프로젝트에 맞게 안 다듬으면, 토큰만 늘고 AI 성공률은 떨어져요. (연구: /init 그대로 두면 토큰 20%↑·성공률 0.5~2%↓)"
+    },
+    {
+      "id": "bloat",
+      "kind": "ai_suspect",
+      "name": "부풀림(같은 말 반복·군더더기 지시)",
+      "why": "같은 지시를 여러 번 반복하거나 군더더기가 쌓이면 정작 중요한 지시가 묻혀요. 부풀린 설명서는 '아예 없는 것'만큼 해로울 수 있어요. (AGENTS.md 연구)"
+    }
+  ]
+}

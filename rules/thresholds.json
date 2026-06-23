@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "_comment": "도구 버전에 따라 바뀔 수 있는 수치들을 한 곳에 모음. 하드코딩 금지. (PRD 05_AUDIT D2)",
+  "claudeMd": {
+    "_unit": "줄 수(lines)",
+    "lines_warn": 200,
+    "lines_high": 300,
+    "_source": "Anthropic 200줄 권장 / logrocket 200~400 / HumanLayer <300 → 단일 숫자 아닌 밴드"
+  },
+  "agentsMd": {
+    "_unit": "바이트(UTF-8 bytes)",
+    "bytes_limit": 32768,
+    "bytes_warn": 26214,
+    "cjk_bytes_per_char": 3,
+    "_source": "Codex project_doc_max_bytes 기본 32KiB(=32768). 한글 1자=3바이트라 글자 수가 적어도 한도 도달 가능"
+  }
+}
