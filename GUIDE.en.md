@@ -38,6 +38,30 @@ Paste these **two lines, one at a time**, pressing Enter after each:
 
 ---
 
+## Step 2-B · Codex users — manual install
+
+Codex (OpenAI Codex) has no plugin marketplace, so you **copy the folders directly**.
+
+1. **Copy these two folders** from this repository:
+   - `skills/sodam-context-checkup`
+   - `skills/sodam-context-intake`
+
+2. **Paste them into `.agents/skills/` inside your project folder**:
+   - Windows example: `C:\MyProject\.agents\skills\sodam-context-checkup\SKILL.md`
+   - Mac example: `~/MyProject/.agents/skills/sodam-context-checkup/SKILL.md`
+
+   *Create the `.agents` folder if it doesn't exist. Create `skills` inside it too.*
+
+3. **Try in Codex using natural language**:
+   ```
+   check my AI manual
+   ```
+   *(Codex uses natural language, not `/commands`.)*
+
+> **Korean character size note**: 1 Korean character = 3 bytes. Even a short-looking manual can hit Codex's 32 KiB limit. The checkup will warn you automatically.
+
+---
+
 ## Step 3 · Restart (important!)
 
 What you just installed appears only after a **restart**.
@@ -97,6 +121,13 @@ If you already have a `CLAUDE.md` in a folder:
 | Something else responds | Don't use plain language; use a command starting with **`/sodam-context-...`** |
 | It says "node not found" | Go back to Step 1 and install Node.js |
 | It created/edited a file without asking | 🚨 Stop and tell someone who can help (it should always ask first) |
+| Codex skill doesn't work | Check Step 2-B — verify `.agents/skills/sodam-context-checkup/SKILL.md` exists |
+| "Why?" button is missing | There's no button in CLI. Just type `why?` and it explains |
+| Score isn't shown | Hidden on purpose — "N problems" is the count (prevents inflated scores) |
+| Korean text looks broken | Check Node.js v18+. On Windows, verify terminal UTF-8 encoding |
+| It says there's a password but I don't see one | The regex also flags things that look similar. It never auto-deletes — check it yourself and decide |
+| Is it safe to use in auto-accept (permission) mode? | Auto-accept mode can skip the confirmation step. For safety, the default (ask) mode is recommended |
+| It stopped suddenly during checkup | It's designed to stop before touching the original file. Your original is untouched |
 
 ---
 

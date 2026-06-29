@@ -32,6 +32,7 @@ description: 사용자의 AI 사용설명서(CLAUDE.md·AGENTS.md)를 건강검�
      node "${CLAUDE_PLUGIN_ROOT}/lib/codex-merge.mjs" "<프로젝트 폴더 절대경로>"
      ```
      결과의 `files`(체인 목록)·`totalBytes`·`overLimit`을 쉬운 한국어로 안내합니다 — "상위 폴더·글로벌 설명서까지 합쳐 N바이트(한글은 글자당 3바이트라 글자 수보다 큼)". 한도를 넘으면 가까운 폴더 규칙이 잘릴 수 있다고 알려주세요.
+     결과에 `configOverride.found === true`가 있으면 반드시 다음 경고를 추가하세요: "⚠️ `config.toml`에 `model_instructions_file` 설정이 감지됐어요. 이 경우 `AGENTS.md`가 아닌 다른 파일이 AI에 전달될 수 있어요 — `AGENTS.md`를 직접 수정해도 반영이 안 될 수 있어요."
 3. **결과(JSON)를 쉬운 한국어 리포트로** 바꿔 보여줍니다.
 
 ## 리포트 형식 (JSON → 사람 말)

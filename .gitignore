@@ -25,5 +25,12 @@ tasks/
 .todos-report.md/
 *.stackdump
 
+# 플러그인 자동 생성 로컬 파일 (사용자별 설정 — push 제외)
+.plugin-config/
+.pair-programming-session.md
+
 # 절대 푸시 금지 메모(루트)
 .이 문서는 반드시 깃허브 저장소에 푸시 하지 않기.md
+
+# SoDamContext 백업 (비밀키 포함 가능, 커밋 금지)
+.sodamcontext/backups/

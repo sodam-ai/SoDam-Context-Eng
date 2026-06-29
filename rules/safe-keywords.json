@@ -4,6 +4,8 @@
   "keywords": [
     "금지", "절대", "절대로", "항상", "반드시", "필수",
     "비밀", "보안", "위험", "주의", "경고", "민감",
-    "never", "must", "always", "do not", "don't", "secret", "danger", "warning", "required"
+    "never", "must", "always", "do not", "don't", "secret", "danger", "warning", "required",
+    "critical", "force push", "forbidden", "prohibited",
+    "외부 전송", "하드코딩 금지"
   ]
 }

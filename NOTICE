@@ -1,40 +1,38 @@
-SoDamContext
+SoDamContext -- AI 사용설명서 건강검진 도구
 Copyright 2026 SoDam AI Studio
 
+이 소프트웨어는 Apache License 2.0에 따라 배포됩니다.
 This product is licensed under the Apache License, Version 2.0.
-See the LICENSE file for the full license text.
+http://www.apache.org/licenses/LICENSE-2.0
 
-================================================================
-Trademarks
-================================================================
-"Claude" and "Claude Code" are trademarks of Anthropic, PBC.
-"Codex" is a trademark of OpenAI, OpenCommerce, or its affiliates.
-All other product names, logos, and brands are property of their
-respective owners.
+---------------------------------------------------------
+상표 고지 / Trademark Notice
+---------------------------------------------------------
+"Claude Code" 및 "Anthropic"은 Anthropic, PBC의 등록상표 또는 상표입니다.
+"Codex" 및 "OpenAI"는 OpenAI, LLC의 등록상표 또는 상표입니다.
+이 소프트웨어는 위 회사와 제휴·보증 관계에 있지 않습니다.
 
-This product merely indicates compatibility (nominative use) with the
-above products. It is NOT affiliated with, endorsed by, or sponsored by
-Anthropic or OpenAI.
+"Claude Code" and "Anthropic" are trademarks or registered trademarks of
+Anthropic, PBC. "Codex" and "OpenAI" are trademarks or registered trademarks
+of OpenAI, LLC. This software is not affiliated with or endorsed by
+Anthropic, PBC or OpenAI, LLC.
 
-================================================================
-Third-party code and materials
-================================================================
-This product does not bundle or copy third-party source code at this time.
-Its design draws on publicly available documentation and research as
-concepts/ideas only (e.g., Anthropic and OpenAI developer docs, and
-academic work on AGENTS.md / context-engineering configuration smells);
-no third-party code or text was copied verbatim.
+---------------------------------------------------------
+외부 연구 참조 / Research References
+---------------------------------------------------------
+이 소프트웨어의 검진 규칙 설계는 공개된 컨텍스트 엔지니어링 연구를
+아이디어 참고로 활용하였습니다. 코드·문장 복제는 없으며, 각 연구의
+저작권은 원 저작자에게 있습니다.
 
-If any borrowed code, text, font, image, or other material is added in
-the future, its source and license MUST be attributed in this file, and
-its license MUST be compatible with redistribution (MIT/BSD/Apache OK;
-AGPL/GPL copyleft is not used).
+The checkup rule design of this software references publicly available
+context-engineering research for ideas only. No code or text was copied.
+All referenced works remain the property of their respective authors.
 
-================================================================
-Disclaimer
-================================================================
-This software is provided "AS IS", without warranty of any kind.
-This NOTICE is for informational/attribution purposes only and is not
-legal advice. Final license confirmation, copyright-holder details, and
-any trademark clearance remain subject to the owner's review before
-public release.
+---------------------------------------------------------
+보증 없음 / No Warranty
+---------------------------------------------------------
+이 소프트웨어는 법적 자문, 보안 보증, 또는 AI 서비스 관련 어떠한 보증도
+제공하지 않습니다. 사용에 따른 책임은 사용자 본인에게 있습니다.
+
+This software does not provide legal advice, security guarantees, or any
+warranty regarding AI services. Use is at your own risk.
