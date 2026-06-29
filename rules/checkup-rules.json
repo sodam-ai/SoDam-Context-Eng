@@ -34,6 +34,7 @@
       "id": "init_fossilization",
       "kind": "ai_suspect",
       "name": "낡음(/init 그대로 둠)",
+      "hint_keywords": ["TBD", "FIXME", "my-project", "add your", "나중에 추가", "추후 업데이트", "작성 예정", "업데이트 예정", "coming soon", "placeholder", "INSERT"],
       "why": "자동 생성 후 안 고친 설명서는 실제 프로젝트와 안 맞아요. (토큰 20%↑·성공률↓)"
     },
     {
@@ -66,6 +67,13 @@
       "kind": "ai_suspect",
       "name": "부풀림(같은 말 반복·군더더기 지시)",
       "why": "같은 지시를 여러 번 반복하거나 군더더기가 쌓이면 정작 중요한 지시가 묻혀요. 부풀린 설명서는 '아예 없는 것'만큼 해로울 수 있어요. (AGENTS.md 연구)"
+    },
+    {
+      "id": "re-scope-guard",
+      "kind": "ai_suspect",
+      "name": "RE 스코프 누락 (방어·교육·본인소유물 언급?)",
+      "why": "SoDam-Reverse가 설치된 프로젝트면 CLAUDE.md에 '방어·교육·본인소유물 전용' 범위를 명시해야 AI가 범위를 벗어나지 않습니다.",
+      "_source": "[sodam-reverse]"
     }
   ]
 }
