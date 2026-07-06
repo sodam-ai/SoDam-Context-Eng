@@ -58,22 +58,24 @@
 ```
 SoDamContext/
 ├── .claude-plugin/plugin.json    ← 플러그인 메타데이터 (수정 금지)
-├── commands/                     ← 슬래시 명령어 (/sodam-context:*)
-│   ├── checkup.md                ← /sodam-context:checkup
-│   ├── intake.md                 ← /sodam-context:intake
-│   └── treat.md                  ← /sodam-context:treat
-├── skills/                       ← 클로드코드·코덱스 공통 스킬
-│   ├── sodam-context-intake/SKILL.md
-│   ├── context-checkup/SKILL.md
-│   └── context-treat/SKILL.md
+├── skills/                       ← 클로드코드·코덱스 공통 스킬 (스킬명이 슬래시 진입점)
+│   ├── sodam-context-checkup/SKILL.md   ← 건강검진
+│   ├── sodam-context-intake/SKILL.md    ← 문진(처음 만들기)
+│   └── sodam-context-treat/SKILL.md     ← 처방(다듬기)
 ├── lib/                          ← 번들 스크립트 (Node.js ESM)
-│   ├── checkup-rules.mjs         ← 규칙 기반 검진 로직
-│   ├── scan-secrets.mjs          ← 비밀키 탐지 (값 미출력)
-│   └── intake-verify.mjs         ← 생성 텍스트 안전 검증
-├── rules/                        ← 설정 파일 (JSON)
+│   ├── checkup-cli.mjs           ← 검진/백업/미리보기/처방/복구 오케스트레이터(JSON 출력)
+│   ├── checkup-rules.mjs         ← 규칙 기반 검진 로직(줄수/바이트·린트중복)
+│   ├── scan-secrets.mjs          ← 비밀키 탐지 (값 미출력·마스킹)
+│   ├── intake-verify.mjs         ← 생성 텍스트 안전 검증(쓰기 전 게이트)
+│   ├── treat.mjs                 ← 처방(중복제거·빈줄압축·안전키워드 보존)
+│   ├── treat-verify.mjs          ← 처방 회귀검증(안전키워드 100% 보존)
+│   ├── backup.mjs                ← 원자적 백업·복구(.gitignore 자동·Harness 위임/폴백)
+│   └── codex-merge.mjs           ← 코덱스 AGENTS.md 병합체인·32KiB·config.toml 감지
+├── rules/                        ← 설정 파일 (JSON) — 하드코딩 금지, 데이터 주도
 │   ├── checkup-rules.json        ← 검진 항목 정의
-│   ├── thresholds.json           ← 임계 수치 (하드코딩 금지)
-│   └── secret-patterns.json      ← 비밀키 패턴
+│   ├── thresholds.json           ← 임계 수치 (줄수·바이트)
+│   ├── secret-patterns.json      ← 비밀키 패턴
+│   └── safe-keywords.json        ← 처방 시 보존할 안전키워드
 ├── AGENTS.md                     ← 이 파일 (코덱스용)
 ├── CLAUDE.md                     ← 클로드코드용 (첫 줄 @AGENTS.md)
 ├── LICENSE                       ← Apache-2.0
@@ -97,8 +99,8 @@ SoDamContext/
 | 스킬 이름 | 파일 위치 | 언제 씀 |
 |-----------|-----------|---------|
 | `sodam-context-intake` | `skills/sodam-context-intake/SKILL.md` | AI 사용설명서 처음 만들 때 |
-| `sodam-context-checkup` | `skills/context-checkup/SKILL.md` | 건강검진 할 때 |
-| `sodam-context-treat` | `skills/context-treat/SKILL.md` | 문제 고칠 때 |
+| `sodam-context-checkup` | `skills/sodam-context-checkup/SKILL.md` | 건강검진 할 때 |
+| `sodam-context-treat` | `skills/sodam-context-treat/SKILL.md` | 문제 고칠 때 |
 
 ---
 

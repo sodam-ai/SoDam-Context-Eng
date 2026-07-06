@@ -42,9 +42,10 @@ Paste these **two lines, one at a time**, pressing Enter after each:
 
 Codex (OpenAI Codex) has no plugin marketplace, so you **copy the folders directly**.
 
-1. **Copy these two folders** from this repository:
+1. **Copy these three folders** from this repository:
    - `skills/sodam-context-checkup`
    - `skills/sodam-context-intake`
+   - `skills/sodam-context-treat`
 
 2. **Paste them into `.agents/skills/` inside your project folder**:
    - Windows example: `C:\MyProject\.agents\skills\sodam-context-checkup\SKILL.md`
@@ -68,7 +69,7 @@ What you just installed appears only after a **restart**.
 - Type `exit` in the input box and press Enter → **fully close** the window (the X)
 - Reopen Claude Code (in a terminal, type `claude`)
 
-Check: type just `/` in the input box. If you see **`sodam-context-checkup`** and **`sodam-context-intake`** in the list, you're ready! 🎉
+Check: type just `/` in the input box. If you see **`sodam-context-checkup`**, **`sodam-context-intake`**, and **`sodam-context-treat`** in the list, you're ready! 🎉
 
 ---
 
@@ -110,6 +111,8 @@ If you already have a `CLAUDE.md` in a folder:
    - Shown as a **count** like "N problems" (the score is hidden on purpose)
    - Any password/key is shown **masked** (`sk-ant-…REDACTED`) only
    - For more, answer **`why?`** and it explains the reason.
+
+> 🆕 If problems are found, you can trim with **`/sodam-context-treat`** — it **backs up first, shows what it will change, and edits only after you say `yes`.** Restore is supported. (Safety/forbidden rule lines are auto-preserved.)
 
 ---
 

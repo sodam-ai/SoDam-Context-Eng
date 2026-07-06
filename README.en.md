@@ -12,8 +12,9 @@
 - **SoDamContext** gives that manual a **health check in plain language**, and if you don't have one, **creates a small one from a few easy questions**.
 - It hides jargon (`CLAUDE.md` → **"AI manual"**) and explains the real reason when you ask **"why?"**.
 
-> ⚠️ **Honest note:** In this version, **only two features actually work: "Checkup" and "Intake (create)".**
-> "Treatment (auto-trim)", "Prevention (auto-block)", and "auto-sync of the two files" are **still in progress (planned)**.
+> ⚠️ **Honest note:** In this version, **three features work: "Checkup", "Intake (create)", and "Treatment (trim)".**
+> Checkup and Intake are validated in real use; **Treatment safely trims after backup + confirmation** (code & automated tests done — marked 'new' since real-world use is still limited).
+> **"Prevention (auto-block)" and "auto-sync of the two files" are still in progress (planned).**
 
 ---
 
@@ -45,8 +46,8 @@ Paste the following into the Claude Code **input box** (the chat line), **one li
 > 💡 **Using a local folder directly** (development/testing): replace `sodam-ai/SoDam-Context-Eng` with **the absolute path of that folder**.
 > e.g. `/plugin marketplace add D:\...\SoDam-Context-Eng`
 
-### Codex (manual install — partial support)
-Codex has no marketplace, so you **place the skill folder under `.agents/skills`**. (Codex support is currently **partial** — detailed guide coming soon.)
+### Codex (manual install)
+Codex has no marketplace, so you **place the skill folder under `.agents/skills`**. See **`GUIDE.en.md` Step 2-B** for the walkthrough. (Skill run paths are `lib/…` relative to the repo root — noted in each SKILL.)
 
 ---
 
@@ -74,9 +75,9 @@ After install and restart:
 
 | Command | Easy name | What it does | Status |
 |---|---|---|---|
-| `/sodam-context-checkup` | Checkup | Checks the manual for bloat, duplication, **secrets**, size → plain report | ✅ Works |
+| `/sodam-context-checkup` | Checkup | Checks for bloat, duplication, **staleness/unrefined ('suspect')**, **secrets**, size → plain report | ✅ Works |
 | `/sodam-context-intake` | Intake | Creates a small manual via questions when none exists | ✅ Works |
-| (Treatment) | Treat | Backs up, then safely trims | ⏳ In progress |
+| `/sodam-context-treat` | Treat | Backs up → preview → after confirmation, trims duplicates/blank lines (restore supported) | 🆕 Works (new) |
 | (Prevention) | Prevent | Blocks secrets / excess length in advance | ⏳ In progress |
 
 ---
@@ -105,8 +106,8 @@ Install → Restart → [Do you have a manual?]
 | What | Location (Windows example) |
 |---|---|
 | Check/create target | `CLAUDE.md` · `AGENTS.md` in **your working project folder** |
-| (Treatment) backup folder | `<project folder>\.sodamcontext\backups\` (treatment in progress) |
-| This manual | `README.md` · `GUIDE.md` in the plugin folder (KO/EN, md·pdf) |
+| (Treatment) backup folder | `<project folder>\.sodamcontext\backups\` (created automatically when treatment runs) |
+| This manual | `README.md` · `GUIDE.md` in the plugin folder (KO/EN md; HTML docs coming later) |
 
 ---
 

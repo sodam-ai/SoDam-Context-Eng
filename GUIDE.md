@@ -42,9 +42,10 @@
 
 코덱스(OpenAI Codex)는 플러그인 마켓이 없어서 **폴더를 직접 복사**합니다.
 
-1. **이 저장소에서 아래 두 폴더를 복사**하세요:
+1. **이 저장소에서 아래 세 폴더를 복사**하세요:
    - `skills/sodam-context-checkup`
    - `skills/sodam-context-intake`
+   - `skills/sodam-context-treat`
 
 2. **내 프로젝트 폴더 안 `.agents/skills/` 에 붙여넣기**:
    - Windows 예시: `C:\내프로젝트\.agents\skills\sodam-context-checkup\SKILL.md`
@@ -68,7 +69,7 @@
 - 입력창에 `exit` 치고 Enter → 창을 **X로 완전히 닫기**
 - 다시 클로드코드를 켜기 (터미널이면 `claude` 입력)
 
-확인: 입력창에 `/` 만 쳐보세요. 목록에 **`sodam-context-checkup`** 과 **`sodam-context-intake`** 가 보이면 준비 완료! 🎉
+확인: 입력창에 `/` 만 쳐보세요. 목록에 **`sodam-context-checkup`**·**`sodam-context-intake`**·**`sodam-context-treat`** 가 보이면 준비 완료! 🎉
 
 ---
 
@@ -110,6 +111,8 @@
    - "문제 ○건" 처럼 **개수**로 (점수는 일부러 안 보여줘요)
    - 비밀번호/키가 있으면 **가린 채**(`sk-ant-…REDACTED`)로만
    - 더 궁금하면 **`왜요?`** 라고 답하면 이유를 설명해줘요.
+
+> 🆕 문제를 찾았다면 **`/sodam-context-treat`** 로 다듬을 수 있어요 — **백업을 먼저 뜨고, 무엇을 바꿀지 보여준 뒤, `네` 라고 해야만** 고쳐요. 되돌리기도 됩니다. (안전·금지 규칙 줄은 자동 보존)
 
 ---
 

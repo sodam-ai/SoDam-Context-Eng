@@ -26,7 +26,7 @@
 ```bash
 # 검진
 node lib/checkup-cli.mjs <파일경로> [--target claude|codex]
-# 반환: { ok, file, target, secret:{found,count}, rules:{findings,lines,bytes}, summary:{problemCount} }
+# 반환: { ok, file, target, secret: { found, count }, rules: { findings, lines, bytes }, summary: { problemCount } }
 # ★T1: 파일 내용 미출력 — 경로·줄 수·개수만
 
 # 처방 미리보기
