@@ -40,24 +40,26 @@
 
 ## 2-B단계 · Codex 사용자 — 수동 설치
 
-코덱스(OpenAI Codex)는 플러그인 마켓이 없어서 **폴더를 직접 복사**합니다.
+코덱스(OpenAI Codex)는 플러그인 마켓이 없어서 **저장소를 통째로 받아 그 안에서** 씁니다.
+(스킬 폴더만 복사하면 검진 도구가 쓰는 `lib`·`rules` 폴더가 빠져서 "파일을 찾을 수 없어요" 오류가 나요.)
 
-1. **이 저장소에서 아래 세 폴더를 복사**하세요:
-   - `skills/sodam-context-checkup`
-   - `skills/sodam-context-intake`
-   - `skills/sodam-context-treat`
+1. **저장소 받기** — 터미널(명령 프롬프트)에 한 줄씩:
+   ```
+   git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
+   cd SoDam-Context-Eng
+   ```
+   *(이미 받아둔 폴더가 있으면 그 폴더로 이동하면 돼요.)*
 
-2. **내 프로젝트 폴더 안 `.agents/skills/` 에 붙여넣기**:
-   - Windows 예시: `C:\내프로젝트\.agents\skills\sodam-context-checkup\SKILL.md`
-   - Mac 예시: `~/내프로젝트/.agents/skills/sodam-context-checkup/SKILL.md`
-
-   *`.agents` 폴더가 없으면 새로 만드세요. `skills` 폴더도 그 안에 만들어요.*
+2. **코덱스를 이 저장소 루트 폴더에서 시작**하세요. (루트에 `AGENTS.md`·`skills`·`lib`·`rules`가 다 있어요.)
+   ⚠️ 루트가 아닌 다른 폴더에서 실행하면 "파일을 찾을 수 없어요" 오류가 나요.
 
 3. **코덱스에서 자연어로 시험**:
    ```
-   내 AI 설명서 점검해줘
+   내 AGENTS.md 건강검진 해줘
    ```
-   *(코덱스는 `/명령어` 방식이 아니라 자연어로 스킬이 동작해요.)*
+   - 검사할 파일은 **절대경로**로 알려주세요 (예: `C:\내프로젝트\AGENTS.md`).
+   - *(코덱스는 `/명령어` 방식이 아니라 자연어로 스킬이 동작해요.)*
+   - 더 자세한 설치·FAQ는 저장소의 **`codex/README.ko.md`** 를 참고하세요.
 
 > **한글 용량 주의**: 한글 1글자 = 3바이트예요. 짧아 보여도 실제 용량이 커서 코덱스 32 KiB 한도에 걸릴 수 있어요. 검진 시 자동으로 알려드려요.
 

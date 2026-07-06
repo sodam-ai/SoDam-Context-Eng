@@ -47,7 +47,7 @@ Paste the following into the Claude Code **input box** (the chat line), **one li
 > e.g. `/plugin marketplace add D:\...\SoDam-Context-Eng`
 
 ### Codex (manual install)
-Codex has no marketplace, so you **place the skill folder under `.agents/skills`**. See **`GUIDE.en.md` Step 2-B** for the walkthrough. (Skill run paths are `lib/…` relative to the repo root — noted in each SKILL.)
+Codex has no marketplace, so you **clone the whole repo and run from its root folder** (copying only the skills omits `lib`/`rules` and causes errors). See **`GUIDE.en.md` Step 2-B** or **`codex/README.ko.md`** for the walkthrough. (Skills run from the repo root — noted in each SKILL.)
 
 ---
 

@@ -40,24 +40,26 @@ Paste these **two lines, one at a time**, pressing Enter after each:
 
 ## Step 2-B · Codex users — manual install
 
-Codex (OpenAI Codex) has no plugin marketplace, so you **copy the folders directly**.
+Codex (OpenAI Codex) has no plugin marketplace, so you **clone the whole repository and run inside it**.
+(If you copy only the skill folders, the `lib` and `rules` folders the checker needs are missing, and you'll get a "file not found" error.)
 
-1. **Copy these three folders** from this repository:
-   - `skills/sodam-context-checkup`
-   - `skills/sodam-context-intake`
-   - `skills/sodam-context-treat`
+1. **Get the repository** — in a terminal, one line at a time:
+   ```
+   git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
+   cd SoDam-Context-Eng
+   ```
+   *(If you already have the folder, just move into it.)*
 
-2. **Paste them into `.agents/skills/` inside your project folder**:
-   - Windows example: `C:\MyProject\.agents\skills\sodam-context-checkup\SKILL.md`
-   - Mac example: `~/MyProject/.agents/skills/sodam-context-checkup/SKILL.md`
-
-   *Create the `.agents` folder if it doesn't exist. Create `skills` inside it too.*
+2. **Start Codex from this repository's root folder.** (The root has `AGENTS.md`, `skills`, `lib`, and `rules`.)
+   ⚠️ Running from a different folder causes a "file not found" error.
 
 3. **Try in Codex using natural language**:
    ```
-   check my AI manual
+   check my AGENTS.md
    ```
-   *(Codex uses natural language, not `/commands`.)*
+   - Give the file to check as an **absolute path** (e.g. `C:\MyProject\AGENTS.md`).
+   - *(Codex uses natural language, not `/commands`.)*
+   - For a fuller install guide + FAQ, see **`codex/README.ko.md`** in the repo.
 
 > **Korean character size note**: 1 Korean character = 3 bytes. Even a short-looking manual can hit Codex's 32 KiB limit. The checkup will warn you automatically.
 
