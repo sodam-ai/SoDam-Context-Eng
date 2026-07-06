@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>System.Collections.Hashtable.t</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", Roboto, sans-serif;
+      line-height: 1.7;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.1rem 4rem;
+      color: #1f2328;
+      background: #ffffff;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    h1, h2, h3 { line-height: 1.3; margin-top: 2rem; }
+    h1 { font-size: 1.9rem; border-bottom: 2px solid #d0d7de; padding-bottom: .4rem; }
+    h2 { font-size: 1.4rem; border-bottom: 1px solid #eaecef; padding-bottom: .3rem; }
+    h3 { font-size: 1.15rem; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: #f3f4f6; padding: .15em .35em; border-radius: 5px; font-size: .9em;
+    }
+    pre {
+      background: #f6f8fa; padding: 1rem; border-radius: 8px; overflow-x: auto; border: 1px solid #eaecef;
+    }
+    pre code { background: none; padding: 0; }
+    blockquote {
+      margin: 1rem 0; padding: .3rem 1rem; color: #57606a;
+      border-left: 4px solid #d0d7de; background: #f9fafb;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; display: block; overflow-x: auto; }
+    th, td { border: 1px solid #d0d7de; padding: .5rem .7rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    tr:nth-child(even) { background: #fafbfc; }
+    details { background: #f9fafb; border: 1px solid #d0d7de; border-radius: 8px; padding: .6rem 1rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    hr { border: none; border-top: 1px solid #eaecef; margin: 2rem 0; }
+    img { max-width: 100%; }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e6edf3; background: #0d1117; }
+      h1 { border-bottom-color: #30363d; }
+      h2 { border-bottom-color: #21262d; }
+      a { color: #4493f8; }
+      code { background: #161b22; }
+      pre { background: #161b22; border-color: #30363d; }
+      blockquote { color: #9198a1; border-left-color: #30363d; background: #161b22; }
+      th, td { border-color: #30363d; }
+      th { background: #161b22; }
+      tr:nth-child(even) { background: #10151c; }
+      details { background: #161b22; border-color: #30363d; }
+      hr { border-top-color: #21262d; }
+    }
+  </style>
+</head>
+<body>
+<h1 id="sodamcontext--ai-사용설명서-건강검진-stethoscope">SoDamContext —
+AI 사용설명서 건강검진 🩺</h1>
+<blockquote>
+<p><strong>코드를 몰라도</strong> AI(클로드코드·코덱스)가 내 프로젝트를
+잘 이해하도록, <strong>"AI
+사용설명서"(<code>CLAUDE.md</code>·<code>AGENTS.md</code>)를 쉬운
+한국어로 점검·생성·정리</strong>해 주는 도구입니다.</p>
+<p>컴퓨터·AI가 처음이어도 괜찮아요. 이 문서는 <strong>하나씩 따라 하면
+되는</strong> 순서로 쓰여 있습니다.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>정직한 현재 상태 (2026-07-07 기준)</strong></p>
+<ul>
+<li><strong>작동(실사용 검증):</strong> 검진(점검)·문진(만들기)</li>
+<li><strong>작동(신규):</strong> 처방(다듬기) — 코드·자동테스트 완료,
+<strong>실제 파일 라이브 검증은 아직 사람 확인 단계</strong></li>
+<li><strong>준비 중(예정):</strong> 예방(자동 차단)·두 파일 자동
+동기화</li>
+<li>과장하지 않습니다. "100% 안전·완벽"이라고 <strong>말하지
+않습니다.</strong></li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="목차">목차</h2>
+<ol type="1">
+<li><a href="#1-이게-뭔가요">이게 뭔가요</a></li>
+<li><a href="#2-사전-준비물과-필요-프로그램">사전 준비물과 필요
+프로그램</a></li>
+<li><a href="#3-다운로드와-설치-방법">다운로드와 설치 방법</a></li>
+<li><a href="#4-빠른-시작">빠른 시작</a></li>
+<li><a href="#5-실행-방법">실행 방법</a></li>
+<li><a href="#6-사용-방법">사용 방법</a></li>
+<li><a href="#7-작동-방법">작동 방법</a></li>
+<li><a href="#8-명령어-목록">명령어 목록</a></li>
+<li><a href="#9-업데이트-내용-요약">업데이트 내용 요약</a></li>
+<li><a href="#10-파일과-문서-위치">파일과 문서 위치</a></li>
+<li><a href="#11-워크플로우">워크플로우</a></li>
+<li><a href="#12-아키텍처">아키텍처</a></li>
+<li><a href="#13-보안과-데이터-흐름">보안과 데이터 흐름</a></li>
+<li><a href="#14-문제와-오류-대처">문제와 오류 대처</a></li>
+<li><a href="#15-자주-묻는-질문">자주 묻는 질문</a></li>
+<li><a href="#16-라이선스-저작권-상업적-사용-면책">라이선스 저작권
+상업적 사용 면책</a></li>
+</ol>
+<hr />
+<h2 id="1-이게-뭔가요">1. 이게 뭔가요</h2>
+<ul>
+<li>AI 코딩 도구(<strong>클로드코드</strong>·<strong>코덱스</strong>)는
+일을 시작하기 전에 <strong><code>CLAUDE.md</code> /
+<code>AGENTS.md</code></strong> 라는 파일을 읽습니다. 이 파일이 바로
+<strong>"AI 사용설명서"</strong> 예요. (AI에게 "이 프로젝트는 이렇게
+다뤄줘"라고 미리 적어 두는 쪽지입니다.)</li>
+<li>이 설명서가 <strong>너무 길거나, 비밀번호(키)가 들어 있거나, 서로
+모순되면</strong> AI가 헷갈리고, 대답이 부정확해지고, 비용도
+늘어납니다.</li>
+<li><strong>SoDamContext</strong>는 그 설명서를 <strong>쉬운 한국어로
+건강검진</strong>하고, 없으면 <strong>쉬운 질문 몇 개로 작게
+만들어</strong> 주고, 문제가 있으면 <strong>안전하게 다듬어</strong>
+줍니다.</li>
+<li>어려운 말은 숨깁니다(<code>CLAUDE.md</code> → <strong>"AI
+사용설명서"</strong>). "왜요?"라고 물으면 그때 진짜 이유를
+알려줘요.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>한 줄 요약:</strong> "AI가 내 프로젝트를 잘 알아듣게 해
+주는 설명서를, 코드 몰라도 점검·정리할 수 있게 도와주는 도구."</p>
+</blockquote>
+<blockquote>
+<p>📱 <strong>참고(정직):</strong> 이 도구는
+<strong>컴퓨터(Windows·macOS)</strong> 의 클로드코드·코덱스
+<strong>안에서</strong> 작동합니다. <strong>휴대폰 앱이
+아닙니다.</strong> 스마트폰만 있는 경우엔 사용할 수 없어요.</p>
+</blockquote>
+<hr />
+<h2 id="2-사전-준비물과-필요-프로그램">2. 사전 준비물과 필요
+프로그램</h2>
+<table>
+<thead>
+<tr>
+<th>준비물</th>
+<th>필요한 이유</th>
+<th>확인 / 설치 방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>클로드코드(Claude Code)</strong></td>
+<td>이 도구가 작동하는 곳</td>
+<td>이미 쓰고 계시면 OK. 없으면 <a
+href="https://claude.com/claude-code">claude.com/claude-code</a> 안내를
+따라 설치</td>
+</tr>
+<tr>
+<td><strong>Node.js 18 이상</strong></td>
+<td>검진 도구가 속으로 Node를 사용</td>
+<td>입력창에 <code>!node --version</code> → <code>v18</code> 이상(예:
+v20, v22) 숫자가 나오면 OK. 없으면 <a
+href="https://nodejs.org">nodejs.org</a> 에서 <strong>LTS</strong>
+버튼으로 설치 후 컴퓨터 재시작</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>코덱스 설치·로컬 설치 때 저장소 받기</td>
+<td>입력창에 <code>!git --version</code> → 숫자가 나오면 OK. 없으면 <a
+href="https://git-scm.com">git-scm.com</a> 에서 설치</td>
+</tr>
+<tr>
+<td>(선택) <strong>코덱스(Codex)</strong></td>
+<td>코덱스의 <code>AGENTS.md</code>도 다루려면</td>
+<td>코덱스 쓰는 분만 필요</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>운영체제:</strong> Windows·macOS 둘 다 됩니다. (이 문서의
+경로 예시는 Windows 기준이에요.)</li>
+<li><strong>인터넷:</strong> 설치할 때만 필요합니다. 검진·문진은
+<strong>100% 내 컴퓨터 안에서</strong> 돌아갑니다(데이터를 밖으로 안
+보냄).</li>
+<li><strong>"입력창"</strong> = 클로드코드에서 글을 치는 칸이에요. 이
+문서에서 "입력창에 ~치세요"는 거기에 친다는 뜻입니다.</li>
+</ul>
+<hr />
+<h2 id="3-다운로드와-설치-방법">3. 다운로드와 설치 방법</h2>
+<h3 id="3-1-클로드코드-자동-설치-권장">3-1. 클로드코드 (자동 설치,
+권장)</h3>
+<p>클로드코드 <strong>입력창</strong>에 아래 두 줄을 <strong>한
+줄씩</strong> 붙여넣고 각각 Enter 하세요.</p>
+<pre><code>/plugin marketplace add sodam-ai/SoDam-Context-Eng</code></pre>
+<pre><code>/plugin install sodam-context</code></pre>
+<ul>
+<li>또는 <code>/plugin</code> 만 쳐서 <strong>메뉴</strong>에서
+SoDamContext를 찾아 <strong>Install</strong> 을 눌러도 됩니다.</li>
+<li><strong>설치 후에는 클로드코드를 완전히 껐다
+켜세요(재시작).</strong> 그래야 명령어가 목록에 떠요.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>내 컴퓨터 폴더에서 바로 쓰는 경우</strong>(개발·테스트):
+위 첫 줄의 <code>sodam-ai/SoDam-Context-Eng</code> 자리에 <strong>그
+폴더의 절대경로</strong>를 넣으세요. 예:
+<code>/plugin marketplace add D:\...\SoDam-Context-Eng</code></p>
+</blockquote>
+<h3 id="3-2-코덱스-수동-설치">3-2. 코덱스 (수동 설치)</h3>
+<p>코덱스에는 플러그인 마켓이 없어서, <strong>저장소를 통째로 받아 그
+안에서</strong> 씁니다. (스킬 폴더만 복사하면 검진 도구가 쓰는
+<code>lib</code>·<code>rules</code> 폴더가 빠져서 "파일을 찾을 수
+없어요" 오류가 나요.)</p>
+<ol type="1">
+<li>터미널(명령 프롬프트)에 한 줄씩:
+<pre><code>git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
+cd SoDam-Context-Eng</code></pre></li>
+<li><strong>코덱스를 이 저장소 루트 폴더에서 시작</strong>하세요.
+(루트에
+<code>AGENTS.md</code>·<code>skills</code>·<code>lib</code>·<code>rules</code>가
+다 있어요.)</li>
+<li>자세한 단계·FAQ는 저장소의
+<strong><code>codex/README.ko.md</code></strong> 또는 이 문서 아래
+<strong><a href="#6-사용-방법">사용 방법</a></strong> 참고.</li>
+</ol>
+<blockquote>
+<p>왕초보용 그림 같은 단계별 안내는 같은 폴더의
+<strong><code>GUIDE.md</code></strong>(한국어)·<strong><code>GUIDE.en.md</code></strong>(영어)에
+있어요.</p>
+</blockquote>
+<hr />
+<h2 id="4-빠른-시작">4. 빠른 시작</h2>
+<p>설치·재시작이 끝났다면, 딱 두 가지만 기억하세요.</p>
+<ol type="1">
+<li><p><strong>이미 설명서가 있을 때 → 점검(검진):</strong></p>
+<pre><code>/sodam-context-checkup</code></pre>
+<p>"어느 파일을 볼까요?"라고 물으면, 점검할 폴더의
+<code>CLAUDE.md</code> 경로(절대경로)를 알려주세요.</p></li>
+<li><p><strong>아직 설명서가 없을 때 → 만들기(문진):</strong></p>
+<pre><code>/sodam-context-intake</code></pre>
+<p>쉬운 질문 5~6개에 답하면, <strong>미리보기 → "만들까요?" 확인
+후</strong> 작은 설명서를 만들어 줍니다.</p></li>
+</ol>
+<blockquote>
+<p>자연어로 <strong>"sodam-context로 내 AI 설명서 점검해줘"</strong>
+처럼 말해도 됩니다.</p>
+</blockquote>
+<hr />
+<h2 id="5-실행-방법">5. 실행 방법</h2>
+<p>이 도구는 <strong>직접 켜는 프로그램이 아니라</strong>,
+클로드코드·코덱스 안에서 <strong>명령/자연어로 부르면</strong>
+작동합니다.</p>
+<ul>
+<li><strong>클로드코드:</strong> 입력창에 슬래시 명령을 칩니다. 예:
+<code>/sodam-context-checkup</code>, <code>/sodam-context-intake</code>,
+<code>/sodam-context-treat</code>.</li>
+<li><strong>코덱스:</strong> 슬래시 명령이 없으니
+<strong>자연어</strong>로 부릅니다. 예: "내 AGENTS.md 건강검진 해줘",
+"설명서 고쳐줘". (반드시 <strong>저장소 루트 폴더</strong>에서 코덱스를
+실행하세요.)</li>
+<li>검사할 파일은 <strong>절대경로</strong>로 알려주면 가장 정확합니다.
+예: <code>C:\내프로젝트\CLAUDE.md</code>.</li>
+</ul>
+<hr />
+<h2 id="6-사용-방법">6. 사용 방법</h2>
+<h3 id="6-1-검진점검--white_check_mark-작동">6-1. 검진(점검) —
+<code>✅ 작동</code></h3>
+<ol type="1">
+<li><code>/sodam-context-checkup</code> 입력.</li>
+<li>"어느 파일?" 물으면 절대경로 알려주기.</li>
+<li>잠시 후 <strong>쉬운 리포트</strong>가 나옵니다:
+<ul>
+<li>"문제 ○건" 처럼 <strong>개수</strong>로 보여줘요(점수는 일부러 숨김
+— 과장 방지).</li>
+<li>비밀번호/키가 있으면 <strong>가린
+채</strong>(<code>sk-ant-…REDACTED</code>)로만.</li>
+<li><strong>낡음·자동생성 미정제·스킬누수</strong> 같은 항목은
+"의심"으로(오탐 가능성 함께 안내).</li>
+<li>더 궁금하면 <strong><code>왜요?</code></strong> 라고 답하면
+이유·근거를 설명해요.</li>
+</ul></li>
+</ol>
+<h3 id="6-2-문진만들기--white_check_mark-작동">6-2. 문진(만들기) —
+<code>✅ 작동</code></h3>
+<ol type="1">
+<li><code>/sodam-context-intake</code> 입력.</li>
+<li>"어느 폴더?" 물으면 경로를 주거나 <strong>"지금 이 폴더"</strong>
+라고 답하기.</li>
+<li>쉬운 질문에 하나씩 답하기(무슨 프로젝트/언어·도구/꼭 지킬 규칙/하지
+말 것/말투).</li>
+<li>AI가 <strong>만들 내용을 먼저 보여주고</strong> "이대로
+만들까요?"라고 물어요 → <strong><code>네</code></strong> 라고 해야 그때
+파일이 생겨요.</li>
+<li>만든 설명서는 <strong>200줄 이하·비밀키 0</strong>. 이어서 "검진도
+해볼까요?"에 <code>네</code> 하면 점검까지.</li>
+</ol>
+<h3 id="6-3-처방다듬기--new-작동신규">6-3. 처방(다듬기) —
+<code>🆕 작동(신규)</code></h3>
+<ol type="1">
+<li>검진에서 문제가 나오면 <code>/sodam-context-treat</code> 입력.</li>
+<li><strong>백업을 먼저</strong> 뜨고, <strong>무엇을 바꿀지
+미리보기</strong>를 보여줘요.</li>
+<li><strong><code>네</code></strong> 라고 해야만 실제로 고칩니다(중복
+줄·불필요한 빈 줄 정리).</li>
+<li><strong>되돌리기(restore)</strong> 지원 — 마음에 안 들면 백업으로
+복구.</li>
+<li><strong>안전·금지 규칙 줄</strong>(예: "절대", "never", "비밀번호
+금지")은 <strong>자동으로 보존</strong>합니다(지우지 않아요).</li>
+</ol>
+<blockquote>
+<p>⚠️ 처방은 코드·자동테스트가 끝났지만 <strong>실제 파일 라이브 검증은
+아직 사람 확인 단계</strong>라 '신규'로 표기해요. 처음 쓸 땐 중요한
+파일은 따로 복사해 두는 걸 권장합니다.</p>
+</blockquote>
+<hr />
+<h2 id="7-작동-방법">7. 작동 방법</h2>
+<ul>
+<li><strong>검진:</strong> 도구가 <strong>원본 파일을 직접 열지
+않습니다.</strong> 속 검사기(<code>checkup-cli.mjs</code>)를 돌려
+<strong>결과(요약 JSON)만</strong> 봐요. 그래서 <strong>비밀키가 새지
+않습니다.</strong> 리포트는 <strong>점수 대신 "문제 ○건"</strong>,
+비밀키는 <strong>가린 채</strong>로만 보여줍니다.</li>
+<li><strong>문진:</strong> 질문 → <strong>미리보기 → "만들까요?" 확인 →
+그때만 파일 생성.</strong> 묻지 않고 마음대로 만들지 않습니다.</li>
+<li><strong>처방:</strong> <strong>백업 먼저 → 미리보기 → 확인 →
+안전하게 쓰기</strong>(임시파일에 쓴 뒤 이름 바꾸기 방식이라, 도중에
+멈춰도 원본이 안 깨져요). 처방 뒤엔 파일이 <strong>더 작아져야</strong>
+성공으로 봅니다.</li>
+<li><strong>코덱스(<code>AGENTS.md</code>):</strong> 코덱스는 상위
+폴더·전역 설명서까지 <strong>합쳐서</strong> 읽어요. 검진이 그
+<strong>합산 용량(32KiB 한도)</strong> 까지 확인합니다. (한글은 글자당
+3바이트라 글자 수보다 용량이 큽니다.)</li>
+</ul>
+<hr />
+<h2 id="8-명령어-목록">8. 명령어 목록</h2>
+<table>
+<thead>
+<tr>
+<th>명령어</th>
+<th>쉬운 이름</th>
+<th>무엇을 하나</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/sodam-context-checkup</code></td>
+<td>검진(점검)</td>
+<td>군더더기·중복·낡음/미정제("의심")·비밀키·크기 점검 → 쉬운
+리포트</td>
+<td>✅ 작동</td>
+</tr>
+<tr>
+<td><code>/sodam-context-intake</code></td>
+<td>문진(만들기)</td>
+<td>설명서가 없을 때 질문으로 작게 생성</td>
+<td>✅ 작동</td>
+</tr>
+<tr>
+<td><code>/sodam-context-treat</code></td>
+<td>처방(다듬기)</td>
+<td>백업→미리보기→확인 후 중복·빈줄 정리(되돌리기 지원)</td>
+<td>🆕 작동(신규)</td>
+</tr>
+<tr>
+<td>(예방/안전장치)</td>
+<td>예방</td>
+<td>비밀키·과다 길이를 미리 차단</td>
+<td>⏳ 준비 중</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>코덱스에서는 위 슬래시 명령 대신 <strong>자연어</strong>로 같은
+기능을 부릅니다("건강검진 해줘" 등).</p>
+</blockquote>
+<hr />
+<h2 id="9-업데이트-내용-요약">9. 업데이트 내용 요약</h2>
+<details>
+<summary><b>📋 눌러서 펼치기 — 버전별 변경 이력</b></summary>
+
+<p><strong>0.1.0 이후 (진행 중, 2026-07-07)</strong></p>
+<ul>
+<li><strong>검진 심화:</strong> "낡음(/init 그대로)·자동생성
+미정제·스킬누수"를 규칙 데이터로 <strong>"의심"</strong>
+탐지(줄번호·감지 표현 포함). 데이터만 고치면 확장(코드 변경 0), 비밀키
+안전(T1) 유지.</li>
+<li><strong>처방 되돌리기 수정:</strong> <code>restore</code> 명령 인자
+순서가 코드와 반대여서 복구가 실패할 수 있던 것을 교정(자동 e2e
+통과).</li>
+<li><strong>코덱스 실행 경로·설치 문서 정리:</strong> 코덱스에서 스킬이
+실제로 돌도록 실행 경로 안내를 넣고, 서로 어긋나던 설치 방법(스킬만 복사
+↔︎ 저장소 통째)을 <strong>작동하는 방식으로 통일</strong>.</li>
+<li><strong>문서 정확도 갱신:</strong> README·GUIDE(한/영)를 현재 능력에
+맞게 정직 반영. PDF는 제거(HTML로 대체).</li>
+<li><strong>테스트 추가:</strong> 검진→백업→미리보기→적용→복구 전 과정을
+실제로 검증하는 회귀 테스트 추가.</li>
+</ul>
+<p><strong>0.1.0 (2026-06-28) — 첫 공개</strong></p>
+<ul>
+<li><strong>검진:</strong> 데이터 주도 규칙으로 AI 사용설명서 자동
+점검(크기·린트중복·스킬중복·충돌·초기화 화석·맹목 참조 등). 비밀키 T1
+안전 설계.</li>
+<li><strong>문진:</strong> 5~6개 질문 인터뷰 → <code>CLAUDE.md</code> +
+<code>AGENTS.md</code> 자동 생성(확인 후에만 쓰기).</li>
+<li><strong>처방:</strong> 문제 줄 정리 — 백업 먼저 → 미리보기 →
+안전키워드 보존 → 원자적 쓰기.</li>
+<li><strong>코덱스 지원:</strong> 병합체인(글로벌~현재폴더
+<code>AGENTS.md</code> 합산·32KiB 판정), <code>config.toml</code>
+감지.</li>
+<li><strong>문서·라이선스:</strong> README·GUIDE(한/영), Apache-2.0 +
+NOTICE.</li>
+</ul>
+</details>
+
+<hr />
+<h2 id="10-파일과-문서-위치">10. 파일과 문서 위치</h2>
+<table>
+<thead>
+<tr>
+<th>무엇</th>
+<th>위치(절대경로 예시)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>점검·생성 대상</td>
+<td>내가 작업 중인 <strong>프로젝트 폴더</strong>의
+<code>CLAUDE.md</code> · <code>AGENTS.md</code></td>
+</tr>
+<tr>
+<td>(처방 시) 백업 폴더</td>
+<td><code>&lt;프로젝트 폴더&gt;\.sodamcontext\backups\</code> (처방 실행
+시 자동 생성)</td>
+</tr>
+<tr>
+<td>이 사용설명서</td>
+<td>플러그인 폴더의
+<code>README.md</code>·<code>README.html</code>(한국어),
+<code>README.en.md</code>·<code>README.en.html</code>(영어)</td>
+</tr>
+<tr>
+<td>왕초보 단계별 가이드</td>
+<td>플러그인 폴더의
+<code>GUIDE.md</code>·<code>GUIDE.html</code>(한국어),
+<code>GUIDE.en.md</code>·<code>GUIDE.en.html</code>(영어)</td>
+</tr>
+<tr>
+<td>코덱스 설치 안내</td>
+<td>저장소의 <code>codex/README.ko.md</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>md 문서와 html 문서는 <strong>내용이 동일</strong>합니다(html은 같은
+md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 바로 열어
+보기 좋아요.</p>
+</blockquote>
+<hr />
+<h2 id="11-워크플로우">11. 워크플로우</h2>
+<pre><code>설치 → 재시작 → [설명서 있나?]
+                 ├─ 없음 → /sodam-context-intake (문진) → 미리보기·확인 → 작은 설명서 생성
+                 └─ 있음 → /sodam-context-checkup (검진) → 문제 리포트
+                                   ├─ &quot;왜요?&quot; → 이유·근거 설명
+                                   └─ 문제 있으면 → /sodam-context-treat (처방)
+                                                      → 백업 → 미리보기 → 확인 → 안전하게 정리 (되돌리기 가능)</code></pre>
+<hr />
+<h2 id="12-아키텍처">12. 아키텍처</h2>
+<p>기술에 관심 있는 분을 위한 내부 구조입니다. (몰라도 사용에는 지장
+없어요.)</p>
+<ul>
+<li><strong>데이터 주도(Data-driven):</strong> 검진·처방의 판정 규칙은
+코드가 아니라 <code>rules/*.json</code> 에 있습니다. 새 검진을
+추가하려면 <strong>JSON 배열에 객체 하나</strong> 넣으면 돼요(코드 변경
+0).</li>
+<li><strong>CLI–JSON 경계(안전의 핵심):</strong> AI·스킬은 원본 파일을
+<strong>직접 읽지 않고</strong>, <code>lib/checkup-cli.mjs</code> 가
+내보내는 <strong>요약 JSON만</strong> 봅니다. 비밀키 '값'은 어떤
+결과·로그에도 들어가지 않아요.</li>
+<li><strong>엔진(lib) 구성:</strong> <code>scan-secrets</code>(비밀키
+탐지) · <code>checkup-rules</code>(크기·린트중복·의심 탐지) ·
+<code>intake-verify</code>(생성물 안전 게이트) ·
+<code>treat</code>+<code>treat-verify</code>(정리·안전키워드
+보존·회귀검증) · <code>backup</code>(원자적 백업·복구) ·
+<code>codex-merge</code>(코덱스 병합체인·32KiB) ·
+<code>checkup-cli</code>(오케스트레이터:
+검진/백업/미리보기/적용/복구).</li>
+<li><strong>의존성 0:</strong> 외부 npm 패키지를 쓰지 않습니다(공급망
+위험 최소화). <strong>Node 18+ ESM</strong>, <strong>100%
+로컬</strong>(네트워크 전송 0).</li>
+<li><strong>진입점(스킬) 3종:</strong>
+<code>sodam-context-intake</code>·<code>sodam-context-checkup</code>·<code>sodam-context-treat</code>
+— 클로드코드·코덱스 공통.</li>
+</ul>
+<hr />
+<h2 id="13-보안과-데이터-흐름">13. 보안과 데이터 흐름</h2>
+<ul>
+<li><strong>비밀키 미열람(T1):</strong> 도구는 비밀키 '값'을
+<strong>읽거나 출력하지 않습니다.</strong> "있다"까지만 확인하고
+<strong>가려서</strong>(<code>sk-ant-…REDACTED</code>) 보여줍니다.
+<strong>자동으로 지우지 않아요</strong>(오탐 위험 때문).</li>
+<li><strong>자동 변경 없음(Fail-Closed):</strong> 사용자가
+<strong>"네"</strong> 라고 하기 전에는 파일을 <strong>만들지도
+고치지도</strong> 않습니다.</li>
+<li><strong>네트워크 0:</strong> 검진·문진·처방은 <strong>내 컴퓨터
+안에서만</strong> 돌아갑니다. 인터넷은 설치할 때만 필요.</li>
+<li><strong>원자적 쓰기 + 백업 우선:</strong> 처방은 임시파일에 쓴 뒤
+이름을 바꿔 반영하고, <strong>백업이 실패하면 즉시
+중단</strong>합니다.</li>
+<li><strong>안전키워드 보존:</strong>
+"절대/금지/never/must/항상/secret/force push" 같은 중요 규칙이 든 줄은
+<strong>자동 보존</strong>(정리에서 제외).</li>
+<li><strong>정직한 한계:</strong> 정해진 패턴만 잡으므로 <strong>"100%
+안전·완벽 탐지"는 보장하지 않습니다</strong>(참고용). 중요한 키는 직접
+재발급/관리하세요.</li>
+</ul>
+<p><strong>데이터 흐름(검진):</strong></p>
+<pre><code>[원본 설명서 파일]
+      │  (도구가 내부에서만 읽음 — AI는 원본을 직접 안 봄)
+      ▼
+[checkup-cli.mjs = 내부 검사기]
+      │  요약 JSON만 생성 (비밀키 &#39;값&#39; 없음 · 마스킹 표시만)
+      ▼
+[AI / 스킬] → 쉬운 한국어 리포트(&quot;문제 ○건&quot;, 가린 키)</code></pre>
+<hr />
+<h2 id="14-문제와-오류-대처">14. 문제와 오류 대처</h2>
+<table>
+<thead>
+<tr>
+<th>증상</th>
+<th>원인</th>
+<th>해결</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>명령어가 목록에 안 보임</td>
+<td>설치 후 <strong>재시작 안 함</strong></td>
+<td>클로드코드 <strong>완전히 껐다 켜기</strong></td>
+</tr>
+<tr>
+<td>재시작해도 안 보임</td>
+<td>설치본 갱신 안 됨</td>
+<td><code>! claude plugin marketplace update sodamcontext-marketplace</code>
+후 다시 재시작</td>
+</tr>
+<tr>
+<td>"node를 찾을 수 없음"</td>
+<td>Node.js 없음/낮은 버전</td>
+<td><a href="https://nodejs.org">nodejs.org</a> LTS 설치 후 재시작</td>
+</tr>
+<tr>
+<td>엉뚱한(다른) 기능이 답함</td>
+<td>이름이 비슷한 다른 플러그인이 가로챔</td>
+<td>자연어 대신 <strong><code>/sodam-context-...</code></strong> 슬래시
+명령 사용</td>
+</tr>
+<tr>
+<td>검진이 엉뚱한 파일을 봄</td>
+<td>"어느 폴더?"가 모호</td>
+<td>점검할 파일의 <strong>절대경로</strong>를 정확히 알려주기</td>
+</tr>
+<tr>
+<td>비밀번호가 있다고 나옴</td>
+<td>설명서에 키처럼 보이는 게 있음</td>
+<td>그 키를 <strong>재발급</strong>하고 설명서에서 빼기(환경변수로) —
+도구는 자동으로 안 지웁니다</td>
+</tr>
+<tr>
+<td>코덱스에서 "Cannot find module"</td>
+<td>저장소 루트가 아닌 폴더에서 실행</td>
+<td>코덱스를 <strong>저장소 루트
+폴더</strong>(<code>SoDam-Context-Eng</code>)에서 다시 실행</td>
+</tr>
+<tr>
+<td>묻지도 않고 파일을 만들/고침</td>
+<td>🚨 정상 아님</td>
+<td>멈추고 도와줄 사람에게 알리기(원래는 꼭 물어봐야 정상)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="15-자주-묻는-질문">15. 자주 묻는 질문</h2>
+<p><strong>Q. "AI 사용설명서"가 정확히 뭔가요?</strong> A. AI 코딩
+도구가 일 시작 전에 읽는
+<code>CLAUDE.md</code>(클로드코드용)·<code>AGENTS.md</code>(코덱스용)
+파일이에요. "이 프로젝트는 이렇게 다뤄줘"라고 적어 두는 쪽지입니다.</p>
+<p><strong>Q. 내 파일 내용이 밖으로 나가나요?</strong> A. 아니요.
+검진·문진·처방은 <strong>100% 내 컴퓨터 안</strong>에서 돌아갑니다.
+인터넷은 설치할 때만 필요해요.</p>
+<p><strong>Q. 비밀번호를 자동으로 지워주나요?</strong> A.
+<strong>아니요.</strong> "있다"까지만 확인하고 <strong>가려서</strong>
+보여줄 뿐, 자동으로 지우지 않습니다(오탐 위험). 직접 확인하고
+재발급하세요.</p>
+<p><strong>Q. 점수는 왜 안 보여줘요?</strong> A. 검증되지 않은 점수는
+과장이 될 수 있어 <strong>일부러 숨겼어요.</strong> 대신 "문제 ○건"으로
+봅니다.</p>
+<p><strong>Q. 한글이 깨져요.</strong> A. Node.js가 v18 이상인지
+확인하세요. Windows에서는 터미널 인코딩이 UTF-8인지도 확인해요.</p>
+<p><strong>Q. 자동 허용(권한) 모드에서 써도 되나요?</strong> A. 자동
+허용 모드는 확인 단계를 건너뛸 수 있어요. 안전을 위해 <strong>기본(ask)
+모드</strong>를 권장합니다.</p>
+<p><strong>Q. 클로드코드와 코덱스를 같이 써도 되나요?</strong> A. 네.
+같은 프로젝트에서 클로드코드는 <code>CLAUDE.md</code>, 코덱스는
+<code>AGENTS.md</code>를 각각 읽어요. 두 파일이 공존해도
+문제없습니다.</p>
+<p><strong>Q. 업데이트는 어떻게 하나요?</strong> A. 클로드코드는
+<code>! claude plugin marketplace update sodamcontext-marketplace</code>
+후 재시작. 코덱스(로컬 저장소)는 폴더에서 <code>git pull</code>.</p>
+<p><strong>Q. 비용이 드나요?</strong> A. 이 도구 자체는 로컬에서 돌아
+별도 요금이 없지만, <strong>AI(클로드·코덱스) 사용에는 각 제공사의
+요금이 적용</strong>됩니다(우리 범위 밖).</p>
+<hr />
+<h2 id="16-라이선스-저작권-상업적-사용-면책">16. 라이선스 저작권 상업적
+사용 면책</h2>
+<blockquote>
+<p>⚖️ <strong>이 안내는 법률 자문이 아닙니다.</strong> 아래는 일반
+안내이며, 실제 공개·배포·상업적 사용 전 <strong>본인 확인 및 법무
+검토</strong>가 필요합니다.</p>
+</blockquote>
+<ul>
+<li><strong>라이선스: Apache License 2.0</strong> © 2026 <strong>SoDam
+AI Studio</strong>.
+<ul>
+<li><strong>할 수 있는 것:</strong> 수정 · 복제 · 재배포 ·
+<strong>상업적 사용</strong> · 포크 · 판매 · 서비스 운영 · 교육 ·
+납품.</li>
+<li><strong>지켜야 할 것:</strong> 라이선스와 <strong>저작권 고지
+보존</strong> · <strong>변경한 부분 명시</strong> · <code>NOTICE</code>
+파일이 있으면 동봉.</li>
+<li><strong>제외:</strong> <strong>보증 없음</strong> · <strong>상표권은
+부여되지 않음</strong>.</li>
+</ul></li>
+<li><strong>면책(보증 없음·책임 제한):</strong> 이 소프트웨어는
+<strong>"있는 그대로(AS IS)"</strong> 제공되며, 사용으로 인한
+결과·손해에 대해 <strong>어떤 보증·책임도 지지 않습니다.</strong>
+"법적으로 100% 안전"하다고 보장하지 않습니다.</li>
+<li><strong>상표 안내:</strong> <strong>"Claude Code" ·
+"Claude"</strong> 는 Anthropic, <strong>"Codex"</strong> 는 OpenAI의
+상표입니다. 이 도구는 그 제품들과의 <strong>호환 표시(명목적 사용,
+nominative use)</strong> 일 뿐, <strong>공식 제휴·후원·보증 관계가
+아닙니다</strong>(not affiliated with / endorsed by Anthropic or
+OpenAI).</li>
+<li><strong>AI 모델 사용 책임:</strong> AI(클로드·코덱스) 사용에는
+<strong>각 제공사의 약관·요금제</strong>가 별도로 적용됩니다(우리
+라이선스 범위 밖).</li>
+<li><strong>생성물 소유권:</strong> 문진으로 만든
+<code>CLAUDE.md</code>·<code>AGENTS.md</code>는 <strong>사용자
+프로젝트에 귀속</strong>되며, 우리는 그 결과물에 권리를 주장하지
+않습니다.</li>
+<li><strong>개인정보:</strong> 이 도구는 데이터를 외부로 보내지 않지만,
+AI 제공사(클로드·코덱스)에 무엇을 보내는지는 각 제공사 정책을 따릅니다.
+비밀키·개인정보는 설명서에 넣지 마세요.</li>
+<li><strong>공개 전 확인(개발자용):</strong> 라이선스 최종 확정 ·
+저작권자 표기 · 제품명 상표 충돌 · 책임 한도 문구 · 차용 자료
+출처(NOTICE)는 <strong>공개 배포 전 법무 검토</strong> 대상입니다.</li>
+</ul>
+<hr />
+<blockquote>
+<p>더 자세한 <strong>단계별 왕초보 안내</strong>는 같은 폴더의
+<strong><code>GUIDE.md</code></strong>(한국어) /
+<strong><code>GUIDE.en.md</code></strong>(English)를 보세요. English
+documents: <code>README.en.md</code>, <code>GUIDE.en.md</code> (and
+<code>.html</code> versions).</p>
+</blockquote>
+</body>
+</html>

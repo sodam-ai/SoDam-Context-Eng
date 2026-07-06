@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>System.Collections.Hashtable.t</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", Roboto, sans-serif;
+      line-height: 1.7;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.1rem 4rem;
+      color: #1f2328;
+      background: #ffffff;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    h1, h2, h3 { line-height: 1.3; margin-top: 2rem; }
+    h1 { font-size: 1.9rem; border-bottom: 2px solid #d0d7de; padding-bottom: .4rem; }
+    h2 { font-size: 1.4rem; border-bottom: 1px solid #eaecef; padding-bottom: .3rem; }
+    h3 { font-size: 1.15rem; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: #f3f4f6; padding: .15em .35em; border-radius: 5px; font-size: .9em;
+    }
+    pre {
+      background: #f6f8fa; padding: 1rem; border-radius: 8px; overflow-x: auto; border: 1px solid #eaecef;
+    }
+    pre code { background: none; padding: 0; }
+    blockquote {
+      margin: 1rem 0; padding: .3rem 1rem; color: #57606a;
+      border-left: 4px solid #d0d7de; background: #f9fafb;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; display: block; overflow-x: auto; }
+    th, td { border: 1px solid #d0d7de; padding: .5rem .7rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    tr:nth-child(even) { background: #fafbfc; }
+    details { background: #f9fafb; border: 1px solid #d0d7de; border-radius: 8px; padding: .6rem 1rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    hr { border: none; border-top: 1px solid #eaecef; margin: 2rem 0; }
+    img { max-width: 100%; }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e6edf3; background: #0d1117; }
+      h1 { border-bottom-color: #30363d; }
+      h2 { border-bottom-color: #21262d; }
+      a { color: #4493f8; }
+      code { background: #161b22; }
+      pre { background: #161b22; border-color: #30363d; }
+      blockquote { color: #9198a1; border-left-color: #30363d; background: #161b22; }
+      th, td { border-color: #30363d; }
+      th { background: #161b22; }
+      tr:nth-child(even) { background: #10151c; }
+      details { background: #161b22; border-color: #30363d; }
+      hr { border-top-color: #21262d; }
+    }
+  </style>
+</head>
+<body>
+<h1 id="sodamcontext--step-by-step-beginner-guide-baby">SoDamContext —
+Step-by-Step Beginner Guide 👶</h1>
+<blockquote>
+<p>Written in a <strong>"press this now"</strong> style so that even
+<strong>first-time</strong> computer/AI/messenger/smartphone users can
+follow along. (For a short summary, command list, architecture, and full
+license, see <code>README.en.md</code> in the same folder.)</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Honest note:</strong> Three features <strong>work now:
+Checkup, Intake (create), and Treatment (tidy)</strong>. Treatment is
+"new" (real-file live verification is still a human step).
+<strong>Prevention (auto-block) and auto-sync are in progress
+(planned).</strong> This tool runs on a <strong>computer (Windows ·
+macOS)</strong> — it is not a phone app.</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#things-to-know-first">Things to Know First</a></li>
+<li><a href="#step-1-check-prerequisites">Step 1 Check
+Prerequisites</a></li>
+<li><a href="#step-2-install">Step 2 Install</a></li>
+<li><a href="#step-2-b-codex-manual-install">Step 2-B Codex Manual
+Install</a></li>
+<li><a href="#step-3-restart">Step 3 Restart</a></li>
+<li><a href="#step-4-create-your-manual">Step 4 Create Your
+Manual</a></li>
+<li><a href="#step-5-check-a-manual">Step 5 Check a Manual</a></li>
+<li><a href="#step-6-tidy">Step 6 Tidy</a></li>
+<li><a href="#step-7-when-you-get-stuck">Step 7 When You Get
+Stuck</a></li>
+<li><a href="#step-8-safety-promises">Step 8 Safety Promises</a></li>
+<li><a href="#update-summary">Update Summary</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#license-note">License Note</a></li>
+</ul>
+<hr />
+<h2 id="things-to-know-first">Things to Know First</h2>
+<ol type="1">
+<li>This tool runs <strong>inside Claude Code</strong>. (Claude Code = a
+computer program where you code by chatting with AI in plain
+language.)</li>
+<li>You only need to <strong>install once</strong>. After that, just
+type commands.</li>
+<li><strong>"Input box"</strong> = the line where you type in Claude
+Code. In this guide, "type ~ in the input box" means typing there.</li>
+</ol>
+<blockquote>
+<p>💡 What's an "AI manual"? The <code>CLAUDE.md</code> ·
+<code>AGENTS.md</code> file the AI reads before working — a note that
+says "handle this project like this."</p>
+</blockquote>
+<hr />
+<h2 id="step-1-check-prerequisites">Step 1 Check Prerequisites</h2>
+<p>Type this in the input box and press Enter:</p>
+<pre><code>!node --version</code></pre>
+<ul>
+<li>If it shows <strong><code>v18</code> or higher</strong> (e.g. v20,
+v22) → you're ready ✅</li>
+<li>If you see red text / <code>not found</code> → open a web browser,
+go to <strong>nodejs.org</strong>, click the green <strong>LTS</strong>
+button to install, then restart your computer.</li>
+</ul>
+<p>(If you'll also use Codex, type <code>!git --version</code> and check
+a number shows. Otherwise install from
+<strong>git-scm.com</strong>.)</p>
+<hr />
+<h2 id="step-2-install">Step 2 Install</h2>
+<p>Paste these <strong>two lines, one at a time</strong>, pressing Enter
+after each:</p>
+<pre><code>/plugin marketplace add sodam-ai/SoDam-Context-Eng</code></pre>
+<pre><code>/plugin install sodam-context</code></pre>
+<ul>
+<li>A message like "installed" means success.</li>
+<li><em>(For a direct local-folder install, replace
+<code>sodam-ai/SoDam-Context-Eng</code> on the first line with that
+folder's path.)</em></li>
+</ul>
+<hr />
+<h2 id="step-2-b-codex-manual-install">Step 2-B Codex Manual
+Install</h2>
+<p>Codex (OpenAI Codex) has no plugin marketplace, so you <strong>clone
+the whole repository and run inside it</strong>. (If you copy only the
+skill folders, the <code>lib</code> and <code>rules</code> folders the
+checker needs are missing, and you'll get a "file not found" error.)</p>
+<ol type="1">
+<li><p><strong>Get the repository</strong> — in a terminal, one line at
+a time:</p>
+<pre><code>git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
+cd SoDam-Context-Eng</code></pre>
+<p><em>(If you already have the folder, just move into
+it.)</em></p></li>
+<li><p><strong>Start Codex from this repository's root folder.</strong>
+(The root has <code>AGENTS.md</code>, <code>skills</code>,
+<code>lib</code>, and <code>rules</code>.) ⚠️ Running from a different
+folder causes a "file not found" error.</p></li>
+<li><p><strong>Try in Codex using natural language</strong>:</p>
+<pre><code>check my AGENTS.md</code></pre>
+<ul>
+<li>Give the file to check as an <strong>absolute path</strong> (e.g.
+<code>C:\MyProject\AGENTS.md</code>).</li>
+<li><em>(Codex uses natural language, not
+<code>/commands</code>.)</em></li>
+<li>For a fuller install guide + FAQ, see
+<strong><code>codex/README.ko.md</code></strong> in the repo.</li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Korean character size note</strong>: 1 Korean character = 3
+bytes. Even a short-looking manual can hit Codex's 32 KiB limit. The
+checkup will warn you automatically.</p>
+</blockquote>
+<hr />
+<h2 id="step-3-restart">Step 3 Restart</h2>
+<p>What you just installed appears only after a
+<strong>restart</strong>.</p>
+<ul>
+<li>Type <code>exit</code> in the input box and press Enter →
+<strong>fully close</strong> the window (the X)</li>
+<li>Reopen Claude Code (in a terminal, type <code>claude</code>)</li>
+</ul>
+<p>Check: type just <code>/</code> in the input box. If you see
+<strong><code>sodam-context-checkup</code></strong>,
+<strong><code>sodam-context-intake</code></strong>, and
+<strong><code>sodam-context-treat</code></strong> in the list, you're
+ready! 🎉</p>
+<hr />
+<h2 id="step-4-create-your-manual">Step 4 Create Your Manual</h2>
+<p>If you don't have an AI manual (<code>CLAUDE.md</code>) yet, let's
+make one. (This feature = <strong>Intake</strong>.)</p>
+<ol type="1">
+<li><p>Type:</p>
+<pre><code>/sodam-context-intake</code></pre></li>
+<li><p>When asked "which folder?", give the folder path or answer
+<strong>"this folder"</strong>.</p></li>
+<li><p>The AI asks easy questions <strong>one at a time</strong>. If
+stuck, you can answer like this:</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>You can answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What project is this?</td>
+<td><code>just practice</code></td>
+</tr>
+<tr>
+<td>What language/tools?</td>
+<td><code>not sure</code></td>
+</tr>
+<tr>
+<td>A must-follow rule?</td>
+<td><code>answer in Korean</code></td>
+</tr>
+<tr>
+<td>Something to never do?</td>
+<td><code>don't put passwords in code</code></td>
+</tr>
+<tr>
+<td>Tone?</td>
+<td><code>simple and short</code></td>
+</tr>
+</tbody>
+</table></li>
+<li><p>The AI <strong>shows you the content first</strong> and asks
+"create it like this?". → If you like it, answer
+<strong><code>yes</code></strong> and the files are created then. (It
+never creates before asking.)</p></li>
+<li><p>When "Created!" appears, you're done. If it asks "shall I run a
+checkup too?", answer <code>yes</code> to also check it.</p></li>
+</ol>
+<hr />
+<h2 id="step-5-check-a-manual">Step 5 Check a Manual</h2>
+<p>If you already have a <code>CLAUDE.md</code> in a folder: (This
+feature = <strong>Checkup</strong>.)</p>
+<ol type="1">
+<li>Type:
+<pre><code>/sodam-context-checkup</code></pre></li>
+<li>When asked "which file?", give the file path (e.g.
+<code>C:\MyFolder\CLAUDE.md</code>).</li>
+<li>Shortly after, you get a <strong>plain report</strong>:
+<ul>
+<li>Shown as a <strong>count</strong> like "N problems" (the score is
+hidden on purpose)</li>
+<li>Any password/key is shown <strong>masked</strong>
+(<code>sk-ant-…REDACTED</code>) only</li>
+<li>Items like staleness/unrefined are shown as
+<strong>"suspect"</strong> (for reference, not confirmed)</li>
+<li>For more, answer <strong><code>why?</code></strong> and it explains
+the reason.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="step-6-tidy">Step 6 Tidy</h2>
+<p>If the checkup found problems, you can tidy safely. (This feature =
+<strong>Treatment</strong>, new.)</p>
+<ol type="1">
+<li>Type:
+<pre><code>/sodam-context-treat</code></pre></li>
+<li>It <strong>backs up first</strong> and <strong>shows what it will
+change</strong>.</li>
+<li>It edits <strong>only after you say <code>yes</code></strong>
+(removes duplicate lines / unnecessary blank lines).</li>
+<li>If you don't like it, use <strong>restore</strong> to roll back to
+the backup.</li>
+<li><strong>Safety/forbidden rule lines</strong> (e.g. "never", "no
+passwords") are <strong>auto-preserved</strong> (never removed).</li>
+</ol>
+<blockquote>
+<p>⚠️ Treatment is still "new", so for your first use, keep <strong>a
+separate copy of important files</strong>.</p>
+</blockquote>
+<hr />
+<h2 id="step-7-when-you-get-stuck">Step 7 When You Get Stuck</h2>
+<p>Don't panic. Just follow the table.</p>
+<table>
+<thead>
+<tr>
+<th>If this happens</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/sodam-context-...</code> isn't in the list</td>
+<td>Redo Step 3 (restart). If still missing, type
+<code>! claude plugin marketplace update sodamcontext-marketplace</code>,
+then restart again</td>
+</tr>
+<tr>
+<td>Something else responds</td>
+<td>Don't use plain language; use a command starting with
+<strong><code>/sodam-context-...</code></strong></td>
+</tr>
+<tr>
+<td>It says "node not found"</td>
+<td>Go back to Step 1 and install Node.js</td>
+</tr>
+<tr>
+<td>It created/edited a file without asking</td>
+<td>🚨 Stop and tell someone who can help (it should always ask
+first)</td>
+</tr>
+<tr>
+<td>Codex "Cannot find module" error</td>
+<td>Re-run Codex from the <strong>repo root folder</strong>
+(<code>SoDam-Context-Eng</code>)</td>
+</tr>
+<tr>
+<td>"Why?" button is missing</td>
+<td>There's no button in CLI. Just type <code>why?</code> and it
+explains</td>
+</tr>
+<tr>
+<td>Score isn't shown</td>
+<td>Hidden on purpose — "N problems" is the count (prevents inflated
+scores)</td>
+</tr>
+<tr>
+<td>Korean text looks broken</td>
+<td>Check Node.js v18+. On Windows, verify terminal UTF-8 encoding</td>
+</tr>
+<tr>
+<td>It says there's a password but I don't see one</td>
+<td>The regex also flags things that look similar. It never auto-deletes
+— check it yourself and decide</td>
+</tr>
+<tr>
+<td>Is it safe in auto-accept (permission) mode?</td>
+<td>Auto-accept mode can skip the confirmation step. For safety, the
+default (ask) mode is recommended</td>
+</tr>
+<tr>
+<td>It stopped suddenly during checkup</td>
+<td>It's designed to stop before touching the original file. Your
+original is untouched</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-8-safety-promises">Step 8 Safety Promises</h2>
+<p>Here are the promises this tool keeps. Relax.</p>
+<ul>
+<li>🔒 <strong>Passwords/keys:</strong> it confirms only that one
+<strong>exists</strong> (without reading the value) and shows it
+<strong>masked</strong>. It <strong>never auto-deletes</strong>.</li>
+<li>✋ <strong>Ask first:</strong> it never <strong>creates or
+edits</strong> files until you say <strong>"yes"</strong>.</li>
+<li>🌐 <strong>No internet:</strong> checkup, intake, and treatment run
+<strong>on your computer only</strong> (internet only for install).</li>
+<li>♻️ <strong>Edits safely:</strong> treatment backs up first and
+writes via a temp file, so your original isn't corrupted if it stops
+midway.</li>
+<li>🙇 <strong>No "absolutely safe" promise:</strong> it only catches
+known patterns, so manage important passwords yourself.</li>
+</ul>
+<blockquote>
+<p>Data flow (simply): the tool reads the original <strong>only
+internally</strong> and passes the AI just a <strong>summary (no secret
+values)</strong>. That's why secrets don't leak.</p>
+</blockquote>
+<hr />
+<h2 id="update-summary">Update Summary</h2>
+<details>
+<summary><b>📋 Click to expand — what changed</b></summary>
+
+<p><strong>After 0.1.0 (in progress, 2026-07-07)</strong></p>
+<ul>
+<li>Checkup now also flags <strong>"staleness / unrefined / skill
+leakage"</strong> as "suspect" (with line numbers).</li>
+<li>Fixed the treatment <strong>restore</strong> bug (it now restores
+correctly).</li>
+<li>Unified the Codex install method to <strong>the one that actually
+works</strong>.</li>
+<li>Updated README·GUIDE (KO/EN) to honestly match current abilities;
+PDFs removed, replaced by HTML.</li>
+</ul>
+<p><strong>0.1.0 (2026-06-28) — first release</strong></p>
+<ul>
+<li>Core Checkup / Intake / Treatment, Codex support (merge chain, size
+check), KO/EN docs, Apache-2.0 license.</li>
+</ul>
+</details>
+
+<hr />
+<h2 id="faq">FAQ</h2>
+<p><strong>Q. Does my file go out to the internet?</strong> → No. It
+runs <strong>on your computer only</strong>.</p>
+<p><strong>Q. Does it delete passwords automatically?</strong> → No. It
+only confirms one <strong>exists</strong> and shows it
+<strong>masked</strong>. Reissue it yourself.</p>
+<p><strong>Q. Does it work on a smartphone?</strong> → No. Only inside
+Claude Code · Codex on a <strong>computer (Windows · Mac)</strong>.</p>
+<p><strong>Q. Can I use Claude Code and Codex together?</strong> → Yes.
+Claude Code reads <code>CLAUDE.md</code>, Codex reads
+<code>AGENTS.md</code>. They coexist fine.</p>
+<p><strong>Q. Does it cost anything?</strong> → The tool itself runs
+free, but <strong>AI usage (Claude · Codex)</strong> follows each
+provider's pricing.</p>
+<hr />
+<h2 id="license-note">License Note</h2>
+<blockquote>
+<p>⚖️ <strong>This is not legal advice.</strong> Your own review / legal
+review is required before public release, distribution, or commercial
+use.</p>
+</blockquote>
+<ul>
+<li><strong>License: Apache License 2.0</strong> © 2026 <strong>SoDam AI
+Studio</strong>. You may modify · copy · redistribute · <strong>use
+commercially</strong> · fork · sell · run as a service · use in
+education · deliver. You must keep the license &amp; <strong>copyright
+notice</strong>, <strong>state changes</strong>, and include
+<code>NOTICE</code>. <strong>No warranty</strong>; no trademark rights
+granted.</li>
+<li><strong>Disclaimer:</strong> provided "AS IS", with <strong>no
+warranty or liability</strong> for results/damages. No "100% safe"
+guarantee.</li>
+<li><strong>Trademarks:</strong> "Claude Code" · "Claude" are
+Anthropic's, "Codex" is OpenAI's. This tool is <strong>nominative-use
+compatibility only</strong> and <strong>not affiliated /
+endorsed</strong>.</li>
+<li><strong>Ownership of outputs:</strong> the <code>CLAUDE.md</code> ·
+<code>AGENTS.md</code> created by Intake are
+<strong>yours</strong>.</li>
+</ul>
+<blockquote>
+<p>For full license/copyright/commercial terms, see
+<code>README.en.md</code> section 16 and the <code>LICENSE</code> ·
+<code>NOTICE</code> files.</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>You made it to the end — great job! 👏 For a shorter summary,
+commands, architecture, and full license, see <code>README.en.md</code>.
+(한국어: <code>README.md</code>, <code>GUIDE.md</code>)</p>
+</blockquote>
+</body>
+</html>
