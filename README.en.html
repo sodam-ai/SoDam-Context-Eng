@@ -4,153 +4,8 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>System.Collections.Hashtable.t</title>
+  <title>SoDamContext — AI Manual Health Check</title>
   <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #1a1a1a;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -167,87 +22,90 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <style>
-    :root { color-scheme: light dark; }
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", Roboto, sans-serif;
-      line-height: 1.7;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2rem 1.1rem 4rem;
-      color: #1f2328;
-      background: #ffffff;
-      word-break: keep-all;
-      overflow-wrap: anywhere;
-    }
-    h1, h2, h3 { line-height: 1.3; margin-top: 2rem; }
-    h1 { font-size: 1.9rem; border-bottom: 2px solid #d0d7de; padding-bottom: .4rem; }
-    h2 { font-size: 1.4rem; border-bottom: 1px solid #eaecef; padding-bottom: .3rem; }
-    h3 { font-size: 1.15rem; }
-    a { color: #0969da; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    code {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      background: #f3f4f6; padding: .15em .35em; border-radius: 5px; font-size: .9em;
-    }
-    pre {
-      background: #f6f8fa; padding: 1rem; border-radius: 8px; overflow-x: auto; border: 1px solid #eaecef;
-    }
-    pre code { background: none; padding: 0; }
-    blockquote {
-      margin: 1rem 0; padding: .3rem 1rem; color: #57606a;
-      border-left: 4px solid #d0d7de; background: #f9fafb;
-    }
-    table { border-collapse: collapse; width: 100%; margin: 1rem 0; display: block; overflow-x: auto; }
-    th, td { border: 1px solid #d0d7de; padding: .5rem .7rem; text-align: left; vertical-align: top; }
-    th { background: #f3f4f6; }
-    tr:nth-child(even) { background: #fafbfc; }
-    details { background: #f9fafb; border: 1px solid #d0d7de; border-radius: 8px; padding: .6rem 1rem; margin: 1rem 0; }
-    summary { cursor: pointer; font-weight: 600; }
-    hr { border: none; border-top: 1px solid #eaecef; margin: 2rem 0; }
-    img { max-width: 100%; }
-    @media (prefers-color-scheme: dark) {
-      body { color: #e6edf3; background: #0d1117; }
-      h1 { border-bottom-color: #30363d; }
-      h2 { border-bottom-color: #21262d; }
-      a { color: #4493f8; }
-      code { background: #161b22; }
-      pre { background: #161b22; border-color: #30363d; }
-      blockquote { color: #9198a1; border-left-color: #30363d; background: #161b22; }
-      th, td { border-color: #30363d; }
-      th { background: #161b22; }
-      tr:nth-child(even) { background: #10151c; }
-      details { background: #161b22; border-color: #30363d; }
-      hr { border-top-color: #21262d; }
-    }
-  </style>
+  <link rel="stylesheet" href="" />
 </head>
 <body>
-<h1 id="sodamcontext--ai-manual-health-check-stethoscope">SoDamContext —
-AI Manual Health Check 🩺</h1>
+<header id="title-block-header">
+<h1 class="title">SoDamContext — AI Manual Health Check</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#sodamcontext-ai-manual-health-check"
+id="toc-sodamcontext-ai-manual-health-check">SoDamContext — AI Manual
+Health Check 🩺</a>
+<ul>
+<li><a href="#table-of-contents" id="toc-table-of-contents">Table of
+Contents</a></li>
+<li><a href="#what-is-this" id="toc-what-is-this">1. What Is
+This</a></li>
+<li><a href="#prerequisites-and-required-programs"
+id="toc-prerequisites-and-required-programs">2. Prerequisites and
+Required Programs</a></li>
+<li><a href="#download-and-install" id="toc-download-and-install">3.
+Download and Install</a>
+<ul>
+<li><a href="#claude-code-automatic-install-recommended"
+id="toc-claude-code-automatic-install-recommended">3-1. Claude Code
+(automatic install, recommended)</a></li>
+<li><a href="#codex-manual-install" id="toc-codex-manual-install">3-2.
+Codex (manual install)</a></li>
+</ul></li>
+<li><a href="#quick-start" id="toc-quick-start">4. Quick Start</a></li>
+<li><a href="#how-to-run" id="toc-how-to-run">5. How to Run</a></li>
+<li><a href="#how-to-use" id="toc-how-to-use">6. How to Use</a>
+<ul>
+<li><a href="#checkup-works" id="toc-checkup-works">6-1. Checkup —
+<code>✅ Works</code></a></li>
+<li><a href="#intake-create-works" id="toc-intake-create-works">6-2.
+Intake (create) — <code>✅ Works</code></a></li>
+<li><a href="#treatment-tidy-works-live-verified"
+id="toc-treatment-tidy-works-live-verified">6-3. Treatment (tidy) —
+<code>✅ Works (live-verified)</code></a></li>
+</ul></li>
+<li><a href="#how-it-works" id="toc-how-it-works">7. How It
+Works</a></li>
+<li><a href="#command-list" id="toc-command-list">8. Command
+List</a></li>
+<li><a href="#update-summary" id="toc-update-summary">9. Update
+Summary</a></li>
+<li><a href="#file-and-document-locations"
+id="toc-file-and-document-locations">10. File and Document
+Locations</a></li>
+<li><a href="#workflow" id="toc-workflow">11. Workflow</a></li>
+<li><a href="#architecture" id="toc-architecture">12.
+Architecture</a></li>
+<li><a href="#security-and-data-flow"
+id="toc-security-and-data-flow">13. Security and Data Flow</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">14.
+Troubleshooting</a></li>
+<li><a href="#faq" id="toc-faq">15. FAQ</a></li>
+<li><a href="#license-copyright-commercial-use-disclaimer"
+id="toc-license-copyright-commercial-use-disclaimer">16. License
+Copyright Commercial Use Disclaimer</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="sodamcontext-ai-manual-health-check">SoDamContext — AI Manual
+Health Check 🩺</h1>
 <blockquote>
 <p>A tool that <strong>checks, creates, and tidies</strong> your
-<strong>"AI manual"</strong> (<code>CLAUDE.md</code> /
-<code>AGENTS.md</code>) in plain language — <strong>even if you don't
+<strong>“AI manual”</strong> (<code>CLAUDE.md</code> /
+<code>AGENTS.md</code>) in plain language — <strong>even if you don’t
 know how to code</strong> — so that AI (Claude Code · Codex) understands
 your project well.</p>
-<p>New to computers or AI? That's fine. This document is written as
+<p>New to computers or AI? That’s fine. This document is written as
 <strong>one step at a time</strong>.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>Honest current status (as of 2026-07-07)</strong></p>
-<ul>
-<li><strong>Works (validated in real use):</strong> Checkup, Intake
-(create)</li>
-<li><strong>Works (new):</strong> Treatment (tidy) — code &amp;
-automated tests done, <strong>real-file live verification is still a
-human step</strong></li>
-<li><strong>In progress (planned):</strong> Prevention (auto-block),
-auto-sync of the two files</li>
-<li>We do not exaggerate. We do <strong>not</strong> claim "100% safe /
-perfect".</li>
-</ul>
+<p>⚠️ <strong>Honest current status (as of 2026-07-11)</strong> -
+<strong>Works (live-verified in real sessions):</strong> Checkup ·
+Intake · Treatment · Codex checkup — <strong>confirmed on both Claude
+Code and Codex</strong> - <strong>Security hardening:</strong> writes to
+sensitive locations (system/credential folders) are now automatically
+rejected - <strong>In progress (planned):</strong> Prevention (auto
+pre-block), auto-sync of the two files — ready to start, not yet begun -
+We do not exaggerate. We do <strong>not</strong> claim “100% safe /
+perfect”.</p>
 </blockquote>
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -273,29 +131,29 @@ Locations</a></li>
 Copyright Commercial Use Disclaimer</a></li>
 </ol>
 <hr />
-<h2 id="1-what-is-this">1. What Is This</h2>
+<h2 id="what-is-this">1. What Is This</h2>
 <ul>
 <li>AI coding tools (<strong>Claude Code</strong> ·
 <strong>Codex</strong>) read a file called
 <strong><code>CLAUDE.md</code> / <code>AGENTS.md</code></strong> before
-they start working. That file is the <strong>"AI manual"</strong> — a
-note you write ahead of time saying "handle this project like
-this."</li>
+they start working. That file is the <strong>“AI manual”</strong> — a
+note you write ahead of time saying “handle this project like
+this.”</li>
 <li>If that manual is <strong>too long, contains a password/secret, or
 contradicts itself</strong>, the AI gets confused, answers less
 accurately, and costs go up.</li>
 <li><strong>SoDamContext</strong> gives that manual a <strong>health
 check in plain language</strong>, <strong>creates a small one</strong>
-from a few easy questions if you don't have one, and <strong>safely
+from a few easy questions if you don’t have one, and <strong>safely
 tidies</strong> it when there are problems.</li>
-<li>It hides jargon (<code>CLAUDE.md</code> → <strong>"AI
-manual"</strong>). Reply <strong>"why?"</strong> and it explains the
+<li>It hides jargon (<code>CLAUDE.md</code> → <strong>“AI
+manual”</strong>). Reply <strong>“why?”</strong> and it explains the
 real reason.</li>
 </ul>
 <blockquote>
-<p>💡 <strong>One-line summary:</strong> "A tool that helps you check
+<p>💡 <strong>One-line summary:</strong> “A tool that helps you check
 and tidy the manual that makes AI understand your project — even if you
-can't code."</p>
+can’t code.”</p>
 </blockquote>
 <blockquote>
 <p>📱 <strong>Note (honest):</strong> This tool runs <strong>inside
@@ -304,9 +162,14 @@ Claude Code / Codex on a computer (Windows · macOS)</strong>. It is
 cannot use it.</p>
 </blockquote>
 <hr />
-<h2 id="2-prerequisites-and-required-programs">2. Prerequisites and
+<h2 id="prerequisites-and-required-programs">2. Prerequisites and
 Required Programs</h2>
 <table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
 <thead>
 <tr>
 <th>Requirement</th>
@@ -325,20 +188,20 @@ href="https://claude.com/claude-code">claude.com/claude-code</a></td>
 <td><strong>Node.js 18+</strong></td>
 <td>The checkup tool runs Node internally</td>
 <td>Type <code>!node --version</code> — if it shows <code>v18</code> or
-higher (e.g. v20, v22), you're set. Otherwise install
+higher (e.g. v20, v22), you’re set. Otherwise install
 <strong>LTS</strong> from <a href="https://nodejs.org">nodejs.org</a>
 and restart your computer</td>
 </tr>
 <tr>
 <td><strong>Git</strong></td>
 <td>To get the repo for Codex / local install</td>
-<td>Type <code>!git --version</code> — if a number shows, you're set.
+<td>Type <code>!git --version</code> — if a number shows, you’re set.
 Otherwise install from <a
 href="https://git-scm.com">git-scm.com</a></td>
 </tr>
 <tr>
 <td>(optional) <strong>Codex</strong></td>
-<td>Only if you also manage Codex's <code>AGENTS.md</code></td>
+<td>Only if you also manage Codex’s <code>AGENTS.md</code></td>
 <td>Codex users only</td>
 </tr>
 </tbody>
@@ -349,12 +212,12 @@ href="https://git-scm.com">git-scm.com</a></td>
 <li><strong>Internet:</strong> needed only for installation. Checkup and
 Intake run <strong>100% on your own computer</strong> (no data is sent
 out).</li>
-<li><strong>"Input box"</strong> = the line where you type in Claude
-Code. In this doc, "type ~ in the input box" means typing there.</li>
+<li><strong>“Input box”</strong> = the line where you type in Claude
+Code. In this doc, “type ~ in the input box” means typing there.</li>
 </ul>
 <hr />
-<h2 id="3-download-and-install">3. Download and Install</h2>
-<h3 id="3-1-claude-code-automatic-install-recommended">3-1. Claude Code
+<h2 id="download-and-install">3. Download and Install</h2>
+<h3 id="claude-code-automatic-install-recommended">3-1. Claude Code
 (automatic install, recommended)</h3>
 <p>Paste the following <strong>two lines, one at a time</strong>, into
 the Claude Code <strong>input box</strong>, pressing Enter after
@@ -365,30 +228,30 @@ each.</p>
 <li>Or just type <code>/plugin</code> to open the <strong>menu</strong>,
 find SoDamContext, and click <strong>Install</strong>.</li>
 <li><strong>After installing, fully close and reopen Claude Code
-(restart).</strong> Otherwise the commands won't appear.</li>
+(restart).</strong> Otherwise the commands won’t appear.</li>
 </ul>
 <blockquote>
 <p>💡 <strong>Using a local folder directly</strong>
 (development/testing): replace <code>sodam-ai/SoDam-Context-Eng</code>
 on the first line with <strong>the absolute path of that
-folder</strong>. e.g.
-<code>/plugin marketplace add D:\...\SoDam-Context-Eng</code></p>
+folder</strong>.
+e.g. <code>/plugin marketplace add D:\...\SoDam-Context-Eng</code></p>
 </blockquote>
-<h3 id="3-2-codex-manual-install">3-2. Codex (manual install)</h3>
+<h3 id="codex-manual-install">3-2. Codex (manual install)</h3>
 <p>Codex has no plugin marketplace, so you <strong>clone the whole
 repository and run inside it</strong>. (If you copy only the skill
 folders, the <code>lib</code> and <code>rules</code> folders the checker
-needs are missing, and you'll get a "file not found" error.)</p>
+needs are missing, and you’ll get a “file not found” error.)</p>
 <ol type="1">
-<li>In a terminal, one line at a time:
+<li><p>In a terminal, one line at a time:</p>
 <pre><code>git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
 cd SoDam-Context-Eng</code></pre></li>
-<li><strong>Start Codex from this repository's root folder.</strong>
+<li><p><strong>Start Codex from this repository’s root folder.</strong>
 (The root has <code>AGENTS.md</code>, <code>skills</code>,
-<code>lib</code>, and <code>rules</code>.)</li>
-<li>For fuller steps + FAQ, see
+<code>lib</code>, and <code>rules</code>.)</p></li>
+<li><p>For fuller steps + FAQ, see
 <strong><code>codex/README.ko.md</code></strong> in the repo, or
-<strong><a href="#6-how-to-use">How to Use</a></strong> below.</li>
+<strong><a href="#6-how-to-use">How to Use</a></strong> below.</p></li>
 </ol>
 <blockquote>
 <p>A picture-book style beginner walkthrough is in
@@ -396,77 +259,76 @@ cd SoDam-Context-Eng</code></pre></li>
 <strong><code>GUIDE.md</code></strong> (Korean) in the same folder.</p>
 </blockquote>
 <hr />
-<h2 id="4-quick-start">4. Quick Start</h2>
+<h2 id="quick-start">4. Quick Start</h2>
 <p>Once installed and restarted, remember just two things.</p>
 <ol type="1">
 <li><p><strong>You already have a manual → check it
 (Checkup):</strong></p>
 <pre><code>/sodam-context-checkup</code></pre>
-<p>When it asks "which file?", give the absolute path to the folder's
+<p>When it asks “which file?”, give the absolute path to the folder’s
 <code>CLAUDE.md</code>.</p></li>
-<li><p><strong>You don't have a manual yet → create one
+<li><p><strong>You don’t have a manual yet → create one
 (Intake):</strong></p>
 <pre><code>/sodam-context-intake</code></pre>
-<p>Answer 5–6 easy questions; it shows a <strong>preview → asks "create
-it?" → only then</strong> makes a small manual.</p></li>
+<p>Answer 5–6 easy questions; it shows a <strong>preview → asks “create
+it?” → only then</strong> makes a small manual.</p></li>
 </ol>
 <blockquote>
-<p>You can also say it in plain language: <strong>"check my AI manual
-with sodam-context"</strong>.</p>
+<p>You can also say it in plain language: <strong>“check my AI manual
+with sodam-context”</strong>.</p>
 </blockquote>
 <hr />
-<h2 id="5-how-to-run">5. How to Run</h2>
+<h2 id="how-to-run">5. How to Run</h2>
 <p>This tool is <strong>not a program you launch directly</strong> — it
 works when you <strong>call it by command / natural language</strong>
 inside Claude Code · Codex.</p>
 <ul>
 <li><strong>Claude Code:</strong> type a slash command in the input box.
-e.g. <code>/sodam-context-checkup</code>,
+e.g. <code>/sodam-context-checkup</code>,
 <code>/sodam-context-intake</code>,
 <code>/sodam-context-treat</code>.</li>
 <li><strong>Codex:</strong> there are no slash commands, so you call it
-with <strong>natural language</strong>. e.g. "check my AGENTS.md", "fix
-my manual". (Always run Codex from the <strong>repository root
+with <strong>natural language</strong>. e.g. “check my AGENTS.md”, “fix
+my manual”. (Always run Codex from the <strong>repository root
 folder</strong>.)</li>
 <li>Giving the file to check as an <strong>absolute path</strong> is the
-most accurate. e.g. <code>C:\MyProject\CLAUDE.md</code>.</li>
+most accurate. e.g. <code>C:\MyProject\CLAUDE.md</code>.</li>
 </ul>
 <hr />
-<h2 id="6-how-to-use">6. How to Use</h2>
-<h3 id="6-1-checkup--white_check_mark-works">6-1. Checkup —
-<code>✅ Works</code></h3>
+<h2 id="how-to-use">6. How to Use</h2>
+<h3 id="checkup-works">6-1. Checkup — <code>✅ Works</code></h3>
 <ol type="1">
 <li>Type <code>/sodam-context-checkup</code>.</li>
-<li>When asked "which file?", give the absolute path.</li>
+<li>When asked “which file?”, give the absolute path.</li>
 <li>Shortly after, you get a <strong>plain report</strong>:
 <ul>
-<li>Shown as a <strong>count</strong> like "N problems" (score is hidden
+<li>Shown as a <strong>count</strong> like “N problems” (score is hidden
 on purpose — prevents inflation).</li>
 <li>Any password/key is shown <strong>masked</strong>
 (<code>sk-ant-…REDACTED</code>) only.</li>
 <li>Items like <strong>staleness, unrefined auto-generation, skill
-leakage</strong> are shown as "suspect" (with a false-positive
+leakage</strong> are shown as “suspect” (with a false-positive
 caveat).</li>
 <li>For more, reply <strong><code>why?</code></strong> and it explains
 the reason and evidence.</li>
 </ul></li>
 </ol>
-<h3 id="6-2-intake-create--white_check_mark-works">6-2. Intake (create)
-— <code>✅ Works</code></h3>
+<h3 id="intake-create-works">6-2. Intake (create) —
+<code>✅ Works</code></h3>
 <ol type="1">
 <li>Type <code>/sodam-context-intake</code>.</li>
-<li>When asked "which folder?", give the path or answer <strong>"this
-folder"</strong>.</li>
+<li>When asked “which folder?”, give the path or answer <strong>“this
+folder”</strong>.</li>
 <li>Answer easy questions one at a time (what project / language &amp;
 tools / a must-follow rule / something to never do / tone).</li>
-<li>The AI <strong>shows the content first</strong> and asks "create it
-like this?" → only when you say <strong><code>yes</code></strong> are
+<li>The AI <strong>shows the content first</strong> and asks “create it
+like this?” → only when you say <strong><code>yes</code></strong> are
 the files created.</li>
 <li>The result is <strong>under 200 lines, 0 secrets</strong>. Say
-<code>yes</code> to "shall I run a checkup too?" to also check it.</li>
+<code>yes</code> to “shall I run a checkup too?” to also check it.</li>
 </ol>
-<h3 id="6-3-treatment-tidy--new-works-new">6-3. Treatment (tidy) —
-<code>🆕 Works (new)</code></h3>
+<h3 id="treatment-tidy-works-live-verified">6-3. Treatment (tidy) —
+<code>✅ Works (live-verified)</code></h3>
 <ol type="1">
 <li>When the checkup finds problems, type
 <code>/sodam-context-treat</code>.</li>
@@ -475,31 +337,30 @@ what it will change</strong>.</li>
 <li>It edits <strong>only after you say <code>yes</code></strong>
 (removes duplicate lines / unnecessary blank lines).</li>
 <li><strong>Restore is supported</strong> — roll back to the backup if
-you don't like it.</li>
-<li><strong>Safety/forbidden rule lines</strong> (e.g. "never", "no
-passwords") are <strong>auto-preserved</strong> (never removed).</li>
+you don’t like it.</li>
+<li><strong>Safety/forbidden rule lines</strong> (e.g. “never”, “no
+passwords”) are <strong>auto-preserved</strong> (never removed).</li>
 </ol>
 <blockquote>
-<p>⚠️ Treatment's code and automated tests are done, but
-<strong>real-file live verification is still a human step</strong>, so
-it's marked "new". For your first use, keep a copy of important
-files.</p>
+<p>⚠️ Treatment has been verified with live, real-session testing
+(safe-keyword preservation and restore accuracy confirmed). Still, for
+your first use, keep a copy of important files.</p>
 </blockquote>
 <hr />
-<h2 id="7-how-it-works">7. How It Works</h2>
+<h2 id="how-it-works">7. How It Works</h2>
 <ul>
 <li><strong>Checkup:</strong> the tool <strong>does not open your
 original file directly.</strong> It runs an internal checker
 (<code>checkup-cli.mjs</code>) and reads <strong>only the summary
 JSON</strong>. So <strong>secrets do not leak.</strong> The report shows
-<strong>"N problems" instead of a score</strong>, and any secret is
+<strong>“N problems” instead of a score</strong>, and any secret is
 shown <strong>masked</strong>.</li>
-<li><strong>Intake:</strong> questions → <strong>preview → "create it?"
+<li><strong>Intake:</strong> questions → <strong>preview → “create it?”
 confirmation → only then writes.</strong> It never creates files without
 asking.</li>
 <li><strong>Treatment:</strong> <strong>backup first → preview → confirm
 → safe write</strong> (writes to a temp file then renames, so your
-original isn't corrupted if it stops midway). After treatment, the file
+original isn’t corrupted if it stops midway). After treatment, the file
 must be <strong>smaller</strong> to count as success.</li>
 <li><strong>Codex (<code>AGENTS.md</code>):</strong> Codex reads the
 <strong>merged chain</strong> of parent-folder and global manuals. The
@@ -508,8 +369,14 @@ checkup verifies that <strong>combined size (32 KiB limit)</strong> too.
 count.)</li>
 </ul>
 <hr />
-<h2 id="8-command-list">8. Command List</h2>
+<h2 id="command-list">8. Command List</h2>
 <table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
 <tr>
 <th>Command</th>
@@ -522,7 +389,7 @@ count.)</li>
 <tr>
 <td><code>/sodam-context-checkup</code></td>
 <td>Checkup</td>
-<td>Checks bloat, duplication, staleness/unrefined ("suspect"), secrets,
+<td>Checks bloat, duplication, staleness/unrefined (“suspect”), secrets,
 size → plain report</td>
 <td>✅ Works</td>
 </tr>
@@ -537,7 +404,7 @@ size → plain report</td>
 <td>Treat</td>
 <td>Backup → preview → after confirmation, tidies duplicates/blank lines
 (restore supported)</td>
-<td>🆕 Works (new)</td>
+<td>✅ Works</td>
 </tr>
 <tr>
 <td>(Prevention)</td>
@@ -549,23 +416,47 @@ size → plain report</td>
 </table>
 <blockquote>
 <p>In Codex, call the same features with <strong>natural
-language</strong> ("run a health check", etc.) instead of the slash
+language</strong> (“run a health check”, etc.) instead of the slash
 commands.</p>
 </blockquote>
 <hr />
-<h2 id="9-update-summary">9. Update Summary</h2>
+<h2 id="update-summary">9. Update Summary</h2>
 <details>
-<summary><b>📋 Click to expand — version history</b></summary>
-
-<p><strong>After 0.1.0 (in progress, 2026-07-07)</strong></p>
+<summary>
+<b>📋 Click to expand — version history</b>
+</summary>
+<p><strong>After 0.1.0 (in progress, 2026-07-11)</strong></p>
 <ul>
-<li><strong>Deeper checkup:</strong> detects "staleness (/init left
-as-is), unrefined auto-generation, skill leakage" as
-<strong>"suspect"</strong> via rule data (with line numbers and matched
+<li><strong>Treatment &amp; Codex checkup live-verified:</strong> what
+was previously confirmed only by automated tests has now been run and
+confirmed in real sessions — safe-keyword preservation and restore
+accuracy verified.</li>
+<li><strong>New safeguard — never writes to sensitive
+locations:</strong> if a treatment/restore target accidentally resolves
+to a system folder or a credential folder (<code>.ssh</code>,
+<code>.aws</code>, <code>.gnupg</code>, <code>.docker</code>, etc.), the
+write is rejected automatically with a reason.</li>
+<li><strong>Codex checkup accuracy fix:</strong> fixed a case where a
+custom <code>CODEX_HOME</code> setup could cause checkup to look at the
+wrong location instead of what Codex actually reads.</li>
+<li><strong>CLI stability fix:</strong> fixed an inconsistency where
+running without a file path reported failure but still exited with a
+“success” code (could mislead automation scripts).</li>
+<li><strong>License finalized:</strong> Apache License 2.0 confirmed as
+final.</li>
+<li><strong>Test suite expanded:</strong> automated tests grew from 67
+to <strong>82</strong>, covering more edge cases, failure paths, and the
+new security check. All passing.</li>
+</ul>
+<p><strong>After 0.1.0 (2026-07-07)</strong></p>
+<ul>
+<li><strong>Deeper checkup:</strong> detects “staleness (/init left
+as-is), unrefined auto-generation, skill leakage” as
+<strong>“suspect”</strong> via rule data (with line numbers and matched
 phrase). Extend by editing JSON only (no code change), secret-safety
 (T1) preserved.</li>
 <li><strong>Treatment restore fix:</strong> the <code>restore</code>
-command's argument order was reversed vs. the code, which could make
+command’s argument order was reversed vs. the code, which could make
 restore fail — corrected (automated e2e passes).</li>
 <li><strong>Codex run-path &amp; install docs cleanup:</strong> added
 run-path guidance so skills actually run in Codex, and unified two
@@ -593,11 +484,14 @@ preview → safe-keyword preservation → atomic write.</li>
 Apache-2.0 + NOTICE.</li>
 </ul>
 </details>
-
 <hr />
-<h2 id="10-file-and-document-locations">10. File and Document
+<h2 id="file-and-document-locations">10. File and Document
 Locations</h2>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
 <tr>
 <th>What</th>
@@ -617,13 +511,13 @@ automatically when treatment runs)</td>
 </tr>
 <tr>
 <td>This manual</td>
-<td>The plugin folder's <code>README.md</code>·<code>README.html</code>
+<td>The plugin folder’s <code>README.md</code>·<code>README.html</code>
 (Korean), <code>README.en.md</code>·<code>README.en.html</code>
 (English)</td>
 </tr>
 <tr>
 <td>Beginner step-by-step guide</td>
-<td>The plugin folder's <code>GUIDE.md</code>·<code>GUIDE.html</code>
+<td>The plugin folder’s <code>GUIDE.md</code>·<code>GUIDE.html</code>
 (Korean), <code>GUIDE.en.md</code>·<code>GUIDE.en.html</code>
 (English)</td>
 </tr>
@@ -639,7 +533,7 @@ automatically when treatment runs)</td>
 opens directly in a browser.</p>
 </blockquote>
 <hr />
-<h2 id="11-workflow">11. Workflow</h2>
+<h2 id="workflow">11. Workflow</h2>
 <pre><code>Install → Restart → [Do you have a manual?]
                      ├─ No  → /sodam-context-intake → preview &amp; confirm → create a small manual
                      └─ Yes → /sodam-context-checkup → problem report
@@ -647,8 +541,8 @@ opens directly in a browser.</p>
                                      └─ has problems → /sodam-context-treat
                                                         → backup → preview → confirm → tidy safely (restore possible)</code></pre>
 <hr />
-<h2 id="12-architecture">12. Architecture</h2>
-<p>Internal structure for the technically curious. (You don't need this
+<h2 id="architecture">12. Architecture</h2>
+<p>Internal structure for the technically curious. (You don’t need this
 to use the tool.)</p>
 <ul>
 <li><strong>Data-driven:</strong> checkup/treatment rules live in
@@ -657,7 +551,7 @@ to use the tool.)</p>
 <li><strong>CLI–JSON boundary (the core of safety):</strong> the
 AI/skill <strong>does not read the original file directly</strong> — it
 reads <strong>only the summary JSON</strong> emitted by
-<code>lib/checkup-cli.mjs</code>. Secret "values" never appear in any
+<code>lib/checkup-cli.mjs</code>. Secret “values” never appear in any
 result or log.</li>
 <li><strong>Engine (lib) parts:</strong> <code>scan-secrets</code>
 (secret detection) · <code>checkup-rules</code> (size, lint duplication,
@@ -665,6 +559,7 @@ suspect detection) · <code>intake-verify</code> (output safety gate) ·
 <code>treat</code>+<code>treat-verify</code> (tidy, safe-keyword
 preservation, regression check) · <code>backup</code> (atomic
 backup/restore) · <code>codex-merge</code> (Codex merge chain, 32 KiB) ·
+<code>path-safety</code> (blocks writes to sensitive paths) ·
 <code>checkup-cli</code> (orchestrator:
 checkup/backup/preview/apply/restore).</li>
 <li><strong>Zero dependencies:</strong> no external npm packages
@@ -675,16 +570,16 @@ checkup/backup/preview/apply/restore).</li>
 <code>sodam-context-treat</code> — shared by Claude Code and Codex.</li>
 </ul>
 <hr />
-<h2 id="13-security-and-data-flow">13. Security and Data Flow</h2>
+<h2 id="security-and-data-flow">13. Security and Data Flow</h2>
 <ul>
 <li><strong>No secret reading (T1):</strong> the tool never
-<strong>reads or prints</strong> a secret's "value". It only confirms
+<strong>reads or prints</strong> a secret’s “value”. It only confirms
 one <strong>exists</strong> and shows it <strong>masked</strong>
 (<code>sk-ant-…REDACTED</code>). It <strong>never auto-deletes</strong>
 (false-positive risk).</li>
 <li><strong>No automatic changes (Fail-Closed):</strong> it never
 <strong>creates or edits</strong> files until you say
-<strong>"yes"</strong>.</li>
+<strong>“yes”</strong>.</li>
 <li><strong>No network:</strong> checkup, intake, and treatment run
 <strong>on your computer only</strong>. Internet is needed just for
 install.</li>
@@ -692,11 +587,16 @@ install.</li>
 temp file then renames, and <strong>aborts immediately if the backup
 fails</strong>.</li>
 <li><strong>Safe-keyword preservation:</strong> lines with key rules
-("never / forbidden / must / always / secret / force push") are
+(“never / forbidden / must / always / secret / force push”) are
 <strong>auto-preserved</strong> (excluded from tidying).</li>
+<li><strong>Never writes to sensitive locations:</strong> if a
+treatment/restore target resolves to the home directory root, a
+credential folder (<code>.ssh</code>, <code>.aws</code>, etc.), or a
+system folder, the write is <strong>rejected automatically</strong> with
+a reason before anything is touched.</li>
 <li><strong>Honest limits:</strong> it only catches <strong>known
-patterns</strong>, so it does <strong>not guarantee "100% safe / perfect
-detection"</strong> (for reference only). Reissue/manage important keys
+patterns</strong>, so it does <strong>not guarantee “100% safe / perfect
+detection”</strong> (for reference only). Reissue/manage important keys
 yourself.</li>
 </ul>
 <p><strong>Data flow (checkup):</strong></p>
@@ -708,8 +608,13 @@ yourself.</li>
       ▼
 [AI / skill] → plain-language report (&quot;N problems&quot;, masked keys)</code></pre>
 <hr />
-<h2 id="14-troubleshooting">14. Troubleshooting</h2>
+<h2 id="troubleshooting">14. Troubleshooting</h2>
 <table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
 <thead>
 <tr>
 <th>Symptom</th>
@@ -731,7 +636,7 @@ yourself.</li>
 then restart</td>
 </tr>
 <tr>
-<td>"node not found"</td>
+<td>“node not found”</td>
 <td>Node.js missing/old</td>
 <td>Install LTS from <a href="https://nodejs.org">nodejs.org</a>, then
 restart</td>
@@ -744,18 +649,18 @@ command instead of plain language</td>
 </tr>
 <tr>
 <td>Checks the wrong file</td>
-<td>"which folder?" was ambiguous</td>
+<td>“which folder?” was ambiguous</td>
 <td>Give the exact <strong>absolute path</strong> of the file</td>
 </tr>
 <tr>
-<td>Says there's a password</td>
+<td>Says there’s a password</td>
 <td>Something looks like a key in the manual</td>
 <td><strong>Reissue</strong> that key and remove it from the manual (use
 env vars) — the tool never deletes it automatically</td>
 </tr>
 <tr>
-<td>Codex says "Cannot find module"</td>
-<td>Run from a folder that isn't the repo root</td>
+<td>Codex says “Cannot find module”</td>
+<td>Run from a folder that isn’t the repo root</td>
 <td>Re-run Codex from the <strong>repo root folder</strong>
 (<code>SoDam-Context-Eng</code>)</td>
 </tr>
@@ -767,21 +672,21 @@ env vars) — the tool never deletes it automatically</td>
 </tbody>
 </table>
 <hr />
-<h2 id="15-faq">15. FAQ</h2>
-<p><strong>Q. What exactly is an "AI manual"?</strong> A. The
+<h2 id="faq">15. FAQ</h2>
+<p><strong>Q. What exactly is an “AI manual”?</strong> A. The
 <code>CLAUDE.md</code> (for Claude Code) / <code>AGENTS.md</code> (for
 Codex) file that AI coding tools read before starting — a note that says
-"handle this project like this."</p>
+“handle this project like this.”</p>
 <p><strong>Q. Does my file content go out to the internet?</strong> A.
-No. Checkup, intake, and treatment run <strong>100% on your
+No. Checkup, intake, and treatment run <strong>100% on your
 computer</strong>. Internet is only needed for install.</p>
 <p><strong>Q. Does it delete passwords automatically?</strong> A.
 <strong>No.</strong> It only confirms one <strong>exists</strong> and
 shows it <strong>masked</strong> — it never auto-deletes (false-positive
 risk). Check and reissue it yourself.</p>
 <p><strong>Q. Why is no score shown?</strong> A. Unverified scores can
-be misleading, so they're <strong>hidden on purpose.</strong> You see "N
-problems" instead.</p>
+be misleading, so they’re <strong>hidden on purpose.</strong> You see “N
+problems” instead.</p>
 <p><strong>Q. Korean text looks broken.</strong> A. Check that Node.js
 is v18+. On Windows, verify the terminal is using UTF-8 encoding.</p>
 <p><strong>Q. Is it safe to use in auto-accept (permission)
@@ -796,9 +701,9 @@ then restart. Codex (local repo): <code>git pull</code> in the
 folder.</p>
 <p><strong>Q. Does it cost anything?</strong> A. The tool itself runs
 locally with no separate fee, but <strong>using AI (Claude · Codex) is
-subject to each provider's pricing</strong> (outside our scope).</p>
+subject to each provider’s pricing</strong> (outside our scope).</p>
 <hr />
-<h2 id="16-license-copyright-commercial-use-disclaimer">16. License
+<h2 id="license-copyright-commercial-use-disclaimer">16. License
 Copyright Commercial Use Disclaimer</h2>
 <blockquote>
 <p>⚖️ <strong>This is not legal advice.</strong> The following is
@@ -820,29 +725,34 @@ notice</strong> · <strong>state changes</strong> · include
 trademark rights granted</strong>.</li>
 </ul></li>
 <li><strong>Disclaimer (no warranty / limited liability):</strong> this
-software is provided <strong>"AS IS"</strong>, and we accept <strong>no
+software is provided <strong>“AS IS”</strong>, and we accept <strong>no
 warranty or liability</strong> for any results or damages from its use.
-We do <strong>not</strong> guarantee it is "100% legally safe".</li>
-<li><strong>Trademarks:</strong> <strong>"Claude Code" ·
-"Claude"</strong> are trademarks of Anthropic, and
-<strong>"Codex"</strong> of OpenAI. This tool merely indicates
+We do <strong>not</strong> guarantee it is “100% legally safe”.</li>
+<li><strong>Trademarks:</strong> <strong>“Claude Code” ·
+“Claude”</strong> are trademarks of Anthropic, and
+<strong>“Codex”</strong> of OpenAI. This tool merely indicates
 <strong>compatibility (nominative use)</strong> and is <strong>not
 affiliated with, endorsed, or sponsored by</strong> Anthropic or
 OpenAI.</li>
 <li><strong>AI usage responsibility:</strong> using AI (Claude · Codex)
-is subject to <strong>each provider's terms and pricing</strong>
+is subject to <strong>each provider’s terms and pricing</strong>
 (outside our license scope).</li>
 <li><strong>Ownership of outputs:</strong> the
 <code>CLAUDE.md</code>·<code>AGENTS.md</code> created by Intake
-<strong>belong to the user's project</strong>; we claim no rights over
+<strong>belong to the user’s project</strong>; we claim no rights over
 them.</li>
 <li><strong>Privacy:</strong> this tool sends no data out, but what you
 send to the AI provider (Claude · Codex) follows their policies. Do not
 put secrets or personal data in the manual.</li>
-<li><strong>Pre-release checks (for developers):</strong> final license
-confirmation · copyright holder · product-name trademark conflicts ·
-liability wording · third-party source attribution (NOTICE) are subject
-to <strong>legal review before public release</strong>.</li>
+<li><strong>Pre-release check status (for developers, as of
+2026-07-11):</strong> final license confirmation (✅ done · Apache-2.0)
+· copyright holder (✅ in <code>NOTICE</code>) · liability wording (✅
+in <code>NOTICE</code>) · third-party source attribution (✅ zero
+external code dependencies, nothing borrowed) · <strong>only the
+product-name trademark conflict check remains unfinished</strong> (a
+quick informational search found no obvious conflict, but this is not a
+formal trademark search — a <strong>human legal review is still required
+before public release</strong>).</li>
 </ul>
 <hr />
 <blockquote>

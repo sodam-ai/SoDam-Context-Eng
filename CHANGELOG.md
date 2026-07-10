@@ -5,7 +5,29 @@
 
 ---
 
-## [Unreleased] — 2026-07-07
+## [Unreleased] — 2026-07-11
+
+### 수정
+- **코덱스 검진의 `CODEX_HOME` 미반영 결함 수정(검진 정확도 핵심)**: `lib/codex-merge.mjs`가 코덱스 글로벌 설명서 위치를 하드코딩된 `<home>/.codex`로만 찾고 있어, `CODEX_HOME` 환경변수로 다른 경로를 쓰는 실제 코덱스 설치(라이브 `codex doctor`로 실측 확인 — `config.toml`도 `CODEX_HOME` 바로 아래 위치)에서는 **엉뚱한 파일을 검진하는 조용한 오류**가 날 수 있었음. `collectCodexChain`에 `codexHome` 옵션 추가(미지정 시 기존 동작 100% 보존) + CLI가 `process.env.CODEX_HOME`을 읽어 전달하도록 수정. `config.toml`의 `model_instructions_file` 감지(B4)도 글로벌 디렉터리가 스캔 대상에서 아예 빠져 있던 것을 함께 수정. TDD로 회귀 테스트 4건 선작성(RED 확인) 후 패치(GREEN), 기존 테스트 전부 무회귀.
+
+### 테스트
+- **Windows CRLF 처방 회귀 테스트 추가**: `treat.mjs`의 중복제거·빈줄압축·안전키워드보존 로직이 CRLF(`\r\n`, Windows 기본 줄바꿈)에서도 정상 동작하는지 지금까지 테스트가 전무했음. 실측 확인 결과 기존 코드가 이미 CRLF를 올바르게 보존하고 있었으나(버그 아님), 이 사실을 앞으로도 보장하도록 영구 회귀 테스트로 고정(`selftest [8.6]`).
+
+### 검증
+- `_selftest.mjs` 51→**59 PASS**(CODEX_HOME 4건 + CRLF 4건) · 추적 `npm test` 67 PASS 유지, 0 FAIL. 실제 이 PC의 `CODEX_HOME`(`~/.codex_runtime`) 환경에서 CLI 라이브 재현으로 수정 전/후 차이 확인.
+
+---
+
+## [Unreleased] — 2026-07-11 (2차)
+
+### 추가
+- **민감 경로 최소 방어선(`lib/path-safety.mjs`, 07_SECURITY §2.2 Must)**: `apply`·`restore`(쓰기 액션)가 홈 폴더 루트·자격증명 폴더(`.ssh`·`.aws`·`.gnupg`·`.docker`)·시스템 폴더(`C:\Windows` 등)·드라이브 루트에 쓰려 하면 실행 전 차단. 지금까지 이 방어는 클로드코드 세션의 외부 Harness 훅에만 의존했는데, 코덱스·CLI 단독 실행 환경엔 그 방어가 전혀 없었음(실측 코드검토로 발견). **AppData\Roaming 전체 차단 같은 과잉 차단은 의도적으로 피함**(다른 SoDam 프로젝트의 실측 교훈 반영) — 자격증명 하위 폴더만 선별 차단.
+
+### 수정
+- **CLI exit code 불일치 수정**: `checkup-cli.mjs`가 파일 경로 없이 실행되면 `ok:false`인데도 exit code가 0이었음(다른 4개 실패 경로는 전부 1) → exit 1로 통일. 스크립트/CI가 exit code만으로 성공·실패를 오판할 위험 제거.
+
+### 테스트
+- `path-safety.test.mjs` 신규 10개 PASS + `checkup-cli.test.mjs`에 실패 경계값 3종([8]파일누락 exit code·[9]restore target누락·[10]apply대상없음) + 민감경로 CLI e2e 2종([11][12]) 추가. 추적 `npm test` 67→**82 PASS**, `selftest` 59 PASS 유지. 회귀 0.
 
 ### 추가
 - **검진 탐지 심화(hint_keyword '의심' 탐지)**: `낡음(/init 그대로)·자동생성 미정제·스킬누수`를 규칙 데이터(`hint_keywords`)로
@@ -33,7 +55,7 @@
 
 ### 테스트
 - **CLI e2e 회귀 테스트 추가**(`lib/checkup-cli.test.mjs`): checkup/backup/preview/apply/restore 전체 체인을 실제 프로세스로 검증(6/6) —
-  restore 결함이 잠복했던 원인(=CLI 액션 레이어 무테스트)을 근본 차단. `npm test`로 추적 테스트 4종(62개) 일괄 실행하도록 스크립트 추가.
+  restore 결함이 잠복했던 원인(=CLI 액션 레이어 무테스트)을 근본 차단. `npm test`로 추적 테스트 4종(67개: checkup-rules 25·scan-secrets 15·treat 20·checkup-cli 7) 일괄 실행하도록 스크립트 추가.
 
 ## [0.1.0] — 2026-06-28
 

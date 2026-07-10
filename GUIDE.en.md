@@ -3,7 +3,7 @@
 > Written in a **"press this now"** style so that even **first-time** computer/AI/messenger/smartphone users can follow along.
 > (For a short summary, command list, architecture, and full license, see `README.en.md` in the same folder.)
 
-> ⚠️ **Honest note:** Three features **work now: Checkup, Intake (create), and Treatment (tidy)**. Treatment is "new" (real-file live verification is still a human step). **Prevention (auto-block) and auto-sync are in progress (planned).** This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
+> ⚠️ **Honest note (as of 2026-07-11):** Three features **work now: Checkup, Intake (create), and Treatment (tidy)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block) and auto-sync are in progress (planned).** This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
 
 ---
 
@@ -153,6 +153,7 @@ If the checkup found problems, you can tidy safely. (This feature = **Treatment*
 3. It edits **only after you say `yes`** (removes duplicate lines / unnecessary blank lines).
 4. If you don't like it, use **restore** to roll back to the backup.
 5. **Safety/forbidden rule lines** (e.g. "never", "no passwords") are **auto-preserved** (never removed).
+6. **It can't touch the wrong place:** if you accidentally point it at an important system folder (like one holding your login credentials), it notices ahead of time and **refuses**.
 
 > ⚠️ Treatment is still "new", so for your first use, keep **a separate copy of important files**.
 
@@ -197,7 +198,15 @@ Here are the promises this tool keeps. Relax.
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
 
-**After 0.1.0 (in progress, 2026-07-07)**
+**After 0.1.0 (in progress, 2026-07-11)**
+
+- Treatment and Codex checkup have now been **run and verified in real use** (previously confirmed only by automated tests).
+- **New safeguard:** if you accidentally point it at an important system or credential folder, it notices ahead of time and refuses.
+- Fixed a checkup accuracy issue that could occur with a custom Codex setup.
+- License finalized as Apache 2.0.
+- Automated tests grew from 67 to **82** for more thorough checking.
+
+**After 0.1.0 (2026-07-07)**
 
 - Checkup now also flags **"staleness / unrefined / skill leakage"** as "suspect" (with line numbers).
 - Fixed the treatment **restore** bug (it now restores correctly).

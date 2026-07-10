@@ -5,10 +5,10 @@
 >
 > New to computers or AI? That's fine. This document is written as **one step at a time**.
 
-> ⚠️ **Honest current status (as of 2026-07-07)**
-> - **Works (validated in real use):** Checkup, Intake (create)
-> - **Works (new):** Treatment (tidy) — code & automated tests done, **real-file live verification is still a human step**
-> - **In progress (planned):** Prevention (auto-block), auto-sync of the two files
+> ⚠️ **Honest current status (as of 2026-07-11)**
+> - **Works (live-verified in real sessions):** Checkup · Intake · Treatment · Codex checkup — **confirmed on both Claude Code and Codex**
+> - **Security hardening:** writes to sensitive locations (system/credential folders) are now automatically rejected
+> - **In progress (planned):** Prevention (auto pre-block), auto-sync of the two files — ready to start, not yet begun
 > - We do not exaggerate. We do **not** claim "100% safe / perfect".
 
 ---
@@ -147,7 +147,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 4. The AI **shows the content first** and asks "create it like this?" → only when you say **`yes`** are the files created.
 5. The result is **under 200 lines, 0 secrets**. Say `yes` to "shall I run a checkup too?" to also check it.
 
-### 6-3. Treatment (tidy) — `🆕 Works (new)`
+### 6-3. Treatment (tidy) — `✅ Works (live-verified)`
 
 1. When the checkup finds problems, type `/sodam-context-treat`.
 2. It **backs up first** and shows a **preview of what it will change**.
@@ -155,7 +155,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 4. **Restore is supported** — roll back to the backup if you don't like it.
 5. **Safety/forbidden rule lines** (e.g. "never", "no passwords") are **auto-preserved** (never removed).
 
-> ⚠️ Treatment's code and automated tests are done, but **real-file live verification is still a human step**, so it's marked "new". For your first use, keep a copy of important files.
+> ⚠️ Treatment has been verified with live, real-session testing (safe-keyword preservation and restore accuracy confirmed). Still, for your first use, keep a copy of important files.
 
 ---
 
@@ -174,7 +174,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 |---|---|---|---|
 | `/sodam-context-checkup` | Checkup | Checks bloat, duplication, staleness/unrefined ("suspect"), secrets, size → plain report | ✅ Works |
 | `/sodam-context-intake` | Intake | Creates a small manual via questions when none exists | ✅ Works |
-| `/sodam-context-treat` | Treat | Backup → preview → after confirmation, tidies duplicates/blank lines (restore supported) | 🆕 Works (new) |
+| `/sodam-context-treat` | Treat | Backup → preview → after confirmation, tidies duplicates/blank lines (restore supported) | ✅ Works |
 | (Prevention) | Prevent | Blocks secrets / excess length in advance | ⏳ In progress |
 
 > In Codex, call the same features with **natural language** ("run a health check", etc.) instead of the slash commands.
@@ -186,7 +186,16 @@ This tool is **not a program you launch directly** — it works when you **call 
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
-**After 0.1.0 (in progress, 2026-07-07)**
+**After 0.1.0 (in progress, 2026-07-11)**
+
+- **Treatment & Codex checkup live-verified:** what was previously confirmed only by automated tests has now been run and confirmed in real sessions — safe-keyword preservation and restore accuracy verified.
+- **New safeguard — never writes to sensitive locations:** if a treatment/restore target accidentally resolves to a system folder or a credential folder (`.ssh`, `.aws`, `.gnupg`, `.docker`, etc.), the write is rejected automatically with a reason.
+- **Codex checkup accuracy fix:** fixed a case where a custom `CODEX_HOME` setup could cause checkup to look at the wrong location instead of what Codex actually reads.
+- **CLI stability fix:** fixed an inconsistency where running without a file path reported failure but still exited with a "success" code (could mislead automation scripts).
+- **License finalized:** Apache License 2.0 confirmed as final.
+- **Test suite expanded:** automated tests grew from 67 to **82**, covering more edge cases, failure paths, and the new security check. All passing.
+
+**After 0.1.0 (2026-07-07)**
 
 - **Deeper checkup:** detects "staleness (/init left as-is), unrefined auto-generation, skill leakage" as **"suspect"** via rule data (with line numbers and matched phrase). Extend by editing JSON only (no code change), secret-safety (T1) preserved.
 - **Treatment restore fix:** the `restore` command's argument order was reversed vs. the code, which could make restore fail — corrected (automated e2e passes).
@@ -239,7 +248,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 
 - **Data-driven:** checkup/treatment rules live in `rules/*.json`, not in code. To add a new check, add **one object to a JSON array** (no code change).
 - **CLI–JSON boundary (the core of safety):** the AI/skill **does not read the original file directly** — it reads **only the summary JSON** emitted by `lib/checkup-cli.mjs`. Secret "values" never appear in any result or log.
-- **Engine (lib) parts:** `scan-secrets` (secret detection) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore).
+- **Engine (lib) parts:** `scan-secrets` (secret detection) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `path-safety` (blocks writes to sensitive paths) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore).
 - **Zero dependencies:** no external npm packages (minimizes supply-chain risk). **Node 18+ ESM**, **100% local** (no network).
 - **Entry points (skills) ×3:** `sodam-context-intake` · `sodam-context-checkup` · `sodam-context-treat` — shared by Claude Code and Codex.
 
@@ -252,6 +261,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **No network:** checkup, intake, and treatment run **on your computer only**. Internet is needed just for install.
 - **Atomic write + backup first:** treatment writes to a temp file then renames, and **aborts immediately if the backup fails**.
 - **Safe-keyword preservation:** lines with key rules ("never / forbidden / must / always / secret / force push") are **auto-preserved** (excluded from tidying).
+- **Never writes to sensitive locations:** if a treatment/restore target resolves to the home directory root, a credential folder (`.ssh`, `.aws`, etc.), or a system folder, the write is **rejected automatically** with a reason before anything is touched.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
 
 **Data flow (checkup):**
@@ -326,7 +336,7 @@ A. The tool itself runs locally with no separate fee, but **using AI (Claude · 
 - **AI usage responsibility:** using AI (Claude · Codex) is subject to **each provider's terms and pricing** (outside our license scope).
 - **Ownership of outputs:** the `CLAUDE.md`·`AGENTS.md` created by Intake **belong to the user's project**; we claim no rights over them.
 - **Privacy:** this tool sends no data out, but what you send to the AI provider (Claude · Codex) follows their policies. Do not put secrets or personal data in the manual.
-- **Pre-release checks (for developers):** final license confirmation · copyright holder · product-name trademark conflicts · liability wording · third-party source attribution (NOTICE) are subject to **legal review before public release**.
+- **Pre-release check status (for developers, as of 2026-07-11):** final license confirmation (✅ done · Apache-2.0) · copyright holder (✅ in `NOTICE`) · liability wording (✅ in `NOTICE`) · third-party source attribution (✅ zero external code dependencies, nothing borrowed) · **only the product-name trademark conflict check remains unfinished** (a quick informational search found no obvious conflict, but this is not a formal trademark search — a **human legal review is still required before public release**).
 
 ---
 
