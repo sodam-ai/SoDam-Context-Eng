@@ -262,6 +262,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **Atomic write + backup first:** treatment writes to a temp file then renames, and **aborts immediately if the backup fails**.
 - **Safe-keyword preservation:** lines with key rules ("never / forbidden / must / always / secret / force push") are **auto-preserved** (excluded from tidying).
 - **Never writes to sensitive locations:** if a treatment/restore target resolves to the home directory root, a credential folder (`.ssh`, `.aws`, etc.), or a system folder, the write is **rejected automatically** with a reason before anything is touched.
+- **Checkup looks at only the one file you point it at:** Codex (`AGENTS.md`) checks the merged chain up through parent and global manuals, but Claude Code (`CLAUDE.md`) currently checks **only the single file you specify**. If you've split rules across a nested `CLAUDE.md` or `.claude/rules/`, those aren't scanned automatically — check each one separately.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
 
 **Data flow (checkup):**

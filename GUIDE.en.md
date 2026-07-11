@@ -187,6 +187,7 @@ Here are the promises this tool keeps. Relax.
 - ✋ **Ask first:** it never **creates or edits** files until you say **"yes"**.
 - 🌐 **No internet:** checkup, intake, and treatment run **on your computer only** (internet only for install).
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
+- 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
 - 🙇 **No "absolutely safe" promise:** it only catches known patterns, so manage important passwords yourself.
 
 > Data flow (simply): the tool reads the original **only internally** and passes the AI just a **summary (no secret values)**. That's why secrets don't leak.
