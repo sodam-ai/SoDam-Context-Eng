@@ -6,9 +6,9 @@
 > New to computers or AI? That's fine. This document is written as **one step at a time**.
 
 > ⚠️ **Honest current status (as of 2026-07-11)**
-> - **Works (live-verified in real sessions):** Checkup · Intake · Treatment · Codex checkup — **confirmed on both Claude Code and Codex**
+> - **Works (live-verified in real sessions):** Checkup · Intake · Treatment · Codex checkup · Sync (compare the two files) — **confirmed on both Claude Code and Codex**
 > - **Security hardening:** writes to sensitive locations (system/credential folders) are now automatically rejected
-> - **In progress (planned):** Prevention (auto pre-block), auto-sync of the two files — ready to start, not yet begun
+> - **Code complete, live behavior still being verified:** Prevention (auto pre-block before saving) — the decision logic and hook protocol check out correctly at the code level, but we haven't yet confirmed the confirmation prompt actually fires live when saving. Please double-check for secrets yourself in the meantime.
 > - We do not exaggerate. We do **not** claim "100% safe / perfect".
 
 ---
@@ -175,7 +175,8 @@ This tool is **not a program you launch directly** — it works when you **call 
 | `/sodam-context-checkup` | Checkup | Checks bloat, duplication, staleness/unrefined ("suspect"), secrets, size → plain report | ✅ Works |
 | `/sodam-context-intake` | Intake | Creates a small manual via questions when none exists | ✅ Works |
 | `/sodam-context-treat` | Treat | Backup → preview → after confirmation, tidies duplicates/blank lines (restore supported) | ✅ Works |
-| (Prevention) | Prevent | Blocks secrets / excess length in advance | ⏳ In progress |
+| `/sodam-context-sync` | Sync | Finds safety rules present in only one of the two manuals and reports the line numbers (does not merge) | ✅ Works |
+| (Prevention) | Prevent | Blocks secrets / excess length before saving | 🟡 Code complete, live behavior in verification |
 
 > In Codex, call the same features with **natural language** ("run a health check", etc.) instead of the slash commands.
 

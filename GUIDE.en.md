@@ -3,7 +3,7 @@
 > Written in a **"press this now"** style so that even **first-time** computer/AI/messenger/smartphone users can follow along.
 > (For a short summary, command list, architecture, and full license, see `README.en.md` in the same folder.)
 
-> ⚠️ **Honest note (as of 2026-07-11):** Three features **work now: Checkup, Intake (create), and Treatment (tidy)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block) and auto-sync are in progress (planned).** This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
+> ⚠️ **Honest note (as of 2026-07-12):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
 
 ---
 
