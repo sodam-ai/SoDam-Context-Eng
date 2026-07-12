@@ -3,7 +3,7 @@
 > Written in a **"press this now"** style so that even **first-time** computer/AI/messenger/smartphone users can follow along.
 > (For a short summary, command list, architecture, and full license, see `README.en.md` in the same folder.)
 
-> ⚠️ **Honest note (as of 2026-07-12):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
+> ⚠️ **Honest note (as of 2026-07-13):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
 
 ---
 
@@ -17,6 +17,7 @@
 - [Step 4 Create Your Manual](#step-4-create-your-manual)
 - [Step 5 Check a Manual](#step-5-check-a-manual)
 - [Step 6 Tidy](#step-6-tidy)
+- [Step 6-B Match the Two Manuals (Sync)](#step-6-b-match-the-two-manuals-sync)
 - [Step 7 When You Get Stuck](#step-7-when-you-get-stuck)
 - [Step 8 Safety Promises](#step-8-safety-promises)
 - [Update Summary](#update-summary)
@@ -95,7 +96,7 @@ What you just installed appears only after a **restart**.
 - Type `exit` in the input box and press Enter → **fully close** the window (the X)
 - Reopen Claude Code (in a terminal, type `claude`)
 
-Check: type just `/` in the input box. If you see **`sodam-context-checkup`**, **`sodam-context-intake`**, and **`sodam-context-treat`** in the list, you're ready! 🎉
+Check: type just `/` in the input box. If you see **`sodam-context-checkup`**, **`sodam-context-intake`**, **`sodam-context-treat`**, and **`sodam-context-sync`** in the list, you're ready! 🎉
 
 ---
 
@@ -159,6 +160,22 @@ If the checkup found problems, you can tidy safely. (This feature = **Treatment*
 
 ---
 
+## Step 6-B Match the Two Manuals (Sync)
+
+**If you use both a Claude Code manual (`CLAUDE.md`) and a Codex manual (`AGENTS.md`)**, this step checks whether they hold different safety rules. (This feature = **Sync**, live-verified.)
+
+1. Type:
+   ```
+   /sodam-context-sync
+   ```
+2. Give the paths of the two files to compare (e.g. `CLAUDE.md` and `AGENTS.md`).
+3. It reports things like **"this rule is only in the Claude manual (line N)"**.
+4. **It does not edit either file for you** — you decide which side to match and copy it over by hand. This is by design, to avoid accidentally changing other content.
+
+> 💡 If you only use one AI tool (only Claude Code, or only Codex), you can skip this step.
+
+---
+
 ## Step 7 When You Get Stuck
 
 Don't panic. Just follow the table.
@@ -176,6 +193,7 @@ Don't panic. Just follow the table.
 | It says there's a password but I don't see one | The regex also flags things that look similar. It never auto-deletes — check it yourself and decide |
 | Is it safe in auto-accept (permission) mode? | Auto-accept mode can skip the confirmation step. For safety, the default (ask) mode is recommended |
 | It stopped suddenly during checkup | It's designed to stop before touching the original file. Your original is untouched |
+| Restore refuses with "not a backup file location" | The file you pointed to isn't a real backup this tool made (this is the safety feature working, not a bug) | Use the backup path shown to you in Step 6 |
 
 ---
 
@@ -188,6 +206,7 @@ Here are the promises this tool keeps. Relax.
 - 🌐 **No internet:** checkup, intake, and treatment run **on your computer only** (internet only for install).
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
 - 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
+- 🛡️ **Restore source is checked too (added 2026-07-13):** "Restore" only uses files inside the tool's own backup folder. Pointing it at any other file, pretending it's a backup, is refused — this stops the wrong content from accidentally being copied into your manual.
 - 🙇 **No "absolutely safe" promise:** it only catches known patterns, so manage important passwords yourself.
 
 > Data flow (simply): the tool reads the original **only internally** and passes the AI just a **summary (no secret values)**. That's why secrets don't leak.
@@ -198,6 +217,13 @@ Here are the promises this tool keeps. Relax.
 
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
+
+**After 0.1.0 (in progress, 2026-07-13)**
+
+- **Found and fixed a real issue during a security review:** Restore would copy any file you pointed it at, even if it wasn't a real backup. Fixed so restore only works with files from the tool's own backup folder.
+- **Fixed treatment/restore failing on a different drive:** if your project isn't on drive C, this could fail — a real user hit this, and it's now fixed.
+- **Unified inconsistent wording across documents:** Prevention and Sync status descriptions no longer contradict each other between documents.
+- **Test suite expanded to 118**, all passing.
 
 **After 0.1.0 (in progress, 2026-07-11)**
 

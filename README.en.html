@@ -4,8 +4,153 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>SoDamContext — AI Manual Health Check</title>
+  <title>SoDamContext — README (English)</title>
   <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -22,11 +167,10 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="" />
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">SoDamContext — AI Manual Health Check</h1>
+<h1 class="title">SoDamContext — README (English)</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -42,26 +186,10 @@ This</a></li>
 id="toc-prerequisites-and-required-programs">2. Prerequisites and
 Required Programs</a></li>
 <li><a href="#download-and-install" id="toc-download-and-install">3.
-Download and Install</a>
-<ul>
-<li><a href="#claude-code-automatic-install-recommended"
-id="toc-claude-code-automatic-install-recommended">3-1. Claude Code
-(automatic install, recommended)</a></li>
-<li><a href="#codex-manual-install" id="toc-codex-manual-install">3-2.
-Codex (manual install)</a></li>
-</ul></li>
+Download and Install</a></li>
 <li><a href="#quick-start" id="toc-quick-start">4. Quick Start</a></li>
 <li><a href="#how-to-run" id="toc-how-to-run">5. How to Run</a></li>
-<li><a href="#how-to-use" id="toc-how-to-use">6. How to Use</a>
-<ul>
-<li><a href="#checkup-works" id="toc-checkup-works">6-1. Checkup —
-<code>✅ Works</code></a></li>
-<li><a href="#intake-create-works" id="toc-intake-create-works">6-2.
-Intake (create) — <code>✅ Works</code></a></li>
-<li><a href="#treatment-tidy-works-live-verified"
-id="toc-treatment-tidy-works-live-verified">6-3. Treatment (tidy) —
-<code>✅ Works (live-verified)</code></a></li>
-</ul></li>
+<li><a href="#how-to-use" id="toc-how-to-use">6. How to Use</a></li>
 <li><a href="#how-it-works" id="toc-how-it-works">7. How It
 Works</a></li>
 <li><a href="#command-list" id="toc-command-list">8. Command
@@ -97,15 +225,18 @@ your project well.</p>
 <strong>one step at a time</strong>.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>Honest current status (as of 2026-07-11)</strong> -
+<p>⚠️ <strong>Honest current status (as of 2026-07-13)</strong> -
 <strong>Works (live-verified in real sessions):</strong> Checkup ·
-Intake · Treatment · Codex checkup — <strong>confirmed on both Claude
-Code and Codex</strong> - <strong>Security hardening:</strong> writes to
-sensitive locations (system/credential folders) are now automatically
-rejected - <strong>In progress (planned):</strong> Prevention (auto
-pre-block), auto-sync of the two files — ready to start, not yet begun -
-We do not exaggerate. We do <strong>not</strong> claim “100% safe /
-perfect”.</p>
+Intake · Treatment · Codex checkup · Sync (compare the two files) —
+<strong>confirmed on both Claude Code and Codex</strong> -
+<strong>Security hardening:</strong> writes to sensitive locations
+(system/credential folders) are now automatically rejected -
+<strong>Code complete, live behavior still being verified:</strong>
+Prevention (auto pre-block before saving) — the decision logic and hook
+protocol check out correctly at the code level, but we haven’t yet
+confirmed the confirmation prompt actually fires live when saving.
+Please double-check for secrets yourself in the meantime. - We do not
+exaggerate. We do <strong>not</strong> claim “100% safe / perfect”.</p>
 </blockquote>
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -407,10 +538,17 @@ size → plain report</td>
 <td>✅ Works</td>
 </tr>
 <tr>
+<td><code>/sodam-context-sync</code></td>
+<td>Sync</td>
+<td>Finds safety rules present in only one of the two manuals and
+reports the line numbers (does not merge)</td>
+<td>✅ Works</td>
+</tr>
+<tr>
 <td>(Prevention)</td>
 <td>Prevent</td>
-<td>Blocks secrets / excess length in advance</td>
-<td>⏳ In progress</td>
+<td>Blocks secrets / excess length before saving</td>
+<td>🟡 Code complete, live behavior in verification</td>
 </tr>
 </tbody>
 </table>
@@ -425,6 +563,28 @@ commands.</p>
 <summary>
 <b>📋 Click to expand — version history</b>
 </summary>
+<p><strong>After 0.1.0 (in progress, 2026-07-13)</strong></p>
+<ul>
+<li><strong>OWASP-style security audit — found and fixed a real
+vulnerability:</strong> Restore accepted any readable file as the backup
+source, so pointing it outside the backup folder would copy that file’s
+raw content straight into the manual. Fixed: restore now only accepts
+sources that are actually inside the tool’s own backup folder, with
+symlink-escape protection added on top.</li>
+<li><strong>Fixed restore failing across drives:</strong> If your
+project lives on a different drive than the system temp folder
+(e.g. drive D on Windows), Treatment/Restore could fail. Reported by a
+real user, reproduced, and fixed — now works regardless of drive.</li>
+<li><strong>Documentation honesty cleanup:</strong> Prevention
+(auto-block) was described inconsistently across documents (“in
+progress” in one place, “already works” in another) — unified to “code
+complete, live behavior still being verified.” Sync is now listed under
+“Works” since it has been confirmed by a real user.</li>
+<li><strong>Test suite expanded further:</strong> 82 →
+<strong>118</strong> tests (including the new security regression
+tests), all passing. Also ran <code>npm audit</code> (dependency
+vulnerability check) — 0 findings.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-11)</strong></p>
 <ul>
 <li><strong>Treatment &amp; Codex checkup live-verified:</strong> what
@@ -594,6 +754,18 @@ treatment/restore target resolves to the home directory root, a
 credential folder (<code>.ssh</code>, <code>.aws</code>, etc.), or a
 system folder, the write is <strong>rejected automatically</strong> with
 a reason before anything is touched.</li>
+<li><strong>Checkup looks at only the one file you point it at:</strong>
+Codex (<code>AGENTS.md</code>) checks the merged chain up through parent
+and global manuals, but Claude Code (<code>CLAUDE.md</code>) currently
+checks <strong>only the single file you specify</strong>. If you’ve
+split rules across a nested <code>CLAUDE.md</code> or
+<code>.claude/rules/</code>, those aren’t scanned automatically — check
+each one separately.</li>
+<li><strong>Restore source is validated too (added 2026-07-13):</strong>
+“Restore” only accepts files inside the tool’s own backup folder
+(<code>.sodamcontext/backups/</code>) as the source. Anything else is
+rejected — this prevents the content of an arbitrary file from
+accidentally being copied into your manual.</li>
 <li><strong>Honest limits:</strong> it only catches <strong>known
 patterns</strong>, so it does <strong>not guarantee “100% safe / perfect
 detection”</strong> (for reference only). Reissue/manage important keys
@@ -668,6 +840,14 @@ env vars) — the tool never deletes it automatically</td>
 <td>Created/edited a file without asking</td>
 <td>🚨 Not normal</td>
 <td>Stop and tell someone who can help (it should always ask first)</td>
+</tr>
+<tr>
+<td>Restore says “not a backup file location” and refuses</td>
+<td>The file you pointed to isn’t a real backup this tool made (this is
+a safety feature working correctly, not a bug)</td>
+<td>Use the backup path shown to you during
+<code>/sodam-context-treat</code> — don’t point restore at a file you
+made yourself</td>
 </tr>
 </tbody>
 </table>
@@ -745,7 +925,7 @@ them.</li>
 send to the AI provider (Claude · Codex) follows their policies. Do not
 put secrets or personal data in the manual.</li>
 <li><strong>Pre-release check status (for developers, as of
-2026-07-11):</strong> final license confirmation (✅ done · Apache-2.0)
+2026-07-13):</strong> final license confirmation (✅ done · Apache-2.0)
 · copyright holder (✅ in <code>NOTICE</code>) · liability wording (✅
 in <code>NOTICE</code>) · third-party source attribution (✅ zero
 external code dependencies, nothing borrowed) · <strong>only the

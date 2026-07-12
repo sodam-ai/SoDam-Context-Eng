@@ -5,7 +5,7 @@
 >
 > New to computers or AI? That's fine. This document is written as **one step at a time**.
 
-> ⚠️ **Honest current status (as of 2026-07-11)**
+> ⚠️ **Honest current status (as of 2026-07-13)**
 > - **Works (live-verified in real sessions):** Checkup · Intake · Treatment · Codex checkup · Sync (compare the two files) — **confirmed on both Claude Code and Codex**
 > - **Security hardening:** writes to sensitive locations (system/credential folders) are now automatically rejected
 > - **Code complete, live behavior still being verified:** Prevention (auto pre-block before saving) — the decision logic and hook protocol check out correctly at the code level, but we haven't yet confirmed the confirmation prompt actually fires live when saving. Please double-check for secrets yourself in the meantime.
@@ -187,6 +187,13 @@ This tool is **not a program you launch directly** — it works when you **call 
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+**After 0.1.0 (in progress, 2026-07-13)**
+
+- **OWASP-style security audit — found and fixed a real vulnerability:** Restore accepted any readable file as the backup source, so pointing it outside the backup folder would copy that file's raw content straight into the manual. Fixed: restore now only accepts sources that are actually inside the tool's own backup folder, with symlink-escape protection added on top.
+- **Fixed restore failing across drives:** If your project lives on a different drive than the system temp folder (e.g. drive D on Windows), Treatment/Restore could fail. Reported by a real user, reproduced, and fixed — now works regardless of drive.
+- **Documentation honesty cleanup:** Prevention (auto-block) was described inconsistently across documents ("in progress" in one place, "already works" in another) — unified to "code complete, live behavior still being verified." Sync is now listed under "Works" since it has been confirmed by a real user.
+- **Test suite expanded further:** 82 → **118** tests (including the new security regression tests), all passing. Also ran `npm audit` (dependency vulnerability check) — 0 findings.
+
 **After 0.1.0 (in progress, 2026-07-11)**
 
 - **Treatment & Codex checkup live-verified:** what was previously confirmed only by automated tests has now been run and confirmed in real sessions — safe-keyword preservation and restore accuracy verified.
@@ -264,6 +271,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **Safe-keyword preservation:** lines with key rules ("never / forbidden / must / always / secret / force push") are **auto-preserved** (excluded from tidying).
 - **Never writes to sensitive locations:** if a treatment/restore target resolves to the home directory root, a credential folder (`.ssh`, `.aws`, etc.), or a system folder, the write is **rejected automatically** with a reason before anything is touched.
 - **Checkup looks at only the one file you point it at:** Codex (`AGENTS.md`) checks the merged chain up through parent and global manuals, but Claude Code (`CLAUDE.md`) currently checks **only the single file you specify**. If you've split rules across a nested `CLAUDE.md` or `.claude/rules/`, those aren't scanned automatically — check each one separately.
+- **Restore source is validated too (added 2026-07-13):** "Restore" only accepts files inside the tool's own backup folder (`.sodamcontext/backups/`) as the source. Anything else is rejected — this prevents the content of an arbitrary file from accidentally being copied into your manual.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
 
 **Data flow (checkup):**
@@ -291,6 +299,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 | Says there's a password | Something looks like a key in the manual | **Reissue** that key and remove it from the manual (use env vars) — the tool never deletes it automatically |
 | Codex says "Cannot find module" | Run from a folder that isn't the repo root | Re-run Codex from the **repo root folder** (`SoDam-Context-Eng`) |
 | Created/edited a file without asking | 🚨 Not normal | Stop and tell someone who can help (it should always ask first) |
+| Restore says "not a backup file location" and refuses | The file you pointed to isn't a real backup this tool made (this is a safety feature working correctly, not a bug) | Use the backup path shown to you during `/sodam-context-treat` — don't point restore at a file you made yourself |
 
 ---
 
@@ -338,7 +347,7 @@ A. The tool itself runs locally with no separate fee, but **using AI (Claude · 
 - **AI usage responsibility:** using AI (Claude · Codex) is subject to **each provider's terms and pricing** (outside our license scope).
 - **Ownership of outputs:** the `CLAUDE.md`·`AGENTS.md` created by Intake **belong to the user's project**; we claim no rights over them.
 - **Privacy:** this tool sends no data out, but what you send to the AI provider (Claude · Codex) follows their policies. Do not put secrets or personal data in the manual.
-- **Pre-release check status (for developers, as of 2026-07-11):** final license confirmation (✅ done · Apache-2.0) · copyright holder (✅ in `NOTICE`) · liability wording (✅ in `NOTICE`) · third-party source attribution (✅ zero external code dependencies, nothing borrowed) · **only the product-name trademark conflict check remains unfinished** (a quick informational search found no obvious conflict, but this is not a formal trademark search — a **human legal review is still required before public release**).
+- **Pre-release check status (for developers, as of 2026-07-13):** final license confirmation (✅ done · Apache-2.0) · copyright holder (✅ in `NOTICE`) · liability wording (✅ in `NOTICE`) · third-party source attribution (✅ zero external code dependencies, nothing borrowed) · **only the product-name trademark conflict check remains unfinished** (a quick informational search found no obvious conflict, but this is not a formal trademark search — a **human legal review is still required before public release**).
 
 ---
 

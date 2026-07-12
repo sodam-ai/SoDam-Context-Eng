@@ -4,8 +4,153 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>SoDamContext — AI 사용설명서 건강검진</title>
+  <title>SoDamContext — README (한국어)</title>
   <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -22,11 +167,10 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="" />
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">SoDamContext — AI 사용설명서 건강검진</h1>
+<h1 class="title">SoDamContext — README (한국어)</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -40,26 +184,10 @@ id="toc-sodamcontext-ai-사용설명서-건강검진">SoDamContext — AI
 id="toc-사전-준비물과-필요-프로그램">2. 사전 준비물과 필요
 프로그램</a></li>
 <li><a href="#다운로드와-설치-방법" id="toc-다운로드와-설치-방법">3.
-다운로드와 설치 방법</a>
-<ul>
-<li><a href="#클로드코드-자동-설치-권장"
-id="toc-클로드코드-자동-설치-권장">3-1. 클로드코드 (자동 설치,
-권장)</a></li>
-<li><a href="#코덱스-수동-설치" id="toc-코덱스-수동-설치">3-2. 코덱스
-(수동 설치)</a></li>
-</ul></li>
+다운로드와 설치 방법</a></li>
 <li><a href="#빠른-시작" id="toc-빠른-시작">4. 빠른 시작</a></li>
 <li><a href="#실행-방법" id="toc-실행-방법">5. 실행 방법</a></li>
-<li><a href="#사용-방법" id="toc-사용-방법">6. 사용 방법</a>
-<ul>
-<li><a href="#검진점검-작동" id="toc-검진점검-작동">6-1. 검진(점검) —
-<code>✅ 작동</code></a></li>
-<li><a href="#문진만들기-작동" id="toc-문진만들기-작동">6-2.
-문진(만들기) — <code>✅ 작동</code></a></li>
-<li><a href="#처방다듬기-작동라이브-검증-완료"
-id="toc-처방다듬기-작동라이브-검증-완료">6-3. 처방(다듬기) —
-<code>✅ 작동(라이브 검증 완료)</code></a></li>
-</ul></li>
+<li><a href="#사용-방법" id="toc-사용-방법">6. 사용 방법</a></li>
 <li><a href="#작동-방법" id="toc-작동-방법">7. 작동 방법</a></li>
 <li><a href="#명령어-목록" id="toc-명령어-목록">8. 명령어 목록</a></li>
 <li><a href="#업데이트-내용-요약" id="toc-업데이트-내용-요약">9.
@@ -91,14 +219,16 @@ id="toc-라이선스-저작권-상업적-사용-면책">16. 라이선스 저작�
 되는</strong> 순서로 쓰여 있습니다.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>정직한 현재 상태 (2026-07-11 기준)</strong> -
+<p>⚠️ <strong>정직한 현재 상태 (2026-07-13 기준)</strong> -
 <strong>작동(실사용 라이브 검증 완료):</strong> 검진(점검) ·
-문진(만들기) · 처방(다듬기) · 코덱스 검진 — <strong>클로드코드·코덱스
-양쪽 실제 세션에서 확인됨</strong> - <strong>보안 강화:</strong> 민감한
-위치(시스템·자격증명 폴더) 쓰기 자동 거부 기능 추가 - <strong>준비
-중(예정):</strong> 예방(자동 사전 차단) · 두 파일 자동 동기화 — 착수
-가능 상태이나 아직 시작 전 - 과장하지 않습니다. “100% 안전·완벽”이라고
-<strong>말하지 않습니다.</strong></p>
+문진(만들기) · 처방(다듬기) · 코덱스 검진 · 동기화(두 설명서 비교) —
+<strong>클로드코드·코덱스 양쪽 실제 세션에서 확인됨</strong> -
+<strong>보안 강화:</strong> 민감한 위치(시스템·자격증명 폴더) 쓰기 자동
+거부 기능 추가 - <strong>코드 완성, 실제 발동은 검증 중:</strong>
+예방(저장 전 자동 사전 차단) — 판정 로직·연동 프로토콜은 코드 레벨에서
+전부 정상 확인했지만, 실제 저장 화면에서 확인창이 뜨는지는 아직 검증
+중입니다. 그동안은 비밀키를 직접 한 번 더 확인해 주세요. - 과장하지
+않습니다. “100% 안전·완벽”이라고 <strong>말하지 않습니다.</strong></p>
 </blockquote>
 <hr />
 <h2 id="목차">목차</h2>
@@ -385,10 +515,17 @@ cd SoDam-Context-Eng</code></pre></li>
 <td>✅ 작동</td>
 </tr>
 <tr>
+<td><code>/sodam-context-sync</code></td>
+<td>동기화</td>
+<td>두 설명서 중 한쪽에만 있는 안전 규칙을 줄 번호로 알려줌(합치지
+않음)</td>
+<td>✅ 작동</td>
+</tr>
+<tr>
 <td>(예방/안전장치)</td>
 <td>예방</td>
-<td>비밀키·과다 길이를 미리 차단</td>
-<td>⏳ 준비 중</td>
+<td>비밀키·과다 길이를 저장 전에 미리 차단</td>
+<td>🟡 코드 완성, 실제 발동 검증 중</td>
 </tr>
 </tbody>
 </table>
@@ -402,6 +539,26 @@ cd SoDam-Context-Eng</code></pre></li>
 <summary>
 <b>📋 눌러서 펼치기 — 버전별 변경 이력</b>
 </summary>
+<p><strong>0.1.0 이후 (진행 중, 2026-07-13)</strong></p>
+<ul>
+<li><strong>보안 감사(OWASP 스타일) 실시 — 실제 취약점 1건
+발견·수정:</strong> 되돌리기(<code>restore</code>) 기능에 백업 폴더 밖의
+임의 파일을 지정하면 그 내용이 그대로 설명서에 복사되는 결함을 발견해
+즉시 수정. 복원 소스가 이 도구가 실제로 만든 백업 폴더 안에 있는지
+확인하는 절차를 추가하고, 우회 가능성까지 한 번 더 막았습니다(심볼릭
+링크 우회 방지 포함).</li>
+<li><strong>드라이브 간 되돌리기 실패 수정:</strong> 프로젝트가 임시파일
+저장 위치와 다른 드라이브(예: D드라이브)에 있으면 “처방
+적용”·“되돌리기”가 실패하던 문제를 실사용자 제보로 발견해 수정. 이제
+어느 드라이브에 있어도 정상 작동합니다.</li>
+<li><strong>문서 정직성 정리:</strong> 예방(자동 차단) 기능을 두고
+문서마다 “준비 중”과 “이미 작동함”으로 서로 다르게 적혀 있던 걸 “코드는
+완성, 실제 발동은 검증 중”으로 통일했습니다. 동기화(sync) 기능은
+실사용자 확인이 끝나 “작동” 목록으로 옮겼습니다.</li>
+<li><strong>자동 테스트 대폭 확대:</strong> 82개 →
+<strong>118개</strong>로 확대(보안 회귀 테스트 포함), 전부 통과.
+<code>npm audit</code>(의존성 취약점 점검)도 실행해 0건 확인.</li>
+</ul>
 <p><strong>0.1.0 이후 (진행 중, 2026-07-11)</strong></p>
 <ul>
 <li><strong>처방·코덱스 검진 실사용 라이브 검증 완료:</strong> 그동안
@@ -564,6 +721,30 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 홈 폴더 자체·자격증명 폴더(<code>.ssh</code>·<code>.aws</code>
 등)·시스템 폴더로 잘못 지정되면, 실행 전에 <strong>자동으로
 거부</strong>하고 이유를 알려줍니다.</li>
+<li><strong>검진은 지정한 파일 하나만 봅니다:</strong>
+코덱스(<code>AGENTS.md</code>)는 상위 폴더·전역 설명서까지 합쳐서
+확인하지만, 클로드코드(<code>CLAUDE.md</code>)는 지금은 <strong>지정한
+파일 하나만</strong> 봅니다. 하위 폴더의 별도 <code>CLAUDE.md</code>나
+<code>.claude/rules/</code>에 규칙을 나눠 두셨다면, 그 파일들은 자동으로
+훑지 않으니 각각 따로 검진해 주세요.</li>
+<li><strong>저장 전에 미리 막도록 설계돼 있습니다(예방):</strong>
+<code>CLAUDE.md</code>·<code>AGENTS.md</code>에 확정된 비밀키가
+들어가거나 너무 길어지면(300줄/32KB 이상) 저장 전에 막고, 200~299줄처럼
+애매한 경우는 <strong>“그래도 저장할까요?”</strong> 로 한 번 더
+확인하도록 만들어 뒀습니다. 판정 로직과 연동 프로토콜은 코드 레벨에서
+직접 검증했지만, <strong>실제 저장 화면에서 이 확인창이 뜨는지는 아직
+검증 중</strong>입니다 — 그동안은 비밀키를 직접 한 번 더 확인해 주세요.
+이 설명서 두 파일 외에는 어떤 파일 작업도 건드리지 않습니다.</li>
+<li><strong>두 설명서 동기화는 합치지 않고 알려만 줍니다:</strong>
+<code>CLAUDE.md</code>와 <code>AGENTS.md</code> 중 한쪽에만 있는 안전
+규칙(절대/금지/never/must/secret 등)을 찾아 줄 번호로 알려드립니다.
+<strong>파일을 자동으로 합치거나 고치지 않으며</strong>, 파일 내용
+자체도 결과에 담지 않습니다(줄 번호만).</li>
+<li><strong>되돌리기 소스도 검증합니다(2026-07-13 추가):</strong>
+“되돌리기(restore)”는 이 도구가 실제로 만든 백업
+폴더(<code>.sodamcontext/backups/</code>) 안의 파일만 소스로 허용합니다.
+그 밖의 임의 파일을 지정하면 거부합니다 — 그래야 엉뚱한 파일 내용이
+실수로 설명서에 복사되는 걸 막을 수 있습니다.</li>
 <li><strong>정직한 한계:</strong> 정해진 패턴만 잡으므로 <strong>“100%
 안전·완벽 탐지”는 보장하지 않습니다</strong>(참고용). 중요한 키는 직접
 재발급/관리하세요.</li>
@@ -635,6 +816,14 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 <td>묻지도 않고 파일을 만들/고침</td>
 <td>🚨 정상 아님</td>
 <td>멈추고 도와줄 사람에게 알리기(원래는 꼭 물어봐야 정상)</td>
+</tr>
+<tr>
+<td>되돌리기(restore)가 “백업 파일 위치가 아니에요”라며 거부됨</td>
+<td>지정한 파일이 이 도구가 만든 진짜
+백업(<code>.sodamcontext/backups/</code> 안)이 아님(보안 보호 동작, 오류
+아님)</td>
+<td><code>/sodam-context-treat</code> 대화에서 안내받은 백업 경로를
+그대로 사용 — 직접 만든 파일을 백업인 척 지정하지 않기</td>
 </tr>
 </tbody>
 </table>
@@ -710,7 +899,7 @@ OpenAI).</li>
 <li><strong>개인정보:</strong> 이 도구는 데이터를 외부로 보내지 않지만,
 AI 제공사(클로드·코덱스)에 무엇을 보내는지는 각 제공사 정책을 따릅니다.
 비밀키·개인정보는 설명서에 넣지 마세요.</li>
-<li><strong>공개 전 확인 현황(개발자용, 2026-07-11):</strong> 라이선스
+<li><strong>공개 전 확인 현황(개발자용, 2026-07-13):</strong> 라이선스
 최종 확정(✅ 완료·Apache-2.0) · 저작권자 표기(✅ <code>NOTICE</code>
 기재) · 책임 한도 문구(✅ <code>NOTICE</code> 기재) · 차용 자료 출처(✅
 외부 코드 의존성 0건 확인, 차용 없음) · <strong>제품명 상표 충돌만 아직

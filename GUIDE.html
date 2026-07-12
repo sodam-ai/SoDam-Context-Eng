@@ -4,8 +4,153 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>SoDamContext — 왕초보 가이드</title>
+  <title>SoDamContext 왕초보 가이드 (한국어)</title>
   <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -22,11 +167,10 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="" />
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">SoDamContext — 왕초보 가이드</h1>
+<h1 class="title">SoDamContext 왕초보 가이드 (한국어)</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -50,6 +194,9 @@ id="toc-b단계-코덱스-수동-설치">2-B단계 코덱스 수동 설치</a></
 <li><a href="#단계-점검하기" id="toc-단계-점검하기">5단계
 점검하기</a></li>
 <li><a href="#단계-다듬기" id="toc-단계-다듬기">6단계 다듬기</a></li>
+<li><a href="#b단계-두-설명서-맞추기동기화"
+id="toc-b단계-두-설명서-맞추기동기화">6-B단계 두 설명서
+맞추기(동기화)</a></li>
 <li><a href="#단계-막혔을-때" id="toc-단계-막혔을-때">7단계 막혔을
 때</a></li>
 <li><a href="#단계-안전-약속" id="toc-단계-안전-약속">8단계 안전
@@ -72,11 +219,14 @@ id="toc-b단계-코덱스-수동-설치">2-B단계 코덱스 수동 설치</a></
 <code>README.md</code> 에 있어요.)</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>정직한 안내(2026-07-11 기준):</strong> 지금
-<strong>작동하는 기능은 검진(점검)·문진(만들기)·처방(다듬기)</strong> 세
+<p>⚠️ <strong>정직한 안내(2026-07-13 기준):</strong> 지금
+<strong>작동까지 확인된 기능은
+검진(점검)·문진(만들기)·처방(다듬기)·동기화(두 설명서 비교)</strong> 네
 가지예요 — <strong>클로드코드·코덱스 둘 다 실제로 써서 확인
-완료</strong>했어요. <strong>예방(자동 차단)·자동 동기화는 준비
-중(예정)</strong>입니다. 이 도구는
+완료</strong>했어요. <strong>예방(저장 전 자동 차단)은 코드는 다
+만들어져서 부품 하나하나는 정확히 작동함을 확인했지만, 실제 저장
+화면에서 확인창이 뜨는지는 아직 검증 중</strong>이에요 — 그래서 비밀키는
+지금도 직접 한 번 더 확인해 주세요. 이 도구는
 <strong>컴퓨터(Windows·macOS)</strong> 에서 돌아가요 — 휴대폰 앱이
 아니에요.</p>
 </blockquote>
@@ -92,6 +242,8 @@ id="toc-b단계-코덱스-수동-설치">2-B단계 코덱스 수동 설치</a></
 <li><a href="#4단계-설명서-만들기">4단계 설명서 만들기</a></li>
 <li><a href="#5단계-점검하기">5단계 점검하기</a></li>
 <li><a href="#6단계-다듬기">6단계 다듬기</a></li>
+<li><a href="#6-b단계-두-설명서-맞추기동기화">6-B단계 두 설명서
+맞추기(동기화)</a></li>
 <li><a href="#7단계-막혔을-때">7단계 막혔을 때</a></li>
 <li><a href="#8단계-안전-약속">8단계 안전 약속</a></li>
 <li><a href="#업데이트-내용-요약">업데이트 내용 요약</a></li>
@@ -178,7 +330,7 @@ cd SoDam-Context-Eng</code></pre>
 <code>exit</code> 치고 Enter → 창을 <strong>X로 완전히 닫기</strong> -
 다시 클로드코드를 켜기 (터미널이면 <code>claude</code> 입력)</p>
 <p>확인: 입력창에 <code>/</code> 만 쳐보세요. 목록에
-<strong><code>sodam-context-checkup</code></strong>·<strong><code>sodam-context-intake</code></strong>·<strong><code>sodam-context-treat</code></strong>
+<strong><code>sodam-context-checkup</code></strong>·<strong><code>sodam-context-intake</code></strong>·<strong><code>sodam-context-treat</code></strong>·<strong><code>sodam-context-sync</code></strong>
 가 보이면 준비 완료! 🎉</p>
 <hr />
 <h2 id="단계-설명서-만들기">4단계 설명서 만들기</h2>
@@ -272,6 +424,28 @@ cd SoDam-Context-Eng</code></pre>
 <strong>중요한 파일은 따로 복사</strong>해 두는 걸 권장해요.</p>
 </blockquote>
 <hr />
+<h2 id="b단계-두-설명서-맞추기동기화">6-B단계 두 설명서
+맞추기(동기화)</h2>
+<p><strong>클로드코드용(<code>CLAUDE.md</code>)과
+코덱스용(<code>AGENTS.md</code>)을 둘 다 쓰신다면</strong>, 이 단계로 두
+파일이 서로 다른 안전 규칙을 갖고 있지 않은지 확인할 수 있어요. (이 기능
+이름 = <strong>동기화</strong>, 실사용 확인 완료)</p>
+<ol type="1">
+<li><p>입력창에 치기:</p>
+<pre><code>/sodam-context-sync</code></pre></li>
+<li><p>비교할 두 파일의 경로를 알려주세요(예: <code>CLAUDE.md</code>와
+<code>AGENTS.md</code>).</p></li>
+<li><p>결과로 <strong>“이 규칙은 클로드용에만 있어요(○번째 줄)”</strong>
+처럼 알려줘요.</p></li>
+<li><p><strong>파일을 대신 고치진 않아요</strong> — 어느 쪽에 맞출지는
+사용자가 직접 정해서 손으로 옮기면 돼요. 실수로 다른 내용까지 바뀌는
+위험을 막기 위한 설계예요.</p></li>
+</ol>
+<blockquote>
+<p>💡 하나의 AI 도구만 쓰신다면(클로드코드만, 또는 코덱스만) 이 단계는
+건너뛰어도 괜찮아요.</p>
+</blockquote>
+<hr />
 <h2 id="단계-막혔을-때">7단계 막혔을 때</h2>
 <p>당황하지 마세요. 아래 표대로 하면 돼요.</p>
 <table>
@@ -340,6 +514,11 @@ cd SoDam-Context-Eng</code></pre>
 <td>원본 파일은 건드리기 전에 중단하도록 설계됐어요. 원본은
 그대로예요</td>
 </tr>
+<tr>
+<td>되돌리기가 “백업 파일 위치가 아니에요”라며 안 돼요</td>
+<td>지정한 파일이 이 도구가 만든 진짜 백업이 아니에요(정상적인 안전
+동작이에요)</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -355,6 +534,22 @@ cd SoDam-Context-Eng</code></pre>
 안에서만</strong> 돌아가요(설치할 때만 인터넷 필요).</li>
 <li>♻️ <strong>안전하게 고침:</strong> 처방은 백업을 먼저 뜨고,
 임시파일에 쓴 뒤 바꿔치기해서 도중에 멈춰도 원본이 안 깨져요.</li>
+<li>🔍 <strong>한 파일만 봐요:</strong> 코덱스는 상위 폴더까지 합쳐서
+보지만, 클로드코드는 지금은 <strong>지정한 파일 하나만</strong> 봐요.
+여러 폴더에 규칙을 나눠 두셨다면 각각 따로 점검해 주세요.</li>
+<li>🛑 <strong>저장 전에 미리 막도록 만들어 뒀어요:</strong> 설명서에
+진짜 비밀키가 들어가거나 너무 길어지면(300줄/32KB 이상) 저장 전에 막고,
+애매하게 긴 정도(200~299줄)면 “그래도 저장할까요?”라고 묻도록 설계돼
+있어요. <strong>다만 이 확인창이 실제로 뜨는지는 아직 검증
+중</strong>이라, 지금은 비밀키가 없는지 직접 한 번 더 봐 주세요.</li>
+<li>🔗 <strong>동기화는 알려만 줘요:</strong> 클로드용·코덱스용 설명서
+중 한쪽에만 있는 안전 규칙을 찾아서 줄 번호로 알려드려요. <strong>파일을
+대신 합치거나 고치진 않아요</strong> — 실수로 다른 내용까지 바뀌면
+위험하니까요.</li>
+<li>🛡️ <strong>되돌리기 소스도 확인해요(2026-07-13 추가):</strong>
+“되돌리기”는 이 도구가 실제로 만든 백업 폴더 안의 파일만 써요. 다른 아무
+파일이나 백업인 척 지정해도 거부돼요 — 엉뚱한 내용이 실수로 설명서에
+복사되는 걸 막기 위해서예요.</li>
 <li>🙇 <strong>“무조건 안전” 장담 안 해요:</strong> 정해진 형태만
 잡으니, 중요한 비밀번호는 직접 챙기세요.</li>
 </ul>
@@ -369,6 +564,20 @@ AI에게는 <strong>요약(비밀키 값 없음)</strong> 만 전달돼요. 그�
 <summary>
 <b>📋 눌러서 펼치기 — 무엇이 바뀌었나</b>
 </summary>
+<p><strong>0.1.0 이후 (진행 중, 2026-07-13)</strong></p>
+<ul>
+<li><strong>보안 점검에서 실제 문제 하나 발견해 바로 고쳤어요:</strong>
+“되돌리기” 기능에 백업 아닌 임의 파일을 지정하면 그 내용이 그대로
+복사되던 걸 발견해서, 진짜 백업 폴더의 파일만 되돌리기에 쓸 수 있게
+막았어요.</li>
+<li><strong>다른 드라이브에서 처방·되돌리기가 안 되던 문제
+수정:</strong> 프로젝트가 C드라이브가 아닌 곳(예: D드라이브)에 있으면
+실패하던 걸 실제 사용자분이 겪으셔서 발견하고 고쳤어요.</li>
+<li><strong>문서에서 서로 다르게 적혀있던 내용을 통일했어요:</strong>
+예방·동기화 기능의 “지금 되는지 안 되는지”를 문서마다 다르게 적어놨던 걸
+정확하게 통일했어요.</li>
+<li><strong>자동 시험 118개로 확대</strong>, 전부 통과 확인했어요.</li>
+</ul>
 <p><strong>0.1.0 이후 (진행 중, 2026-07-11)</strong></p>
 <ul>
 <li>처방·코덱스 검진을 <strong>실제로 써서 확인</strong>
