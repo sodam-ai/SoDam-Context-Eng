@@ -16,6 +16,9 @@ TESTING.md
 CHECKPOINT.md
 tasks/
 
+# 베타 진행자용 준비물 (가짜 비밀키 fixture 포함 — 배포·git 추적 제외, PRD 12_BETA §3 위생)
+beta-kit/
+
 # 로그
 *.log
 
