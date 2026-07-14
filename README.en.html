@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -186,10 +186,26 @@ This</a></li>
 id="toc-prerequisites-and-required-programs">2. Prerequisites and
 Required Programs</a></li>
 <li><a href="#download-and-install" id="toc-download-and-install">3.
-Download and Install</a></li>
+Download and Install</a>
+<ul>
+<li><a href="#claude-code-automatic-install-recommended"
+id="toc-claude-code-automatic-install-recommended">3-1. Claude Code
+(automatic install, recommended)</a></li>
+<li><a href="#codex-manual-install" id="toc-codex-manual-install">3-2.
+Codex (manual install)</a></li>
+</ul></li>
 <li><a href="#quick-start" id="toc-quick-start">4. Quick Start</a></li>
 <li><a href="#how-to-run" id="toc-how-to-run">5. How to Run</a></li>
-<li><a href="#how-to-use" id="toc-how-to-use">6. How to Use</a></li>
+<li><a href="#how-to-use" id="toc-how-to-use">6. How to Use</a>
+<ul>
+<li><a href="#checkup-works" id="toc-checkup-works">6-1. Checkup —
+<code>✅ Works</code></a></li>
+<li><a href="#intake-create-works" id="toc-intake-create-works">6-2.
+Intake (create) — <code>✅ Works</code></a></li>
+<li><a href="#treatment-tidy-works-live-verified"
+id="toc-treatment-tidy-works-live-verified">6-3. Treatment (tidy) —
+<code>✅ Works (live-verified)</code></a></li>
+</ul></li>
 <li><a href="#how-it-works" id="toc-how-it-works">7. How It
 Works</a></li>
 <li><a href="#command-list" id="toc-command-list">8. Command
@@ -225,12 +241,18 @@ your project well.</p>
 <strong>one step at a time</strong>.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>Honest current status (as of 2026-07-13)</strong> -
+<p>⚠️ <strong>Honest current status (as of 2026-07-15)</strong> -
 <strong>Works (live-verified in real sessions):</strong> Checkup ·
 Intake · Treatment · Codex checkup · Sync (compare the two files) —
 <strong>confirmed on both Claude Code and Codex</strong> -
 <strong>Security hardening:</strong> writes to sensitive locations
 (system/credential folders) are now automatically rejected -
+<strong>Code complete, CLI-verified (live session confirmation
+pending):</strong> Freshness reminder (auto-notes how many days since
+the last checkup) · Reference health score — both are now automatically
+included in the checkup result, and their accuracy has been confirmed by
+unit tests and direct command-line runs. We just haven’t yet confirmed
+these appear naturally in a real conversational checkup session. -
 <strong>Code complete, live behavior still being verified:</strong>
 Prevention (auto pre-block before saving) — the decision logic and hook
 protocol check out correctly at the code level, but we haven’t yet
@@ -433,15 +455,25 @@ most accurate. e.g. <code>C:\MyProject\CLAUDE.md</code>.</li>
 <li>When asked “which file?”, give the absolute path.</li>
 <li>Shortly after, you get a <strong>plain report</strong>:
 <ul>
-<li>Shown as a <strong>count</strong> like “N problems” (score is hidden
-on purpose — prevents inflation).</li>
+<li>Shown as a <strong>count</strong> like “N problems”, front and
+center.</li>
 <li>Any password/key is shown <strong>masked</strong>
 (<code>sk-ant-…REDACTED</code>) only.</li>
 <li>Items like <strong>staleness, unrefined auto-generation, skill
 leakage</strong> are shown as “suspect” (with a false-positive
 caveat).</li>
+<li>A <strong>reference score</strong> (e.g. “85 pts”) is added after
+the count, always paired with the <strong>“reference only
+(unvalidated)”</strong> label — meaning it hasn’t been tuned against
+real, diverse user data yet (prevents inflated claims — see §9).</li>
+<li>If it’s been <strong>more than 30 days</strong> since your last
+checkup, you’ll get a short note like “want to check again while you’re
+here?” (this is not a background alert — it only compares timestamps the
+moment you run a checkup). No note appears if it’s under 30 days, or
+this is your first checkup.</li>
 <li>For more, reply <strong><code>why?</code></strong> and it explains
-the reason and evidence.</li>
+the reason and evidence (including how the reference score was
+calculated).</li>
 </ul></li>
 </ol>
 <h3 id="intake-create-works">6-2. Intake (create) —
@@ -498,6 +530,18 @@ must be <strong>smaller</strong> to count as success.</li>
 checkup verifies that <strong>combined size (32 KiB limit)</strong> too.
 (Korean is 3 bytes per character, so byte size exceeds character
 count.)</li>
+<li><strong>Freshness reminder:</strong> every checkup records, per
+absolute file path, only “when was this last checked” as a timestamp (no
+content stored). The next checkup compares against that timestamp and
+only speaks up if it’s been over 30 days. <strong>There is no background
+alert</strong> — comparison only happens the moment you run a
+checkup.</li>
+<li><strong>Reference score:</strong> it doesn’t re-read the file to
+compute this — it uses the <strong>problem counts</strong> the checkup
+already found (confirmed problems −15 pts each, suspects −5 pts each,
+out of 100) and calculates on the spot. It’s a fully transparent
+subtraction formula, so if you ask “why this score?”, it can show its
+work.</li>
 </ul>
 <hr />
 <h2 id="command-list">8. Command List</h2>
@@ -521,7 +565,8 @@ count.)</li>
 <td><code>/sodam-context-checkup</code></td>
 <td>Checkup</td>
 <td>Checks bloat, duplication, staleness/unrefined (“suspect”), secrets,
-size → plain report</td>
+size → plain report (includes freshness reminder &amp; reference
+score)</td>
 <td>✅ Works</td>
 </tr>
 <tr>
@@ -563,6 +608,27 @@ commands.</p>
 <summary>
 <b>📋 Click to expand — version history</b>
 </summary>
+<p><strong>After 0.1.0 (in progress, 2026-07-15)</strong></p>
+<ul>
+<li><strong>Added a freshness reminder:</strong> every checkup now
+remembers “when was this last checked”, and if it’s been <strong>over 30
+days</strong>, gently suggests checking again. It’s not a background
+notification — it only compares the moment you run a checkup, so it
+doesn’t overlap with other tools’ (e.g. SoDamLoop’s) scheduled-alert
+features.</li>
+<li><strong>Added a reference health score:</strong> the checkup report
+now shows a supplementary score like “85 pts”. Since it isn’t a formula
+tuned on real, diverse user data yet, it’s always labeled
+<strong>“reference only (unvalidated)”</strong>. The calculation itself
+(confirmed problem = −15 pts, suspect = −5 pts) is fully disclosed, not
+hidden.</li>
+<li><strong>Fixed an internal documentation contradiction:</strong> an
+old safety rule that said “never show a score” conflicted with the new
+reference-score feature above — clarified to “show it as supplementary
+info, always paired with the reference-only label.”</li>
+<li><strong>Test suite expanded:</strong> 118 → <strong>134</strong>
+tests, all passing.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-13)</strong></p>
 <ul>
 <li><strong>OWASP-style security audit — found and fixed a real
@@ -670,6 +736,12 @@ working project folder</strong></td>
 automatically when treatment runs)</td>
 </tr>
 <tr>
+<td>(Freshness reminder) last-checkup record</td>
+<td><code>&lt;project folder&gt;\.sodamcontext\last-checkup.json</code>
+(created/updated automatically on each checkup; stores only the path +
+timestamp)</td>
+</tr>
+<tr>
 <td>This manual</td>
 <td>The plugin folder’s <code>README.md</code>·<code>README.html</code>
 (Korean), <code>README.en.md</code>·<code>README.en.html</code>
@@ -766,6 +838,18 @@ each one separately.</li>
 (<code>.sodamcontext/backups/</code>) as the source. Anything else is
 rejected — this prevents the content of an arbitrary file from
 accidentally being copied into your manual.</li>
+<li><strong>The freshness reminder stores no content either (added
+2026-07-15):</strong> the “when was this last checked” record keeps only
+the file’s <strong>absolute path string + a timestamp string</strong>,
+in your project folder (<code>.sodamcontext/last-checkup.json</code>).
+The manual’s actual content never enters this record.</li>
+<li><strong>The reference score is not a black box (added
+2026-07-15):</strong> computing it reads no new files — it just
+subtracts from the “confirmed problem count” / “suspect count” the
+checkup already produced. The weights (−15 for confirmed, −5 for
+suspect) are written as data in <code>rules/thresholds.json</code>, not
+buried in code, so anyone can inspect them, and asking “why?” shows the
+exact math.</li>
 <li><strong>Honest limits:</strong> it only catches <strong>known
 patterns</strong>, so it does <strong>not guarantee “100% safe / perfect
 detection”</strong> (for reference only). Reissue/manage important keys
@@ -864,9 +948,19 @@ computer</strong>. Internet is only needed for install.</p>
 <strong>No.</strong> It only confirms one <strong>exists</strong> and
 shows it <strong>masked</strong> — it never auto-deletes (false-positive
 risk). Check and reissue it yourself.</p>
-<p><strong>Q. Why is no score shown?</strong> A. Unverified scores can
-be misleading, so they’re <strong>hidden on purpose.</strong> You see “N
-problems” instead.</p>
+<p><strong>Q. Can I trust the reference score (health score)?</strong>
+A. The <strong>“reference only (unvalidated)”</strong> label that always
+appears alongside it is the honest answer — it hasn’t been tuned against
+real, diverse usage data yet. The real information is “N problems”,
+shown first; the score is a <strong>reference-only supplement</strong>
+after it. The calculation is fully disclosed, never hidden (confirmed
+problem = −15 pts, suspect = −5 pts, out of 100).</p>
+<p><strong>Q. How does the “N days since your last checkup” note
+work?</strong> A. It’s not a background notification suddenly popping
+up. It only compares against your last checkup timestamp <strong>at the
+moment you run</strong> <code>/sodam-context-checkup</code>. If it’s
+under 30 days, or this is your first checkup, the note doesn’t appear at
+all (to avoid unnecessary noise).</p>
 <p><strong>Q. Korean text looks broken.</strong> A. Check that Node.js
 is v18+. On Windows, verify the terminal is using UTF-8 encoding.</p>
 <p><strong>Q. Is it safe to use in auto-accept (permission)

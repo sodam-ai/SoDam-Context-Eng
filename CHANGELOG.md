@@ -57,6 +57,75 @@
 - **CLI e2e 회귀 테스트 추가**(`lib/checkup-cli.test.mjs`): checkup/backup/preview/apply/restore 전체 체인을 실제 프로세스로 검증(6/6) —
   restore 결함이 잠복했던 원인(=CLI 액션 레이어 무테스트)을 근본 차단. `npm test`로 추적 테스트 4종(67개: checkup-rules 25·scan-secrets 15·treat 20·checkup-cli 7) 일괄 실행하도록 스크립트 추가.
 
+---
+
+## [Unreleased] — 2026-07-12
+
+### 수정
+- **`checkupFile` 디렉터리 입력 오보고**: `existsSync`는 디렉터리에도 `true`를 반환하는데, 그 뒤 `readFileSync`의 `EISDIR` 에러가 조용히 삼켜져 디렉터리를 "문제 0건(정상)"으로 **거짓 보고**하고 있었음(실측 재현). `statSync().isFile()` 확인을 추가해 디렉터리는 파일없음과 동일하게(문진 안내 경로로) 처리.
+- **`treat.mjs` 빈줄 압축 임계값 불일치**: 문서(README·GUIDE·SKILL.md)와 코드 주석은 전부 "연속 3개 이상만 압축"이라고 적혀 있었는데, 실제 `collapseBlankLines`는 "연속 2개부터" 압축하고 있었음(처방 라운드트립에서 실측 재현). 게다가 이 불일치를 잡아냈어야 할 기존 테스트가 `assert.ok(r.shrunk || !r.shrunk)`(항상 참, 무의미)로 무력화된 채 방치돼 있었던 것도 함께 발견. run-length 방식으로 재구현(문서와 일치하도록 1~2개는 보존, 3개 이상만 압축) + 무력화된 assert를 실제 검증으로 교체.
+
+### 보안
+- **`path-safety.mjs` 심볼릭 링크 우회(부분 해소)**: 문자열 기반 판정이라 `.ssh` 등 민감 경로를 심볼릭 링크로 우회할 수 있음을 실측 재현. `fs.realpathSync` 기반 해석을 추가(실패 시 기존 동작으로 안전 폴백). 표준 API(Node `fs.symlinkSync`)로 만든 링크는 차단 확인. ⚠️ Git Bash `ln -s`가 만드는 특정 링크 유형은 이 환경에서 여전히 우회됨(Windows 정션 인식의 한계로 추정) — 외부 의존성 없이는 근본 해결이 어려워 낮은 우선순위로 보류(대상 사용자층 특성상 공격 현실성 낮음).
+
+### 추가
+- **Phase 2 — 예방(prevention) hook**(`lib/prevent-write.mjs` + `hooks/hooks.json`): 설명서 저장 시도를 가로채 확정 비밀키·상한 초과(200~300줄대)는 차단(deny), 권장선 근접(200~299줄)은 확인만(ask) 요청. 새 판정 로직 없이 기존 `scan-secrets.mjs`·`checkup-rules.mjs`를 재사용(데이터 주도 원칙 준수). fail-open 설계(훅 내부 오류 시 항상 허용 — 핵심 방어는 이미 `checkup-cli.mjs`가 별도로 담당하므로 훅 오류로 사용자가 파일을 영영 못 고치는 위험을 피함). ⚠️ 부품 단위(단위테스트+CLI 프로토콜 수동검증)로는 정확성 확인됨, **실제 저장 화면에서 확인창이 뜨는지는 아직 라이브 미검증**(Claude Code 자체의 훅 디스패치 계층 문제로 추정, 이 저장소 코드 범위 밖).
+- **Phase 2 — 두 설명서 동기화 확인**(`lib/sync-check.mjs` + `skills/sodam-context-sync`): `CLAUDE.md`↔`AGENTS.md`를 자동으로 합치지 않고, 안전·금지 키워드가 포함된 줄이 한쪽에만 있으면 줄 번호로 알려주는 "리포트 전용" 방식으로 구현. PRD 원안의 `@import` 방식은 이 프로젝트 자신의 근거 문서(08_DEEP_RESEARCH_FINDINGS.md A1: "@import는 절약이 아니라 정리일 뿐")와 정면 충돌해 재설계함.
+
+### 수정
+- **`apply`·`restore`의 드라이브 간 EXDEV 실패**: 임시 파일을 `os.tmpdir()`(Windows에서 항상 C드라이브)에 만든 뒤 다른 드라이브의 대상 파일로 `rename`하려다 `EXDEV: cross-device link not permitted`로 실패하던 결함. 실사용자가 D드라이브에서 되돌리기(restore)를 실행하다 실제로 마주침. `backup.mjs`에 이미 있던 올바른 패턴(tmp를 대상과 같은 폴더에 생성)을 재사용하도록 `checkup-cli.mjs`를 수정(코드 중복 제거 겸함).
+
+### 문서
+- **예방 hook·동기화 상태 문구 정직화**: 예방 hook을 두고 "준비 중"과 "자동으로 막아요"가 같은 문서 안에서 서로 모순되던 것을 "코드는 완성, 실제 발동은 검증 중"으로 통일. 동기화는 실사용자 라이브 검증이 끝나 "작동" 목록으로 이동. README 명령어 표에 누락돼 있던 `/sodam-context-sync` 행 추가.
+
+### 검증
+- 이 날짜의 변경을 거치며 `npm test` 82 → 85(3버그 수정) → 104(예방 hook) → 112(동기화) → 117(EXDEV 수정) PASS, `selftest` 59 PASS 유지, 매 단계 회귀 0 확인.
+
+---
+
+## [Unreleased] — 2026-07-13
+
+### 보안
+- **`restore --target` 임의 파일 읽기 취약점(발견·수정·2차 강화)**: `.sodamcontext/backups/` 밖의 임의 파일(예: 가짜 개인키 흉내 파일)을 검증 없이 그대로 `CLAUDE.md`/`AGENTS.md`에 복사하는 결함을 실제 공격 시나리오로 재현. 1차 수정(`isBackupPath` substring 검사)을 배포하자마자 자동 보안 리뷰가 "그 이름의 폴더를 아무 데나 만들면 우회 가능"한 anchored-안 된 검사임을 지적 — 즉시 대상 파일의 진짜 백업 폴더 하나에만 anchoring + `realpathSync` 기반 심볼릭 링크 우회 차단으로 재수정. 공격 재현 → 차단 확인, 정상 복원은 계속 작동 확인.
+
+### 문서
+- **README·GUIDE(한/영, md+html) 전면 최신화**: 이날까지의 실제 코드 상태(보안 수정·EXDEV 수정·테스트 82→118 확대)를 반영. 왕초보 가이드(GUIDE)에 빠져 있던 동기화(sync) 사용 단계를 신규 6-B단계로 추가(문진·검진·처방 3개만 안내하고 있었는데 실제론 sync까지 4개 기능이 작동 중이었던 누락).
+
+### 검증
+- `npm test` **118 PASS**(0 FAIL) · `selftest` **59 PASS** — 이 세션 구간 최종 회귀 0. `npm audit`(락파일 신규 생성 후 실행) 0 vulnerabilities. `git ls-files` 전체 대상 실제 시크릿 패턴 스캔 0건.
+
+---
+
+## [Unreleased] — 2026-07-15
+
+### 추가
+- **Phase 3 — 정기 점검 알림(좁은 범위)**(`lib/checkup-freshness.mjs`): 마지막 검진 이후 며칠 지났는지 계산해
+  검진 리포트에 포함. **능동 알림·백그라운드 스케줄링은 만들지 않음**(`SODAM_FAMILY_MAP.md §1`이 "주기
+  스케줄링·오케스트레이션"을 SoDamLoop 소유로 명시 — Context는 checkup이 **실행되는 시점**에만 비교).
+  저장하는 것은 절대경로별 "마지막 검진 시각" 문자열뿐(파일 내용 아님, T1 무관). 기준 일수(기본 30일)는
+  `rules/thresholds.json`에 데이터로 분리(`09_EXTENSIBILITY §1` 원칙). `backup.mjs`의 `findGitRoot`를
+  export해 재사용 — 백업과 동일한 ".sodamcontext/ 위치 규칙"을 새로 만들지 않음.
+
+### 테스트
+- `lib/checkup-freshness.test.mjs` 신규 8개(첫 검진·기록 직후·경계값 stale 판정·손상된 상태파일 fail-safe·
+  멀티파일 상태 무결성·T1 구조 검증·`.git` 없는 폴백 등) + 실제 CLI 라이브 재실행으로 1차(기록 없음)→2차
+  (`daysSinceLastCheckup:0`) 전환 눈으로 확인. 전체 회귀 `npm test` 118→**126 PASS**(0 FAIL)·`selftest`
+  **59 PASS** 유지, 회귀 0.
+
+### 추가
+- **Phase 3 — 건강점수(참고용)**(`lib/health-score.mjs`): 낯선 다수 베타 데이터로 "정식화"된 공식이
+  아니라 **완전히 투명한 감점식**(확정 문제 1건당 -15점, 의심 1건당 -5점, 100점 만점·0점 하한 — 가중치는
+  `rules/thresholds.json`에 데이터로 분리). 화면에는 항상 **"참고용(검증 전)"** 라벨을 함께 표시하고
+  근거(`breakdown`)를 "왜?"로 그대로 공개(07_SECURITY §2.8 "검증 없이 표시 금지" 준수 — 검증 안 됐다고
+  정직하게 밝히는 방식). 새 파일 내용을 읽지 않고 이미 계산된 findings 개수만 집계(T1 무관).
+  2026-07-15 "이 저장소는 PRIVATE·본인 전용 유지" 확정에 따라, 다수 낯선 사용자 대상 검증 없이도
+  참고 지표로 도입.
+
+### 테스트
+- `lib/health-score.test.mjs` 신규 8개(경계값 감점 계산·0점 하한·설정 누락 시 기본값 폴백·투명성
+  검증 등) + 실제 CLI 라이브 검증(린트중복 1건 → 100-5=95점 정확히 일치) 확인. 전체 회귀 `npm test`
+  126→**134 PASS**(0 FAIL)·`selftest` **59 PASS** 유지, 회귀 0.
+
 ## [0.1.0] — 2026-06-28
 
 ### 추가
@@ -83,9 +152,9 @@
 - 점수 숨김: "문제 ○건"으로만 표시 (검증 안 된 점수 과장 방지)
 - 데이터 주도: 검진 규칙은 `rules/*.json` — 코드 변경 없이 JSON만 수정
 
-### Phase 2 예정
-- Harness 통합 처방: 백업·되돌리기를 SoDam-Harness에 위임 (현재는 독립 폴백)
-- 예방(prevention) hook: 200줄 초과·비밀키 진입 시 사전 차단
-- 생존 진단(A2): `/compact` 후 rules 소실 경고
-- CLAUDE.md ↔ AGENTS.md 동기화
-- 초보자 베타 검증: 직접 체험 — 사람이 진행 필요
+### Phase 2 상태 (2026-07-15 갱신 — 이 절은 "이 릴리스에서 바뀐 것"이 아니라 현재 진행 상태 요약이라, 사실과 어긋난 항목은 그때그때 갱신함)
+- ~~Harness 통합 처방~~ → **폐기, 독립 방식으로 확정**: 이후 결정(PRE-4)으로 백업·되돌리기는 처음부터 독립 실행(`backup.mjs`)으로 구현됨. Harness 위임은 불필요 판단해 채택하지 않음(미착수 아니라 계획 변경).
+- ~~예방(prevention) hook: 200줄 초과·비밀키 진입 시 사전 차단~~ → **✅ 코드 완료**(2026-07-12, 위 항목 참고). 부품 단위 정확성은 확인됨, 실제 저장 화면에서 확인창이 뜨는지는 라이브 검증 중.
+- 생존 진단(A2): `/compact` 후 rules 소실 경고 — 미착수(변동 없음).
+- ~~CLAUDE.md ↔ AGENTS.md 동기화~~ → **✅ 완료**(2026-07-12, 위 항목 참고. 실사용자 라이브 검증까지 끝남).
+- 초보자 베타 검증: 직접 체험 — 사람이 진행 필요(변동 없음, 유일하게 남은 헤드라인 성공기준).

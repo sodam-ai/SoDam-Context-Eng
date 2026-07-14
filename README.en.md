@@ -5,9 +5,10 @@
 >
 > New to computers or AI? That's fine. This document is written as **one step at a time**.
 
-> ⚠️ **Honest current status (as of 2026-07-13)**
+> ⚠️ **Honest current status (as of 2026-07-15)**
 > - **Works (live-verified in real sessions):** Checkup · Intake · Treatment · Codex checkup · Sync (compare the two files) — **confirmed on both Claude Code and Codex**
 > - **Security hardening:** writes to sensitive locations (system/credential folders) are now automatically rejected
+> - **Code complete, CLI-verified (live session confirmation pending):** Freshness reminder (auto-notes how many days since the last checkup) · Reference health score — both are now automatically included in the checkup result, and their accuracy has been confirmed by unit tests and direct command-line runs. We just haven't yet confirmed these appear naturally in a real conversational checkup session.
 > - **Code complete, live behavior still being verified:** Prevention (auto pre-block before saving) — the decision logic and hook protocol check out correctly at the code level, but we haven't yet confirmed the confirmation prompt actually fires live when saving. Please double-check for secrets yourself in the meantime.
 > - We do not exaggerate. We do **not** claim "100% safe / perfect".
 
@@ -134,10 +135,12 @@ This tool is **not a program you launch directly** — it works when you **call 
 1. Type `/sodam-context-checkup`.
 2. When asked "which file?", give the absolute path.
 3. Shortly after, you get a **plain report**:
-   - Shown as a **count** like "N problems" (score is hidden on purpose — prevents inflation).
+   - Shown as a **count** like "N problems", front and center.
    - Any password/key is shown **masked** (`sk-ant-…REDACTED`) only.
    - Items like **staleness, unrefined auto-generation, skill leakage** are shown as "suspect" (with a false-positive caveat).
-   - For more, reply **`why?`** and it explains the reason and evidence.
+   - A **reference score** (e.g. "85 pts") is added after the count, always paired with the **"reference only (unvalidated)"** label — meaning it hasn't been tuned against real, diverse user data yet (prevents inflated claims — see §9).
+   - If it's been **more than 30 days** since your last checkup, you'll get a short note like "want to check again while you're here?" (this is not a background alert — it only compares timestamps the moment you run a checkup). No note appears if it's under 30 days, or this is your first checkup.
+   - For more, reply **`why?`** and it explains the reason and evidence (including how the reference score was calculated).
 
 ### 6-2. Intake (create) — `✅ Works`
 
@@ -165,6 +168,8 @@ This tool is **not a program you launch directly** — it works when you **call 
 - **Intake:** questions → **preview → "create it?" confirmation → only then writes.** It never creates files without asking.
 - **Treatment:** **backup first → preview → confirm → safe write** (writes to a temp file then renames, so your original isn't corrupted if it stops midway). After treatment, the file must be **smaller** to count as success.
 - **Codex (`AGENTS.md`):** Codex reads the **merged chain** of parent-folder and global manuals. The checkup verifies that **combined size (32 KiB limit)** too. (Korean is 3 bytes per character, so byte size exceeds character count.)
+- **Freshness reminder:** every checkup records, per absolute file path, only "when was this last checked" as a timestamp (no content stored). The next checkup compares against that timestamp and only speaks up if it's been over 30 days. **There is no background alert** — comparison only happens the moment you run a checkup.
+- **Reference score:** it doesn't re-read the file to compute this — it uses the **problem counts** the checkup already found (confirmed problems −15 pts each, suspects −5 pts each, out of 100) and calculates on the spot. It's a fully transparent subtraction formula, so if you ask "why this score?", it can show its work.
 
 ---
 
@@ -172,7 +177,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 
 | Command | Easy name | What it does | Status |
 |---|---|---|---|
-| `/sodam-context-checkup` | Checkup | Checks bloat, duplication, staleness/unrefined ("suspect"), secrets, size → plain report | ✅ Works |
+| `/sodam-context-checkup` | Checkup | Checks bloat, duplication, staleness/unrefined ("suspect"), secrets, size → plain report (includes freshness reminder & reference score) | ✅ Works |
 | `/sodam-context-intake` | Intake | Creates a small manual via questions when none exists | ✅ Works |
 | `/sodam-context-treat` | Treat | Backup → preview → after confirmation, tidies duplicates/blank lines (restore supported) | ✅ Works |
 | `/sodam-context-sync` | Sync | Finds safety rules present in only one of the two manuals and reports the line numbers (does not merge) | ✅ Works |
@@ -186,6 +191,13 @@ This tool is **not a program you launch directly** — it works when you **call 
 
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
+
+**After 0.1.0 (in progress, 2026-07-15)**
+
+- **Added a freshness reminder:** every checkup now remembers "when was this last checked", and if it's been **over 30 days**, gently suggests checking again. It's not a background notification — it only compares the moment you run a checkup, so it doesn't overlap with other tools' (e.g. SoDamLoop's) scheduled-alert features.
+- **Added a reference health score:** the checkup report now shows a supplementary score like "85 pts". Since it isn't a formula tuned on real, diverse user data yet, it's always labeled **"reference only (unvalidated)"**. The calculation itself (confirmed problem = −15 pts, suspect = −5 pts) is fully disclosed, not hidden.
+- **Fixed an internal documentation contradiction:** an old safety rule that said "never show a score" conflicted with the new reference-score feature above — clarified to "show it as supplementary info, always paired with the reference-only label."
+- **Test suite expanded:** 118 → **134** tests, all passing.
 
 **After 0.1.0 (in progress, 2026-07-13)**
 
@@ -229,6 +241,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 |---|---|
 | Check/create target | `CLAUDE.md` · `AGENTS.md` in **your working project folder** |
 | (Treatment) backup folder | `<project folder>\.sodamcontext\backups\` (created automatically when treatment runs) |
+| (Freshness reminder) last-checkup record | `<project folder>\.sodamcontext\last-checkup.json` (created/updated automatically on each checkup; stores only the path + timestamp) |
 | This manual | The plugin folder's `README.md`·`README.html` (Korean), `README.en.md`·`README.en.html` (English) |
 | Beginner step-by-step guide | The plugin folder's `GUIDE.md`·`GUIDE.html` (Korean), `GUIDE.en.md`·`GUIDE.en.html` (English) |
 | Codex install guide | `codex/README.ko.md` in the repo |
@@ -272,6 +285,8 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **Never writes to sensitive locations:** if a treatment/restore target resolves to the home directory root, a credential folder (`.ssh`, `.aws`, etc.), or a system folder, the write is **rejected automatically** with a reason before anything is touched.
 - **Checkup looks at only the one file you point it at:** Codex (`AGENTS.md`) checks the merged chain up through parent and global manuals, but Claude Code (`CLAUDE.md`) currently checks **only the single file you specify**. If you've split rules across a nested `CLAUDE.md` or `.claude/rules/`, those aren't scanned automatically — check each one separately.
 - **Restore source is validated too (added 2026-07-13):** "Restore" only accepts files inside the tool's own backup folder (`.sodamcontext/backups/`) as the source. Anything else is rejected — this prevents the content of an arbitrary file from accidentally being copied into your manual.
+- **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file's **absolute path string + a timestamp string**, in your project folder (`.sodamcontext/last-checkup.json`). The manual's actual content never enters this record.
+- **The reference score is not a black box (added 2026-07-15):** computing it reads no new files — it just subtracts from the "confirmed problem count" / "suspect count" the checkup already produced. The weights (−15 for confirmed, −5 for suspect) are written as data in `rules/thresholds.json`, not buried in code, so anyone can inspect them, and asking "why?" shows the exact math.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
 
 **Data flow (checkup):**
@@ -314,8 +329,11 @@ A. No. Checkup, intake, and treatment run **100% on your computer**. Internet is
 **Q. Does it delete passwords automatically?**
 A. **No.** It only confirms one **exists** and shows it **masked** — it never auto-deletes (false-positive risk). Check and reissue it yourself.
 
-**Q. Why is no score shown?**
-A. Unverified scores can be misleading, so they're **hidden on purpose.** You see "N problems" instead.
+**Q. Can I trust the reference score (health score)?**
+A. The **"reference only (unvalidated)"** label that always appears alongside it is the honest answer — it hasn't been tuned against real, diverse usage data yet. The real information is "N problems", shown first; the score is a **reference-only supplement** after it. The calculation is fully disclosed, never hidden (confirmed problem = −15 pts, suspect = −5 pts, out of 100).
+
+**Q. How does the "N days since your last checkup" note work?**
+A. It's not a background notification suddenly popping up. It only compares against your last checkup timestamp **at the moment you run** `/sodam-context-checkup`. If it's under 30 days, or this is your first checkup, the note doesn't appear at all (to avoid unnecessary noise).
 
 **Q. Korean text looks broken.**
 A. Check that Node.js is v18+. On Windows, verify the terminal is using UTF-8 encoding.

@@ -3,7 +3,7 @@
 > Written in a **"press this now"** style so that even **first-time** computer/AI/messenger/smartphone users can follow along.
 > (For a short summary, command list, architecture, and full license, see `README.en.md` in the same folder.)
 
-> ⚠️ **Honest note (as of 2026-07-13):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
+> ⚠️ **Honest note (as of 2026-07-15):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **The freshness reminder and reference health score** are fully coded and confirmed by automated tests and direct command-line runs, but we haven't yet confirmed they show up naturally on the real chat screen. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
 
 ---
 
@@ -135,9 +135,11 @@ If you already have a `CLAUDE.md` in a folder: (This feature = **Checkup**.)
    ```
 2. When asked "which file?", give the file path (e.g. `C:\MyFolder\CLAUDE.md`).
 3. Shortly after, you get a **plain report**:
-   - Shown as a **count** like "N problems" (the score is hidden on purpose)
+   - Shown as a **count** like "N problems", front and center
    - Any password/key is shown **masked** (`sk-ant-…REDACTED`) only
    - Items like staleness/unrefined are shown as **"suspect"** (for reference, not confirmed)
+   - A **reference score** (e.g. "85 pts") is added after the count, always paired with the **"reference only (unvalidated)"** label (meaning it isn't a formula tuned on real, diverse usage data yet)
+   - If it's been **over 30 days** since your last checkup, you'll get a short "want to check again?" note (not a background alert — it only compares the moment you run a checkup; no note if it's under 30 days)
    - For more, answer **`why?`** and it explains the reason.
 
 ---
@@ -207,6 +209,8 @@ Here are the promises this tool keeps. Relax.
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
 - 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
 - 🛡️ **Restore source is checked too (added 2026-07-13):** "Restore" only uses files inside the tool's own backup folder. Pointing it at any other file, pretending it's a backup, is refused — this stops the wrong content from accidentally being copied into your manual.
+- 🗓️ **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file path and a timestamp. Your manual's actual content never goes into this record.
+- 🔢 **The reference score isn't a hidden calculation (added 2026-07-15):** it doesn't re-read your file to make the score — it calculates on the spot from the problem count the checkup already found, and the formula (confirmed = −15 pts, suspect = −5 pts) is fully disclosed.
 - 🙇 **No "absolutely safe" promise:** it only catches known patterns, so manage important passwords yourself.
 
 > Data flow (simply): the tool reads the original **only internally** and passes the AI just a **summary (no secret values)**. That's why secrets don't leak.
@@ -217,6 +221,13 @@ Here are the promises this tool keeps. Relax.
 
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
+
+**After 0.1.0 (in progress, 2026-07-15)**
+
+- **Now remembers "when was this last checked":** if it's been over 30 days, the next checkup gently suggests checking again. No content is stored, only the date.
+- **Added a reference score (health score):** a supplementary "85 pts"-style score now appears after the checkup result. Since it isn't a validated formula yet, it's always labeled "reference only".
+- **Fixed an old safety rule that said "never show a score"**, which had drifted out of sync with the new reference-score feature above.
+- **Test suite expanded to 134**, all passing.
 
 **After 0.1.0 (in progress, 2026-07-13)**
 
@@ -259,6 +270,8 @@ Here are the promises this tool keeps. Relax.
 **Q. Can I use Claude Code and Codex together?** → Yes. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`. They coexist fine.
 
 **Q. Does it cost anything?** → The tool itself runs free, but **AI usage (Claude · Codex)** follows each provider's pricing.
+
+**Q. Can I trust the reference score (health score)?** → The **"reference only (unvalidated)"** label that's always shown with it is the honest answer — it's not an official score yet, just a **helpful extra**. The real information is "N problems"; the score is a small addition after that.
 
 ---
 

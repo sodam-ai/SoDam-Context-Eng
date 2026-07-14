@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -219,15 +219,19 @@ follow along. (For a short summary, command list, architecture, and full
 license, see <code>README.en.md</code> in the same folder.)</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>Honest note (as of 2026-07-13):</strong> Four features
+<p>⚠️ <strong>Honest note (as of 2026-07-15):</strong> Four features
 <strong>are verified working: Checkup, Intake (create), Treatment
 (tidy), and Sync (compare the two files)</strong> — <strong>verified in
-real use on both Claude Code and Codex</strong>. <strong>Prevention
-(auto-block before saving) is fully coded and each part checks out
-correctly in isolation, but we have not yet confirmed the confirmation
-prompt actually appears live when saving</strong> — please double-check
-for secrets yourself in the meantime. This tool runs on a
-<strong>computer (Windows · macOS)</strong> — it is not a phone app.</p>
+real use on both Claude Code and Codex</strong>. <strong>The freshness
+reminder and reference health score</strong> are fully coded and
+confirmed by automated tests and direct command-line runs, but we
+haven’t yet confirmed they show up naturally on the real chat screen.
+<strong>Prevention (auto-block before saving) is fully coded and each
+part checks out correctly in isolation, but we have not yet confirmed
+the confirmation prompt actually appears live when saving</strong> —
+please double-check for secrets yourself in the meantime. This tool runs
+on a <strong>computer (Windows · macOS)</strong> — it is not a phone
+app.</p>
 </blockquote>
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -399,12 +403,20 @@ feature = <strong>Checkup</strong>.)</p>
 (e.g. <code>C:\MyFolder\CLAUDE.md</code>).</p></li>
 <li><p>Shortly after, you get a <strong>plain report</strong>:</p>
 <ul>
-<li>Shown as a <strong>count</strong> like “N problems” (the score is
-hidden on purpose)</li>
+<li>Shown as a <strong>count</strong> like “N problems”, front and
+center</li>
 <li>Any password/key is shown <strong>masked</strong>
 (<code>sk-ant-…REDACTED</code>) only</li>
 <li>Items like staleness/unrefined are shown as
 <strong>“suspect”</strong> (for reference, not confirmed)</li>
+<li>A <strong>reference score</strong> (e.g. “85 pts”) is added after
+the count, always paired with the <strong>“reference only
+(unvalidated)”</strong> label (meaning it isn’t a formula tuned on real,
+diverse usage data yet)</li>
+<li>If it’s been <strong>over 30 days</strong> since your last checkup,
+you’ll get a short “want to check again?” note (not a background alert —
+it only compares the moment you run a checkup; no note if it’s under 30
+days)</li>
 <li>For more, answer <strong><code>why?</code></strong> and it explains
 the reason.</li>
 </ul></li>
@@ -555,6 +567,15 @@ folders, check each one separately.</li>
 backup folder. Pointing it at any other file, pretending it’s a backup,
 is refused — this stops the wrong content from accidentally being copied
 into your manual.</li>
+<li>🗓️ <strong>The freshness reminder stores no content either (added
+2026-07-15):</strong> the “when was this last checked” record keeps only
+the file path and a timestamp. Your manual’s actual content never goes
+into this record.</li>
+<li>🔢 <strong>The reference score isn’t a hidden calculation (added
+2026-07-15):</strong> it doesn’t re-read your file to make the score —
+it calculates on the spot from the problem count the checkup already
+found, and the formula (confirmed = −15 pts, suspect = −5 pts) is fully
+disclosed.</li>
 <li>🙇 <strong>No “absolutely safe” promise:</strong> it only catches
 known patterns, so manage important passwords yourself.</li>
 </ul>
@@ -569,6 +590,20 @@ values)</strong>. That’s why secrets don’t leak.</p>
 <summary>
 <b>📋 Click to expand — what changed</b>
 </summary>
+<p><strong>After 0.1.0 (in progress, 2026-07-15)</strong></p>
+<ul>
+<li><strong>Now remembers “when was this last checked”:</strong> if it’s
+been over 30 days, the next checkup gently suggests checking again. No
+content is stored, only the date.</li>
+<li><strong>Added a reference score (health score):</strong> a
+supplementary “85 pts”-style score now appears after the checkup result.
+Since it isn’t a validated formula yet, it’s always labeled “reference
+only”.</li>
+<li><strong>Fixed an old safety rule that said “never show a
+score”</strong>, which had drifted out of sync with the new
+reference-score feature above.</li>
+<li><strong>Test suite expanded to 134</strong>, all passing.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-13)</strong></p>
 <ul>
 <li><strong>Found and fixed a real issue during a security
@@ -629,6 +664,11 @@ Claude Code reads <code>CLAUDE.md</code>, Codex reads
 <p><strong>Q. Does it cost anything?</strong> → The tool itself runs
 free, but <strong>AI usage (Claude · Codex)</strong> follows each
 provider’s pricing.</p>
+<p><strong>Q. Can I trust the reference score (health score)?</strong> →
+The <strong>“reference only (unvalidated)”</strong> label that’s always
+shown with it is the honest answer — it’s not an official score yet,
+just a <strong>helpful extra</strong>. The real information is “N
+problems”; the score is a small addition after that.</p>
 <hr />
 <h2 id="license-note">License Note</h2>
 <blockquote>
