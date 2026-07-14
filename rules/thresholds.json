@@ -13,5 +13,17 @@
     "bytes_warn": 26214,
     "cjk_bytes_per_char": 3,
     "_source": "Codex project_doc_max_bytes 기본 32KiB(=32768). 한글 1자=3바이트라 글자 수가 적어도 한도 도달 가능"
+  },
+  "freshness": {
+    "_unit": "일수(days)",
+    "stale_days": 30,
+    "_source": "PRD 03_PHASES.md Phase3 '정기 점검 알림' — 임의 기본값(근거 문헌 없음), 사용자가 자연어로 조정 가능(09_EXTENSIBILITY §1 데이터 주도 원칙). 능동 알림·스케줄링 아님 — checkup 실행 시점에만 비교(SODAM_FAMILY_MAP §1: 주기 스케줄링은 SoDamLoop 소유)"
+  },
+  "healthScore": {
+    "start": 100,
+    "penalty_high": 15,
+    "penalty_medium": 5,
+    "min": 0,
+    "_source": "PRD 03_PHASES.md Phase3 '건강점수 정식화' — 낯선 다수 베타 데이터로 튜닝된 공식이 아니라 완전히 투명한 감점식(2026-07-15, PRIVATE·본인 전용 확정에 따라 참고용으로 도입). 절대 '검증됨'으로 표시 안 함(07_SECURITY §2.8), 항상 '참고용(검증 전)' 표기. 새 파일 내용을 읽지 않고 이미 계산된 findings 개수·심각도만 집계(T1 무관)."
   }
 }
