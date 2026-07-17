@@ -68,9 +68,9 @@ if (Test-Path "AGENTS.md") {
 
 ## 사용 가능한 스킬
 
-- `sodam-context-checkup` — 설명서 건강검진 (skills/sodam-context-checkup/SKILL.md)
-- `sodam-context-treat` — 발견한 문제 처방 (skills/sodam-context-treat/SKILL.md)
-- `sodam-context-intake` — 설명서 초기 생성 (skills/sodam-context-intake/SKILL.md)
+- `sodam-context-checkup` — 설명서 건강검진 (commands/checkup.md)
+- `sodam-context-treat` — 발견한 문제 처방 (commands/treat.md)
+- `sodam-context-intake` — 설명서 초기 생성 (commands/intake.md)
 '@
     Set-Content -Path "AGENTS.md" -Value $template -Encoding UTF8
     Write-Ok "AGENTS.md 생성 완료"

@@ -17,11 +17,12 @@
 
 ## 역할 (코덱스가 이 도구로 할 수 있는 것)
 
-| 역할 | 명령어/스킬 |
+| 역할 | 명령어(클로드코드 `/sodam-context:*`, 코덱스는 자연어로 같은 파일 읽음) |
 |------|------------|
-| AI 사용설명서 만들기 (문진) | `sodam-context-intake` 스킬 |
-| AI 사용설명서 건강검진 | `sodam-context-checkup` 스킬 |
-| 발견된 문제 안전하게 고치기 (처방) | `sodam-context-treat` 스킬 |
+| AI 사용설명서 만들기 (문진) | `sodam-context:intake` |
+| AI 사용설명서 건강검진 | `sodam-context:checkup` |
+| 발견된 문제 안전하게 고치기 (처방) | `sodam-context:treat` |
+| 두 설명서 동기화 점검 | `sodam-context:sync` |
 
 ---
 
@@ -58,10 +59,11 @@
 ```
 SoDamContext/
 ├── .claude-plugin/plugin.json    ← 플러그인 메타데이터 (수정 금지)
-├── skills/                       ← 클로드코드·코덱스 공통 스킬 (스킬명이 슬래시 진입점)
-│   ├── sodam-context-checkup/SKILL.md   ← 건강검진
-│   ├── sodam-context-intake/SKILL.md    ← 문진(처음 만들기)
-│   └── sodam-context-treat/SKILL.md     ← 처방(다듬기)
+├── commands/                     ← 클로드코드 슬래시 진입점(`/sodam-context:*`) + 코덱스 자연어가 읽는 본문
+│   ├── checkup.md                ← 건강검진
+│   ├── intake.md                 ← 문진(처음 만들기)
+│   ├── treat.md                  ← 처방(다듬기)
+│   └── sync.md                   ← 두 설명서 동기화 점검
 ├── lib/                          ← 번들 스크립트 (Node.js ESM)
 │   ├── checkup-cli.mjs           ← 검진/백업/미리보기/처방/복구 오케스트레이터(JSON 출력)
 │   ├── checkup-rules.mjs         ← 규칙 기반 검진 로직(줄수/바이트·린트중복)
@@ -92,15 +94,16 @@ SoDamContext/
 
 ---
 
-## 사용하는 스킬
+## 사용하는 명령
 
-코덱스에서 이 도구의 스킬을 쓰려면 `.agents/skills/` 또는 프로젝트 폴더의 `skills/` 아래 SKILL.md 파일을 배치하세요:
+코덱스는 슬래시 명령이 없어 자연어로 부르지만, 실제 지시문은 아래 `commands/*.md`에 있습니다(클로드코드는 같은 파일을 `/sodam-context:*`로 직접 호출):
 
-| 스킬 이름 | 파일 위치 | 언제 씀 |
+| 명령 이름 | 파일 위치 | 언제 씀 |
 |-----------|-----------|---------|
-| `sodam-context-intake` | `skills/sodam-context-intake/SKILL.md` | AI 사용설명서 처음 만들 때 |
-| `sodam-context-checkup` | `skills/sodam-context-checkup/SKILL.md` | 건강검진 할 때 |
-| `sodam-context-treat` | `skills/sodam-context-treat/SKILL.md` | 문제 고칠 때 |
+| `sodam-context:intake` | `commands/intake.md` | AI 사용설명서 처음 만들 때 |
+| `sodam-context:checkup` | `commands/checkup.md` | 건강검진 할 때 |
+| `sodam-context:treat` | `commands/treat.md` | 문제 고칠 때 |
+| `sodam-context:sync` | `commands/sync.md` | 두 설명서 동기화 점검할 때 |
 
 ---
 

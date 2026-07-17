@@ -11,6 +11,14 @@
 - **슬래시 명령어 4종 추가** (`commands/checkup.md`·`intake.md`·`treat.md`·`sync.md`): 지금까지 스킬 4개(자연어 트리거)만 있고 `commands/` 폴더가 비어있어 `/`를 쳐도 짧은 명령이 안 떴음. 이미 설치된 다른 플러그인(SoDam-Reverse)의 `commands/*.md` 실제 예시로 파일명=슬래시 명령 이름 규칙을 확인한 뒤, 각 파일이 해당 스킬(`sodam-context-checkup`/`intake`/`treat`/`sync`)을 그대로 위임 호출하도록 얇게 작성(로직 중복 없음). 기존 자연어 트리거는 그대로 유지.
 - **검증(5단계)**: ①파일 존재·명명 확인 ②frontmatter(`description`)·본문 유효성 파싱 확인 ③각 명령이 참조하는 스킬명이 실제 `skills/` 폴더와 정확히 일치 확인 ④검증된 동작 사례(SoDam-Reverse `re-ping.md`)와 구조(frontmatter+본문) 일치 확인 ⑤`npm test`(142 PASS)·`selftest`(60 PASS) 무회귀 + `git status`로 변경 범위 확인. **라이브 확인 완료(2026-07-18)**: 실제 새 세션에서 `/sodam-context:sync`가 기존 `/sodam-context-sync`와 나란히 뜨고, 각자 다른 description으로 정확히 구분 표시됨을 사용자가 직접 확인. 이후 플러그인 제거→마켓플레이스 재등록→재설치→`/reload-plugins`(완전 재설치 경로)까지 거친 뒤에도 `sync`·`treat`·`intake` 3개(신구 형태 모두) 정상 표시 재확인(`checkup`은 화면 스크롤로 안 보였을 뿐 동일 구조).
 
+## [Unreleased] — 2026-07-18
+
+### 변경
+- **checkup·intake·treat·sync 4종을 "스킬+명령 중복" → "명령 전용"으로 전환**: 사용자가 `/sodam-context-sync`(하이픈, 스킬 자동노출)와 `/sodam-context:sync`(콜론, 명령) 두 형태가 같이 뜨는 걸 원치 않아 하이픈 형태 제거를 요청. 스킬 이름을 유지한 채로는 하이픈 형태를 끌 방법이 없음을 SoDam-Reverse·SoDam-Harness 두 형제 저장소를 직접 대조해 확인(둘 다 "같은 이름의 스킬을 아예 안 둠"으로 회피하고 있었음 — 특별한 설정이 아니라 설계상 제약임을 재확인). 4개 스킬(`skills/sodam-context-{checkup,intake,treat,sync}/SKILL.md`)을 전부 삭제하고, 그 안내문 전문을 `commands/*.md`에 그대로 옮겨 자체 완결형으로 만듦.
+- **트레이드오프(사용자에게 명시적으로 고지 후 진행)**: 자연어("설명서 점검해줘")로는 더 이상 자동으로 안 찾아지고, 반드시 `/sodam-context:*` 슬래시 명령을 정확히 입력해야만 작동함. 초보자 대상 "말로만 해도 된다"는 원래 설계 원칙의 일부를 이 4개 기능에 한해 포기하는 결정.
+- **회귀 발견·수정(요청 이행 중 발견)**: `skills/*/SKILL.md` 삭제가 **코덱스 지원을 깨뜨림**을 뒤늦게 발견 — `codex/README.ko.md`의 AGENTS.md 예시 템플릿이 삭제된 `skills/.../SKILL.md` 경로를 가리키고 있었음(코덱스는 슬래시 명령이 없어 이 경로 참조가 유일한 진입 수단이었음). `commands/*.md`(새 위치, 같은 내용)로 경로를 정정해 코덱스 지원 복구. README·GUIDE(한/영)·AGENTS.md에 남아있던 하이픈 형태 명령 예시·자연어 트리거 안내(이제 거짓)도 전부 콜론 형태·정정된 설명으로 갱신.
+- **검증**: `npm test` 142 PASS·`selftest` 60 PASS 무회귀 유지. 저장소 전체 grep으로 하이픈 형태(`/sodam-context-checkup` 등) 및 삭제된 `skills/.../SKILL.md` 경로 잔여 참조 0건 확인(히스토리 문서인 CHECKPOINT.md·tasks/todo.md·과거 CHANGELOG 항목은 기록 보존 원칙에 따라 의도적으로 손대지 않음).
+
 ## [Unreleased] — 2026-07-11
 
 ### 수정

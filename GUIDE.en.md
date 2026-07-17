@@ -3,7 +3,7 @@
 > Written in a **"press this now"** style so that even **first-time** computer/AI/messenger/smartphone users can follow along.
 > (For a short summary, command list, architecture, and full license, see `README.en.md` in the same folder.)
 
-> ⚠️ **Honest note (as of 2026-07-15):** Four features **are verified working: Checkup, Intake (create), Treatment (tidy), and Sync (compare the two files)** — **verified in real use on both Claude Code and Codex**. **The freshness reminder and reference health score** are fully coded and confirmed by automated tests and direct command-line runs, but we haven't yet confirmed they show up naturally on the real chat screen. **Prevention (auto-block before saving) is fully coded and each part checks out correctly in isolation, but we have not yet confirmed the confirmation prompt actually appears live when saving** — please double-check for secrets yourself in the meantime. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
+> ⚠️ **Honest note (as of 2026-07-18):** Five features **are verified working: Checkup, Intake (create), Treatment (tidy), Sync (compare the two files), and Prevention (auto-block before saving)** — **verified in real use on both Claude Code and Codex**. **The freshness reminder and reference health score** are fully coded and confirmed by automated tests and direct command-line runs, but we haven't yet confirmed they show up naturally on the real chat screen. **⚠️ How you call this changed in Claude Code (2026-07-18):** plain language ("check my manual") used to sometimes work; now it works **only** when you type the **exact slash command**, e.g. `/sodam-context:checkup`. **Codex is unaffected** — it still works with natural language exactly as before. This tool runs on a **computer (Windows · macOS)** — it is not a phone app.
 
 ---
 
@@ -86,6 +86,8 @@ Codex (OpenAI Codex) has no plugin marketplace, so you **clone the whole reposit
    - *(Codex uses natural language, not `/commands`.)*
    - For a fuller install guide + FAQ, see **`codex/README.ko.md`** in the repo.
 
+> 💡 **One-click install (optional, Windows):** running `codex/install.ps1` from the repo automates step 1 above (prerequisite check, get the repository, create `AGENTS.md`). The repository is **private**, so you must do the `git clone` in step 1 manually once to get the script itself.
+
 > **Korean character size note**: 1 Korean character = 3 bytes. Even a short-looking manual can hit Codex's 32 KiB limit. The checkup will warn you automatically.
 
 ---
@@ -96,7 +98,7 @@ What you just installed appears only after a **restart**.
 - Type `exit` in the input box and press Enter → **fully close** the window (the X)
 - Reopen Claude Code (in a terminal, type `claude`)
 
-Check: type just `/` in the input box. If you see **`sodam-context-checkup`**, **`sodam-context-intake`**, **`sodam-context-treat`**, and **`sodam-context-sync`** in the list, you're ready! 🎉
+Check: type just `/` in the input box. If you see **`sodam-context:checkup`**, **`sodam-context:intake`**, **`sodam-context:treat`**, and **`sodam-context:sync`** in the list, you're ready! 🎉
 
 ---
 
@@ -106,7 +108,7 @@ If you don't have an AI manual (`CLAUDE.md`) yet, let's make one. (This feature 
 
 1. Type:
    ```
-   /sodam-context-intake
+   /sodam-context:intake
    ```
 2. When asked "which folder?", give the folder path or answer **"this folder"**.
 3. The AI asks easy questions **one at a time**. If stuck, you can answer like this:
@@ -131,13 +133,14 @@ If you already have a `CLAUDE.md` in a folder: (This feature = **Checkup**.)
 
 1. Type:
    ```
-   /sodam-context-checkup
+   /sodam-context:checkup
    ```
 2. When asked "which file?", give the file path (e.g. `C:\MyFolder\CLAUDE.md`).
 3. Shortly after, you get a **plain report**:
    - Shown as a **count** like "N problems", front and center
    - Any password/key is shown **masked** (`sk-ant-…REDACTED`) only
    - Items like staleness/unrefined are shown as **"suspect"** (for reference, not confirmed)
+   - **Wholesale paste-ins** (an overly long code block pasted in as-is) are flagged as a **"confirmed"** problem (judged by length alone, content is never read)
    - A **reference score** (e.g. "85 pts") is added after the count, always paired with the **"reference only (unvalidated)"** label (meaning it isn't a formula tuned on real, diverse usage data yet)
    - If it's been **over 30 days** since your last checkup, you'll get a short "want to check again?" note (not a background alert — it only compares the moment you run a checkup; no note if it's under 30 days)
    - For more, answer **`why?`** and it explains the reason.
@@ -150,7 +153,7 @@ If the checkup found problems, you can tidy safely. (This feature = **Treatment*
 
 1. Type:
    ```
-   /sodam-context-treat
+   /sodam-context:treat
    ```
 2. It **backs up first** and **shows what it will change**.
 3. It edits **only after you say `yes`** (removes duplicate lines / unnecessary blank lines).
@@ -168,7 +171,7 @@ If the checkup found problems, you can tidy safely. (This feature = **Treatment*
 
 1. Type:
    ```
-   /sodam-context-sync
+   /sodam-context:sync
    ```
 2. Give the paths of the two files to compare (e.g. `CLAUDE.md` and `AGENTS.md`).
 3. It reports things like **"this rule is only in the Claude manual (line N)"**.
@@ -184,8 +187,8 @@ Don't panic. Just follow the table.
 
 | If this happens | Do this |
 |---|---|
-| `/sodam-context-...` isn't in the list | Redo Step 3 (restart). If still missing, type `! claude plugin marketplace update sodamcontext-marketplace`, then restart again |
-| Something else responds | Don't use plain language; use a command starting with **`/sodam-context-...`** |
+| `/sodam-context:...` isn't in the list | Redo Step 3 (restart). If still missing, type `! claude plugin marketplace update sodamcontext-marketplace`, then restart again |
+| Something else responds | Don't use plain language; use a command starting with **`/sodam-context:...`** |
 | It says "node not found" | Go back to Step 1 and install Node.js |
 | It created/edited a file without asking | 🚨 Stop and tell someone who can help (it should always ask first) |
 | Codex "Cannot find module" error | Re-run Codex from the **repo root folder** (`SoDam-Context-Eng`) |
@@ -209,6 +212,7 @@ Here are the promises this tool keeps. Relax.
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
 - 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
 - 🛡️ **Restore source is checked too (added 2026-07-13):** "Restore" only uses files inside the tool's own backup folder. Pointing it at any other file, pretending it's a backup, is refused — this stops the wrong content from accidentally being copied into your manual.
+- 🛑 **Prevents before saving (confirmed live 2026-07-17):** if your manual gets a real secret or grows too long (300+ lines / 32KB+), it's blocked before saving; a borderline length (200–299 lines) triggers "still save this?". **We've now directly confirmed in a real usage session that this prompt genuinely appears** when saving a 252-line file.
 - 🗓️ **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file path and a timestamp. Your manual's actual content never goes into this record.
 - 🔢 **The reference score isn't a hidden calculation (added 2026-07-15):** it doesn't re-read your file to make the score — it calculates on the spot from the problem count the checkup already found, and the formula (confirmed = −15 pts, suspect = −5 pts) is fully disclosed.
 - 🙇 **No "absolutely safe" promise:** it only catches known patterns, so manage important passwords yourself.
@@ -221,6 +225,20 @@ Here are the promises this tool keeps. Relax.
 
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
+
+**After 0.1.0 (in progress, 2026-07-18)**
+
+- **Changed how Claude Code calls this:** removed the old form that sometimes worked via plain language, so now you must type the **exact slash command**, e.g. `/sodam-context:checkup` (done to remove confusion). **Codex is unchanged** — plain language still works.
+
+**After 0.1.0 (in progress, 2026-07-17)**
+
+- **Confirmed Prevention (auto-block before saving) actually works live:** what used to be "the parts are right, but we haven't seen it fire live" is now directly confirmed — saving a 252-line file in a real session triggered the confirmation prompt exactly as designed.
+
+**After 0.1.0 (in progress, 2026-07-16)**
+
+- **Now flags "wholesale paste-ins" as a confirmed problem:** an overly long code block (15+ lines) pasted in as-is is flagged by **length alone** — content is never read.
+- **Added a one-click Codex install script (`codex/install.ps1`, Windows):** automates the prerequisite check, getting the repo, and creating `AGENTS.md`.
+- **Test suite expanded to 142**, all passing.
 
 **After 0.1.0 (in progress, 2026-07-15)**
 
@@ -270,6 +288,8 @@ Here are the promises this tool keeps. Relax.
 **Q. Can I use Claude Code and Codex together?** → Yes. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`. They coexist fine.
 
 **Q. Does it cost anything?** → The tool itself runs free, but **AI usage (Claude · Codex)** follows each provider's pricing.
+
+**Q. I said "check my manual" in plain language in Claude Code and it wasn't found.** → That's expected, not a bug. Since 2026-07-18, Claude Code works **only via slash commands** — type it exactly, e.g. `/sodam-context:checkup`. Codex was always natural-language-only and keeps working as before.
 
 **Q. Can I trust the reference score (health score)?** → The **"reference only (unvalidated)"** label that's always shown with it is the honest answer — it's not an official score yet, just a **helpful extra**. The real information is "N problems"; the score is a small addition after that.
 
