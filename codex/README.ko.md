@@ -20,6 +20,26 @@ Node.js가 없으면 → https://nodejs.org 에서 LTS 버전 설치 후 진행�
 
 ---
 
+## 빠른 설치(선택) — Windows PowerShell 스크립트
+
+`codex/install.ps1`이 아래 "설치 단계"(1~3단계)를 대신 해줍니다. 새 설치 방식이 아니라 같은 단계를 그대로
+자동화한 것뿐이에요. **이 저장소는 PRIVATE라서, 이 스크립트를 처음 손에 넣으려면 딱 한 번은 아래 1단계
+(`git clone`)를 직접 해야 합니다**(비공개 저장소라 링크 하나로 바로 받을 수는 없어요).
+
+한 번 받아두면, 그다음부터는 이 스크립트를 **저장소를 두고 싶은 부모 폴더에서** 실행하세요 — 처음이면 새로
+받고, 이미 받아둔 폴더가 있으면 최신화(`git pull`) 여부를 물어봅니다. `codex/install.ps1`을 그 부모 폴더로
+복사해 두면 다음부터는 수동 clone 없이 이 한 줄이면 됩니다:
+
+```powershell
+# SoDam-Context-Eng를 두고 싶은 폴더에서:
+.\install.ps1
+```
+
+> 실행이 막히면(Windows 보안 정책) 이 스크립트가 시스템 설정을 바꾸지 않으니, 파일을 우클릭 → **PowerShell로 실행**
+> 하거나, 1회에 한해 `powershell -ExecutionPolicy Bypass -File install.ps1` 로 실행하세요.
+
+---
+
 ## 설치 단계
 
 ### 1단계 — 저장소 받기
