@@ -62,7 +62,7 @@ Codex 에이전트를 시작할 때 반드시 **프로젝트 루트 폴더**에�
 ```
 sodam-context-eng/   ← 여기서 실행 (이 폴더가 루트)
 ├── AGENTS.md
-├── skills/
+├── commands/
 ├── lib/
 └── ...
 ```
@@ -84,11 +84,12 @@ Codex는 프로젝트 루트의 `AGENTS.md` 파일을 자동으로 읽습니다.
 
 이 프로젝트에는 AI 사용설명서(AGENTS.md·CLAUDE.md) 건강검진 스킬이 있습니다.
 
-## 사용 가능한 스킬
+## 사용 가능한 기능
 
-- `sodam-context-checkup` — 설명서 건강검진 (commands/checkup.md)
-- `sodam-context-treat` — 발견한 문제 처방 (commands/treat.md)
-- `sodam-context-intake` — 설명서 초기 생성 (commands/intake.md)
+- 건강검진 — 설명서 문제점 점검 (commands/checkup.md)
+- 처방 — 발견한 문제 안전하게 다듬기 (commands/treat.md)
+- 문진 — 설명서 처음부터 만들기 (commands/intake.md)
+- 동기화 점검 — CLAUDE.md·AGENTS.md 안전 규칙 차이 확인 (commands/sync.md)
 ```
 
 ---
@@ -102,6 +103,7 @@ Codex 대화창에서 아래처럼 말하면 됩니다:
 | 설명서 건강검진 | "내 AGENTS.md 건강검진 해줘" |
 | 발견한 문제 처방 | "설명서 고쳐줘" 또는 "처방해줘" |
 | 설명서 새로 만들기 | "AI 사용설명서 처음부터 만들어줘" |
+| 두 설명서 동기화 점검 | "CLAUDE.md랑 AGENTS.md 안전규칙 맞는지 확인해줘" |
 
 ---
 
