@@ -199,6 +199,7 @@ Don't panic. Just follow the table.
 | Is it safe in auto-accept (permission) mode? | Auto-accept mode can skip the confirmation step. For safety, the default (ask) mode is recommended |
 | It stopped suddenly during checkup | It's designed to stop before touching the original file. Your original is untouched |
 | Restore refuses with "not a backup file location" | The file you pointed to isn't a real backup this tool made (this is the safety feature working, not a bug) | Use the backup path shown to you in Step 6 |
+| Backup refuses with "can't back up this location" | The target is a sensitive location — a credential folder (`.ssh`/`.aws`) or a system folder (this is the safety feature working, not a bug) | Only point backup at ordinary project files |
 
 ---
 
@@ -212,6 +213,7 @@ Here are the promises this tool keeps. Relax.
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
 - 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
 - 🛡️ **Restore source is checked too (added 2026-07-13):** "Restore" only uses files inside the tool's own backup folder. Pointing it at any other file, pretending it's a backup, is refused — this stops the wrong content from accidentally being copied into your manual.
+- 🛡️ **Backup target is checked too (added 2026-07-27):** "Backup" also refuses sensitive targets (credential folders like `.ssh`/`.aws`, or system folders) before running — this stops credential file contents from ending up copied into the backup folder.
 - 🛑 **Prevents before saving (confirmed live 2026-07-17):** if your manual gets a real secret or grows too long (300+ lines / 32KB+), it's blocked before saving; a borderline length (200–299 lines) triggers "still save this?". **We've now directly confirmed in a real usage session that this prompt genuinely appears** when saving a 252-line file.
 - 🗓️ **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file path and a timestamp. Your manual's actual content never goes into this record.
 - 🔢 **The reference score isn't a hidden calculation (added 2026-07-15):** it doesn't re-read your file to make the score — it calculates on the spot from the problem count the checkup already found, and the formula (confirmed = −15 pts, suspect = −5 pts) is fully disclosed.
@@ -225,6 +227,10 @@ Here are the promises this tool keeps. Relax.
 
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
+
+**After 0.1.0 (in progress, 2026-07-27)**
+
+- **Found and fixed one more real issue:** "Backup" wasn't checking if its target was a credential folder before copying — now it's blocked the same way treatment and restore already were. All 152 automated tests pass.
 
 **After 0.1.0 (in progress, 2026-07-18)**
 

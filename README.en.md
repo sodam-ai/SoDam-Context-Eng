@@ -195,6 +195,10 @@ This tool is **not a program you launch directly** — it works when you **call 
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+**After 0.1.0 (in progress, 2026-07-27)**
+
+- **Found and fixed one more real issue during a security review:** discovered that "backup" didn't check whether its target was a credential folder (like `.ssh`/`.aws`) before copying — added the same sensitive-path check that treatment and restore already had. All 152 tests pass, including the new regression test.
+
 **After 0.1.0 (in progress, 2026-07-18)**
 
 - **Changed how Claude Code calls this tool:** removed the old hyphenated form (`/sodam-context-checkup`) that duplicated the natural-language auto-discovery mechanism, keeping only the exact colon slash command (`/sodam-context:checkup`). Natural language ("check my manual") no longer finds it in Claude Code — you must type the exact slash command (a change made to remove ambiguity). **Codex is unaffected** — natural language keeps working exactly as before.
@@ -304,6 +308,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **Prevents before saving (Prevention, confirmed live on 2026-07-17):** if a confirmed secret or an oversized manual (300+ lines / 32KB+) is about to be written to `CLAUDE.md`/`AGENTS.md`, the write is blocked before it happens; a borderline size (200–299 lines) triggers a **"still save this?"** confirmation. Beyond checking the decision logic and hook protocol at the code level, we've now confirmed in a real usage session that this confirmation prompt genuinely appears when saving a 252-line file (a real user confirmation, not auto-approved). Nothing outside these two manual files is ever touched.
 - **Checkup looks at only the one file you point it at:** Codex (`AGENTS.md`) checks the merged chain up through parent and global manuals, but Claude Code (`CLAUDE.md`) currently checks **only the single file you specify**. If you've split rules across a nested `CLAUDE.md` or `.claude/rules/`, those aren't scanned automatically — check each one separately.
 - **Restore source is validated too (added 2026-07-13):** "Restore" only accepts files inside the tool's own backup folder (`.sodamcontext/backups/`) as the source. Anything else is rejected — this prevents the content of an arbitrary file from accidentally being copied into your manual.
+- **Backup target is validated too (added 2026-07-27):** "Backup" also rejects sensitive targets (credential folders like `.ssh`/`.aws`, or system folders) before running — this prevents the content of a credential file from accidentally being copied into the backup folder.
 - **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file's **absolute path string + a timestamp string**, in your project folder (`.sodamcontext/last-checkup.json`). The manual's actual content never enters this record.
 - **The reference score is not a black box (added 2026-07-15):** computing it reads no new files — it just subtracts from the "confirmed problem count" / "suspect count" the checkup already produced. The weights (−15 for confirmed, −5 for suspect) are written as data in `rules/thresholds.json`, not buried in code, so anyone can inspect them, and asking "why?" shows the exact math.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
@@ -334,6 +339,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 | Codex says "Cannot find module" | Run from a folder that isn't the repo root | Re-run Codex from the **repo root folder** (`SoDam-Context-Eng`) |
 | Created/edited a file without asking | 🚨 Not normal | Stop and tell someone who can help (it should always ask first) |
 | Restore says "not a backup file location" and refuses | The file you pointed to isn't a real backup this tool made (this is a safety feature working correctly, not a bug) | Use the backup path shown to you during `/sodam-context:treat` — don't point restore at a file you made yourself |
+| Backup says "can't back up this location" and refuses | The target you gave is a sensitive location — a credential folder (`.ssh`/`.aws`) or a system folder (this is a safety feature working correctly, not a bug) | Only point backup at ordinary project files — credential/system folders are out of scope for this tool |
 
 ---
 
