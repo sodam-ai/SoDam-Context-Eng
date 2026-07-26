@@ -5,6 +5,37 @@
 
 ---
 
+## [Unreleased] — 2026-07-26
+
+### 수정
+- **`treat.mjs` 줄수 표시 off-by-one 버그(뒤늦은 기록)**: `checkup`은 파일을 196줄, `treat`(preview/apply)는
+  같은 파일을 197줄로 서로 다르게 보고하던 결함(`7eb8497`, 2026-07-18 커밋됨). `checkup-rules.mjs`의
+  `countLines()`(트레일링 개행을 줄로 안 세는 공식 기준)를 `treat.mjs`가 재사용하지 않고
+  `content.split("\n").length`를 직접 써서 항상 1 더 많이 보고했음. `countLines()` import로 교체해 통일.
+  **이 항목은 커밋 당시 CHANGELOG에 기록되지 않아 이번에 소급 기록함**(회귀테스트는 아래 참조).
+- **`commands/checkup.md` 참고 점수 표시 자기모순**: 17·49행은 "참고 점수를 문제 개수 뒤에 보조로
+  표시하라"는데, 리포트 예시 61행은 "점수는 일부러 안 보여드려요(과장 방지)"로 정반대였음(`3946d78`,
+  2026-07-15에서 표시 규칙만 추가하고 예시는 Phase1 시절 문구로 방치 → `0ba89ff`가 그대로 이관, 11일간
+  라이브 상태). 61행을 실제 값으로 교체 — 점수 60점은 손계산이 아니라 `computeHealthScore()`를 직접
+  호출해 검증(예시 findings 구성: 높음 2건·보통 2건 → 100-2×15-2×5=60, 실행 결과와 일치 확인).
+- **`codex/README.ko.md` 코덱스 온보딩 결함 2건**: ① 설치 2단계 폴더 구조 예시가 `0ba89ff`(2026-07-18)로
+  git에서 완전히 삭제된 `skills/`를 여전히 안내 — 신규 사용자가 `git clone`해도 없는 폴더(`commands/`로
+  교체). ② 3단계 "AGENTS.md 만드는 법" 템플릿(신규 사용자가 그대로 복사해 쓰는 내용)이 삭제된 스킬 이름
+  (`sodam-context-checkup`·`treat`·`intake`)을 나열하고 있었고 **`sync`가 4개 명령 중 유일하게 통째로
+  빠져** 있었음(4단계 "스킬 호출하기" 표에서도 동일하게 누락) — 코덱스는 슬래시 명령이 없어 AGENTS.md
+  서술이 곧 "AI가 뭘 할 수 있는지"의 전부라 `01_PRD §5` "클로드코드+코덱스 둘 다 작동" 기준을 코덱스
+  쪽에서 무력화하는 결함이었음. 실제 파일 위치(`commands/*.md`) 기준 서술로 교체 + 두 표 모두 sync 추가.
+
+### 테스트
+- **`treat.test.mjs` countLines 회귀테스트 공백 메우기**: `23차 세션`이 남긴 항목 이행. `originalLines`/
+  `proposedLines`가 `checkup-rules.mjs`의 `countLines()`와 일치하는지 검증하는 테스트 3개 추가(트레일링
+  개행 있음/없음, 실제 처방 후 `proposedLines`). **재현 검증**: `git show 0ba89ff:lib/treat.mjs`(수정
+  전 버전)를 격리 실행해 `originalLines=4` vs `countLines()=3`로 위 버그가 실제 재현됨을 확인 — 새
+  테스트가 장식이 아니라 이 버그를 실제로 잡아낸다는 것을 실측으로 증명.
+- 전체 회귀: `npm test` 142→**145 PASS**(0 FAIL) · `selftest` **60 PASS**(0 FAIL), 회귀 0.
+
+---
+
 ## [Unreleased] — 2026-07-17
 
 ### 추가
