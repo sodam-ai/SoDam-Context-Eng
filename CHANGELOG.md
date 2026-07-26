@@ -16,13 +16,19 @@
   반환하는 두 경로 모두 **`exit 0`**이었음 — 2026-07-11에 `checkup-cli.mjs`에서 이미 고친 것과 동일한
   결함 클래스가 형제 파일에 남아 있었음(당시 전수 점검이 이 파일까지 미치지 못함). 두 분기에
   `process.exit(1)` 추가.
+- **`checkup-cli.mjs` backup 액션이 대상 경로의 민감 여부를 검사하지 않음(T3)**: `apply` 액션엔 이미
+  있는 `isSensitiveWritePath()` 검사가 `backup` 액션엔 빠져 있어, `.ssh`·`.aws` 같은 자격증명 폴더를
+  backup 대상으로 지정해도 그대로 읽어 `.sodamcontext/backups/`에 평문 복사됐음(07_SECURITY 위협
+  T3, §2.3·§2.7 Must 요구사항). 동일 검사를 backup 핸들러에 추가하고 거부 시 `exit 1`.
 
 ### 테스트
 - 블랙박스 QA 배터리(정상 8·잘못된입력 6·경계값 8·실패 3·보안/성능 3 = 28개 시나리오)를 처음 실행해
   위 2건을 발견. `checkup-cli.test.mjs`에 회귀테스트 2건 추가, `intake-verify.mjs`용 자동 테스트가
   이번까지 **0건**이었던 공백을 메우기 위해 `intake-verify.test.mjs` 신규 생성(4건) — `package.json`
   test 스크립트에 등록.
-- 전체 회귀: `npm test` 145→**151 PASS**(0 FAIL) · `selftest` **60 PASS**(0 FAIL, 변동 없음) · QA
+- 이어진 별도 QA 라운드(함수 직접 호출로 `isSensitiveWritePath()` 실제 동작 검증)에서 backup 경로
+  검사 누락(T3)을 추가 발견 — `checkup-cli.test.mjs`에 `[21]` 회귀테스트 1건 추가.
+- 전체 회귀: `npm test` 145→151→**152 PASS**(0 FAIL) · `selftest` **60 PASS**(0 FAIL, 변동 없음) · QA
   배터리 재실행 **28 PASS**(0 FAIL), 회귀 0.
 
 ---
