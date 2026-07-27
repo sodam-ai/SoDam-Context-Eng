@@ -197,7 +197,11 @@ This tool is **not a program you launch directly** — it works when you **call 
 
 **After 0.1.0 (in progress, 2026-07-27)**
 
-- **Found and fixed one more real issue during a security review:** discovered that "backup" didn't check whether its target was a credential folder (like `.ssh`/`.aws`) before copying — added the same sensitive-path check that treatment and restore already had. All 152 tests pass, including the new regression test.
+- **Found and fixed one more real issue during a security review:** discovered that "backup" didn't check whether its target was a credential folder (like `.ssh`/`.aws`) before copying — added the same sensitive-path check that treatment and restore already had.
+- **Built backup directly into applying a treatment (apply):** found that calling apply directly, without going through the normal backup step, could overwrite the original with no backup at all — fixed so the apply code itself now always backs up first internally (enforced in code, not just conversational instructions).
+- **Fixed a temp-file cleanup gap:** restore, backup, and apply could leave an orphaned temp file behind if the rename step failed — now cleaned up on failure too.
+- **Improved freshness-reminder wording accuracy:** fixed a case where the tool said "checked yesterday" when it should have stayed silent (no change since the last checkup) — tightened the guidance for accuracy.
+- All **153** tests pass (`npm test`), including the new regression test; `selftest` 60/60 pass.
 
 **After 0.1.0 (in progress, 2026-07-18)**
 
@@ -303,6 +307,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **No automatic changes (Fail-Closed):** it never **creates or edits** files until you say **"yes"**.
 - **No network:** checkup, intake, and treatment run **on your computer only**. Internet is needed just for install.
 - **Atomic write + backup first:** treatment writes to a temp file then renames, and **aborts immediately if the backup fails**.
+- **Applying (apply) enforces its own backup (hardened 2026-07-27):** rather than relying on conversational instructions alone, the code that applies a treatment always creates a backup internally before changing the original — no matter how it's called, it can never overwrite without one.
 - **Safe-keyword preservation:** lines with key rules ("never / forbidden / must / always / secret / force push") are **auto-preserved** (excluded from tidying).
 - **Never writes to sensitive locations:** if a treatment/restore target resolves to the home directory root, a credential folder (`.ssh`, `.aws`, etc.), or a system folder, the write is **rejected automatically** with a reason before anything is touched.
 - **Prevents before saving (Prevention, confirmed live on 2026-07-17):** if a confirmed secret or an oversized manual (300+ lines / 32KB+) is about to be written to `CLAUDE.md`/`AGENTS.md`, the write is blocked before it happens; a borderline size (200–299 lines) triggers a **"still save this?"** confirmation. Beyond checking the decision logic and hook protocol at the code level, we've now confirmed in a real usage session that this confirmation prompt genuinely appears when saving a 252-line file (a real user confirmation, not auto-approved). Nothing outside these two manual files is ever touched.

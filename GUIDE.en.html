@@ -512,8 +512,16 @@ original is untouched</td>
 </tr>
 <tr>
 <td>Restore refuses with "not a backup file location"</td>
-<td>The file you pointed to isn't a real backup this tool made (this is
-the safety feature working, not a bug)</td>
+<td>The file you pointed to isn't a real backup this tool made — this is
+the safety feature working correctly, not a bug. Use the backup path
+shown to you in Step 6</td>
+</tr>
+<tr>
+<td>Backup refuses with "can't back up this location"</td>
+<td>The target is a sensitive location (a credential folder like
+<code>.ssh</code>/<code>.aws</code>, or a system folder) — this is the
+safety feature working correctly, not a bug. Only point backup at
+ordinary project files</td>
 </tr>
 </tbody>
 </table>
@@ -531,6 +539,9 @@ edits</strong> files until you say <strong>"yes"</strong>.</li>
 <li>♻️ <strong>Edits safely:</strong> treatment backs up first and
 writes via a temp file, so your original isn't corrupted if it stops
 midway.</li>
+<li>🛡️ <strong>Applying enforces its own backup (hardened
+2026-07-27):</strong> the code that runs Treatment has backup built in,
+so however it's called, your original can never change without one.</li>
 <li>🔍 <strong>Only looks at one file:</strong> Codex checks up through
 parent folders too, but Claude Code currently checks <strong>only the
 one file you point it at</strong>. If you've split rules across multiple
@@ -540,6 +551,11 @@ folders, check each one separately.</li>
 backup folder. Pointing it at any other file, pretending it's a backup,
 is refused — this stops the wrong content from accidentally being copied
 into your manual.</li>
+<li>🛡️ <strong>Backup target is checked too (added 2026-07-27):</strong>
+"Backup" also refuses sensitive targets (credential folders like
+<code>.ssh</code>/<code>.aws</code>, or system folders) before running —
+this stops credential file contents from ending up copied into the
+backup folder.</li>
 <li>🛑 <strong>Prevents before saving (confirmed live
 2026-07-17):</strong> if your manual gets a real secret or grows too
 long (300+ lines / 32KB+), it's blocked before saving; a borderline
@@ -568,6 +584,20 @@ values)</strong>. That's why secrets don't leak.</p>
 <details>
 <summary><b>📋 Click to expand — what changed</b></summary>
 
+<p><strong>After 0.1.0 (in progress, 2026-07-27)</strong></p>
+<ul>
+<li><strong>Found and fixed one more real issue:</strong> "Backup" wasn't
+checking if its target was a credential folder before copying — now it's
+blocked the same way treatment and restore already were.</li>
+<li><strong>Backup is now always built into applying a fix:</strong>
+calling apply on its own, skipping the usual backup step, could
+overwrite the original with no backup — now backup always happens
+automatically as part of applying (enforced in code, not just
+instructions).</li>
+<li>Cleaned up stray temp files that could be left behind if something
+failed partway.</li>
+<li>Test suite expanded to <strong>153</strong>, all passing.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-18)</strong></p>
 <ul>
 <li><strong>Changed how Claude Code calls this:</strong> removed the old

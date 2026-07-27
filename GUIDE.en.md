@@ -198,8 +198,8 @@ Don't panic. Just follow the table.
 | It says there's a password but I don't see one | The regex also flags things that look similar. It never auto-deletes — check it yourself and decide |
 | Is it safe in auto-accept (permission) mode? | Auto-accept mode can skip the confirmation step. For safety, the default (ask) mode is recommended |
 | It stopped suddenly during checkup | It's designed to stop before touching the original file. Your original is untouched |
-| Restore refuses with "not a backup file location" | The file you pointed to isn't a real backup this tool made (this is the safety feature working, not a bug) | Use the backup path shown to you in Step 6 |
-| Backup refuses with "can't back up this location" | The target is a sensitive location — a credential folder (`.ssh`/`.aws`) or a system folder (this is the safety feature working, not a bug) | Only point backup at ordinary project files |
+| Restore refuses with "not a backup file location" | The file you pointed to isn't a real backup this tool made — this is the safety feature working correctly, not a bug. Use the backup path shown to you in Step 6 |
+| Backup refuses with "can't back up this location" | The target is a sensitive location (a credential folder like `.ssh`/`.aws`, or a system folder) — this is the safety feature working correctly, not a bug. Only point backup at ordinary project files |
 
 ---
 
@@ -211,6 +211,7 @@ Here are the promises this tool keeps. Relax.
 - ✋ **Ask first:** it never **creates or edits** files until you say **"yes"**.
 - 🌐 **No internet:** checkup, intake, and treatment run **on your computer only** (internet only for install).
 - ♻️ **Edits safely:** treatment backs up first and writes via a temp file, so your original isn't corrupted if it stops midway.
+- 🛡️ **Applying enforces its own backup (hardened 2026-07-27):** the code that runs Treatment has backup built in, so however it's called, your original can never change without one.
 - 🔍 **Only looks at one file:** Codex checks up through parent folders too, but Claude Code currently checks **only the one file you point it at**. If you've split rules across multiple folders, check each one separately.
 - 🛡️ **Restore source is checked too (added 2026-07-13):** "Restore" only uses files inside the tool's own backup folder. Pointing it at any other file, pretending it's a backup, is refused — this stops the wrong content from accidentally being copied into your manual.
 - 🛡️ **Backup target is checked too (added 2026-07-27):** "Backup" also refuses sensitive targets (credential folders like `.ssh`/`.aws`, or system folders) before running — this stops credential file contents from ending up copied into the backup folder.
@@ -230,7 +231,10 @@ Here are the promises this tool keeps. Relax.
 
 **After 0.1.0 (in progress, 2026-07-27)**
 
-- **Found and fixed one more real issue:** "Backup" wasn't checking if its target was a credential folder before copying — now it's blocked the same way treatment and restore already were. All 152 automated tests pass.
+- **Found and fixed one more real issue:** "Backup" wasn't checking if its target was a credential folder before copying — now it's blocked the same way treatment and restore already were.
+- **Backup is now always built into applying a fix:** calling apply on its own, skipping the usual backup step, could overwrite the original with no backup — now backup always happens automatically as part of applying (enforced in code, not just instructions).
+- Cleaned up stray temp files that could be left behind if something failed partway.
+- Test suite expanded to **153**, all passing.
 
 **After 0.1.0 (in progress, 2026-07-18)**
 

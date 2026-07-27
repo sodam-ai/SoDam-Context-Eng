@@ -568,6 +568,30 @@ check", etc.) — that's always been true and still works.</p>
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+<p><strong>After 0.1.0 (in progress, 2026-07-27)</strong></p>
+<ul>
+<li><strong>Found and fixed one more real issue during a security
+review:</strong> discovered that "backup" didn't check whether its
+target was a credential folder (like <code>.ssh</code>/<code>.aws</code>)
+before copying — added the same sensitive-path check that treatment and
+restore already had.</li>
+<li><strong>Built backup directly into applying a treatment
+(apply):</strong> found that calling apply directly, without going
+through the normal backup step, could overwrite the original with no
+backup at all — fixed so the apply code itself now always backs up
+first internally (enforced in code, not just conversational
+instructions).</li>
+<li><strong>Fixed a temp-file cleanup gap:</strong> restore, backup, and
+apply could leave an orphaned temp file behind if the rename step
+failed — now cleaned up on failure too.</li>
+<li><strong>Improved freshness-reminder wording accuracy:</strong> fixed
+a case where the tool said "checked yesterday" when it should have
+stayed silent (no change since the last checkup) — tightened the
+guidance for accuracy.</li>
+<li>All <strong>153</strong> tests pass (<code>npm test</code>),
+including the new regression test; <code>selftest</code> 60/60
+pass.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-18)</strong></p>
 <ul>
 <li><strong>Changed how Claude Code calls this tool:</strong> removed
@@ -824,6 +848,11 @@ install.</li>
 <li><strong>Atomic write + backup first:</strong> treatment writes to a
 temp file then renames, and <strong>aborts immediately if the backup
 fails</strong>.</li>
+<li><strong>Applying (apply) enforces its own backup (hardened
+2026-07-27):</strong> rather than relying on conversational
+instructions alone, the code that applies a treatment always creates a
+backup internally before changing the original — no matter how it's
+called, it can never overwrite without one.</li>
 <li><strong>Safe-keyword preservation:</strong> lines with key rules
 ("never / forbidden / must / always / secret / force push") are
 <strong>auto-preserved</strong> (excluded from tidying).</li>
@@ -855,6 +884,11 @@ each one separately.</li>
 (<code>.sodamcontext/backups/</code>) as the source. Anything else is
 rejected — this prevents the content of an arbitrary file from
 accidentally being copied into your manual.</li>
+<li><strong>Backup target is validated too (added 2026-07-27):</strong>
+"Backup" also rejects sensitive targets (credential folders like
+<code>.ssh</code>/<code>.aws</code>, or system folders) before running —
+this prevents the content of a credential file from accidentally being
+copied into the backup folder.</li>
 <li><strong>The freshness reminder stores no content either (added
 2026-07-15):</strong> the "when was this last checked" record keeps only
 the file's <strong>absolute path string + a timestamp string</strong>,
@@ -944,6 +978,14 @@ a safety feature working correctly, not a bug)</td>
 <td>Use the backup path shown to you during
 <code>/sodam-context:treat</code> — don't point restore at a file you
 made yourself</td>
+</tr>
+<tr>
+<td>Backup says "can't back up this location" and refuses</td>
+<td>The target you gave is a sensitive location — a credential folder
+(<code>.ssh</code>/<code>.aws</code>) or a system folder (this is a
+safety feature working correctly, not a bug)</td>
+<td>Only point backup at ordinary project files — credential/system
+folders are out of scope for this tool</td>
 </tr>
 </tbody>
 </table>
