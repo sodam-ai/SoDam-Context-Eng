@@ -146,4 +146,4 @@ nodejs.org에서 LTS 버전을 설치하고 터미널을 닫았다가 다시 열
 
 Claude Code에서는 Codex와 달리 플러그인 마켓에서 설치할 수 있습니다.
 
-자세한 내용은 프로젝트 루트의 `README.md` 또는 `GUIDE.md`를 참고하세요.
+자세한 내용은 프로젝트 루트의 `README.md`를 참고하세요.

@@ -96,8 +96,6 @@ Codex has no plugin marketplace, so you **clone the whole repository and run ins
 
 > 💡 **One-click install script (optional, Windows):** `codex/install.ps1` in the repo automates steps 1–2 above (prerequisite check, clone, `AGENTS.md` creation). Note the repository is **PRIVATE**, so you must do step 1 (`git clone`) manually once to get the script itself. If execution policy blocks it, right-click the file → **Run with PowerShell**, or run once with `powershell -ExecutionPolicy Bypass -File install.ps1`. Full guide: `codex/README.ko.md` (Korean).
 
-> A picture-book style beginner walkthrough is in **`GUIDE.en.md`** (English) / **`GUIDE.md`** (Korean) in the same folder.
-
 ---
 
 ## 4. Quick Start
@@ -268,7 +266,6 @@ This tool is **not a program you launch directly** — it works when you **call 
 | (Treatment) backup folder | `<project folder>\.sodamcontext\backups\` (created automatically when treatment runs) |
 | (Freshness reminder) last-checkup record | `<project folder>\.sodamcontext\last-checkup.json` (created/updated automatically on each checkup; stores only the path + timestamp) |
 | This manual | The plugin folder's `README.md`·`README.html` (Korean), `README.en.md`·`README.en.html` (English) |
-| Beginner step-by-step guide | The plugin folder's `GUIDE.md`·`GUIDE.html` (Korean), `GUIDE.en.md`·`GUIDE.en.html` (English) |
 | Codex install guide | `codex/README.ko.md` in the repo |
 
 > The md and html documents have **identical content** (html is generated from the same md). md reads well on GitHub; html opens directly in a browser.
@@ -402,5 +399,4 @@ A. The tool itself runs locally with no separate fee, but **using AI (Claude · 
 
 ---
 
-> For a detailed **step-by-step beginner walkthrough**, see **`GUIDE.en.md`** (English) / **`GUIDE.md`** (Korean) in the same folder.
-> 한국어 문서: `README.md`, `GUIDE.md` (및 `.html` 버전).
+> 한국어 문서: `README.md` (및 `README.html`).

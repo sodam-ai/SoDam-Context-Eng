@@ -31,6 +31,24 @@
 - 전체 회귀: `npm test` 145→151→**152 PASS**(0 FAIL) · `selftest` **60 PASS**(0 FAIL, 변동 없음) · QA
   배터리 재실행 **28 PASS**(0 FAIL), 회귀 0.
 
+### 보안
+- **처방 적용(apply)이 백업 절차 없이 호출되면 백업 없이 원본을 덮어쓰던 결함**: `commands/treat.md`의
+  "백업 먼저" 지시(프롬프트)에만 의존하고 있었고, `apply` 코드 자체는 `backupFile()`을 호출하지
+  않았음(08_DEEP_RESEARCH_FINDINGS.md A3 "프롬프트 지시는 준수를 보장하지 않는다" 원칙 위반). 백업을
+  apply 코드 내부로 옮겨 fail-closed로 강제.
+- **원자적 쓰기 3곳(apply·backupLocal·restoreBackup) 임시파일 고아 결함**: rename 실패 시 임시파일이
+  폴더에 그대로 남던 문제 수정.
+
+### 문서
+- README/GUIDE(한/영, md+html)에 누락돼 있던 위 백업 강제화 내용·정확한 테스트 개수(152→153) 반영.
+- **`GUIDE.md`·`GUIDE.en.md`·`GUIDE.html`·`GUIDE.en.html` 제거**: README(한/영, md+html)가 설치·빠른
+  시작·사용법·문제 대처까지 이미 전부 포함하고 있어 별도 왕초보 가이드를 유지할 필요가 없다고 판단,
+  중복 문서를 정리. README·`codex/README.ko.md`에 남아 있던 GUIDE 참조도 함께 제거.
+
+### 테스트
+- 전체 회귀: `npm test` **153 PASS**(0 FAIL, apply 자동 백업 회귀테스트 1건 추가) · `selftest`
+  **60 PASS**(0 FAIL, 변동 없음).
+
 ---
 
 ## [Unreleased] — 2026-07-26

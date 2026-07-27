@@ -96,8 +96,6 @@
 
 > 💡 **원클릭 설치 스크립트(선택, Windows):** 저장소의 `codex/install.ps1`을 받아서 실행하면 위 1~2단계(준비물 확인·clone·AGENTS.md 생성)를 대신 해 줍니다. 단, 이 저장소는 **비공개(PRIVATE)** 라 스크립트 자체를 처음 손에 넣으려면 딱 한 번은 위 1단계(`git clone`)를 직접 해야 합니다. 실행 정책이 막으면(Windows 보안), 파일을 우클릭 → **PowerShell로 실행**하거나 `powershell -ExecutionPolicy Bypass -File install.ps1`로 1회 실행하세요. 자세한 안내는 `codex/README.ko.md`.
 
-> 왕초보용 그림 같은 단계별 안내는 같은 폴더의 **`GUIDE.md`**(한국어)·**`GUIDE.en.md`**(영어)에 있어요.
-
 ---
 
 ## 4. 빠른 시작
@@ -268,7 +266,6 @@
 | (처방 시) 백업 폴더 | `<프로젝트 폴더>\.sodamcontext\backups\` (처방 실행 시 자동 생성) |
 | (정기 점검 알림) 마지막 점검 기록 | `<프로젝트 폴더>\.sodamcontext\last-checkup.json` (검진 실행 시 자동 생성/갱신, 경로+시각만 저장) |
 | 이 사용설명서 | 플러그인 폴더의 `README.md`·`README.html`(한국어), `README.en.md`·`README.en.html`(영어) |
-| 왕초보 단계별 가이드 | 플러그인 폴더의 `GUIDE.md`·`GUIDE.html`(한국어), `GUIDE.en.md`·`GUIDE.en.html`(영어) |
 | 코덱스 설치 안내 | 저장소의 `codex/README.ko.md` |
 
 > md 문서와 html 문서는 **내용이 동일**합니다(html은 같은 md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 바로 열어 보기 좋아요.
@@ -403,5 +400,4 @@ A. 이 도구 자체는 로컬에서 돌아 별도 요금이 없지만, **AI(클
 
 ---
 
-> 더 자세한 **단계별 왕초보 안내**는 같은 폴더의 **`GUIDE.md`**(한국어) / **`GUIDE.en.md`**(English)를 보세요.
-> English documents: `README.en.md`, `GUIDE.en.md` (and `.html` versions).
+> English documents: `README.en.md` (and `README.en.html`).
