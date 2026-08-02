@@ -361,6 +361,35 @@ PowerShell</strong>, or run once with
 <code>powershell -ExecutionPolicy Bypass -File install.ps1</code>. Full
 guide: <code>codex/README.ko.md</code> (Korean).</p>
 </blockquote>
+<h3 id="3-3-uninstalling">3-3. Uninstalling</h3>
+<p><strong>Claude Code</strong></p>
+<ol type="1">
+<li>Type <code>/plugin uninstall sodam-context</code> in the input box
+and press Enter.</li>
+<li>Fully quit and restart Claude Code — this makes the command
+disappear from the list too.</li>
+</ol>
+<p><strong>Codex</strong></p>
+<ul>
+<li>Just <strong>delete the folder</strong> you cloned in 3-2 (nothing
+else is written anywhere else — no registry, no other config
+files).</li>
+</ul>
+<p><strong>What happens to backups
+(<code>.sodamcontext/backups/</code>)?</strong></p>
+<ul>
+<li>Uninstalling the plugin <strong>does not touch backups in your
+project folder</strong> — the plugin is removed on Claude Code's side,
+while backups are separate files living in your own project folder.</li>
+<li><strong>To keep them</strong>: do nothing. If you reinstall this
+tool later, the old backups are still there for restoring.</li>
+<li><strong>To delete them completely</strong>: manually delete the
+<code>.sodamcontext</code> folder in each project (just like deleting
+any other folder in your file explorer). This folder only holds backup
+files and a "last checkup time" record — your actual
+<code>CLAUDE.md</code>/<code>AGENTS.md</code> originals are never stored
+inside it, so it's safe to remove.</li>
+</ul>
 <hr />
 <h2 id="4-quick-start">4. Quick Start</h2>
 <p>Once installed and restarted, remember just two things.</p>
@@ -567,18 +596,18 @@ check", etc.) — that's always been true and still works.</p>
 <ul>
 <li><strong>Found and fixed one more real issue during a security
 review:</strong> discovered that "backup" didn't check whether its
-target was a credential folder (like <code>.ssh</code>/<code>.aws</code>)
-before copying — added the same sensitive-path check that treatment and
-restore already had.</li>
+target was a credential folder (like
+<code>.ssh</code>/<code>.aws</code>) before copying — added the same
+sensitive-path check that treatment and restore already had.</li>
 <li><strong>Built backup directly into applying a treatment
 (apply):</strong> found that calling apply directly, without going
 through the normal backup step, could overwrite the original with no
-backup at all — fixed so the apply code itself now always backs up
-first internally (enforced in code, not just conversational
+backup at all — fixed so the apply code itself now always backs up first
+internally (enforced in code, not just conversational
 instructions).</li>
 <li><strong>Fixed a temp-file cleanup gap:</strong> restore, backup, and
-apply could leave an orphaned temp file behind if the rename step
-failed — now cleaned up on failure too.</li>
+apply could leave an orphaned temp file behind if the rename step failed
+— now cleaned up on failure too.</li>
 <li><strong>Improved freshness-reminder wording accuracy:</strong> fixed
 a case where the tool said "checked yesterday" when it should have
 stayed silent (no change since the last checkup) — tightened the
@@ -838,10 +867,10 @@ install.</li>
 temp file then renames, and <strong>aborts immediately if the backup
 fails</strong>.</li>
 <li><strong>Applying (apply) enforces its own backup (hardened
-2026-07-27):</strong> rather than relying on conversational
-instructions alone, the code that applies a treatment always creates a
-backup internally before changing the original — no matter how it's
-called, it can never overwrite without one.</li>
+2026-07-27):</strong> rather than relying on conversational instructions
+alone, the code that applies a treatment always creates a backup
+internally before changing the original — no matter how it's called, it
+can never overwrite without one.</li>
 <li><strong>Safe-keyword preservation:</strong> lines with key rules
 ("never / forbidden / must / always / secret / force push") are
 <strong>auto-preserved</strong> (excluded from tidying).</li>
@@ -1080,7 +1109,8 @@ before public release</strong>).</li>
 </ul>
 <hr />
 <blockquote>
-<p>한국어 문서: <code>README.md</code> (및 <code>README.html</code>).</p>
+<p>한국어 문서: <code>README.md</code> (및
+<code>README.html</code>).</p>
 </blockquote>
 </body>
 </html>

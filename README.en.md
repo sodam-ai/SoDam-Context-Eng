@@ -96,6 +96,20 @@ Codex has no plugin marketplace, so you **clone the whole repository and run ins
 
 > 💡 **One-click install script (optional, Windows):** `codex/install.ps1` in the repo automates steps 1–2 above (prerequisite check, clone, `AGENTS.md` creation). Note the repository is **PRIVATE**, so you must do step 1 (`git clone`) manually once to get the script itself. If execution policy blocks it, right-click the file → **Run with PowerShell**, or run once with `powershell -ExecutionPolicy Bypass -File install.ps1`. Full guide: `codex/README.ko.md` (Korean).
 
+### 3-3. Uninstalling
+
+**Claude Code**
+1. Type `/plugin uninstall sodam-context` in the input box and press Enter.
+2. Fully quit and restart Claude Code — this makes the command disappear from the list too.
+
+**Codex**
+- Just **delete the folder** you cloned in 3-2 (nothing else is written anywhere else — no registry, no other config files).
+
+**What happens to backups (`.sodamcontext/backups/`)?**
+- Uninstalling the plugin **does not touch backups in your project folder** — the plugin is removed on Claude Code's side, while backups are separate files living in your own project folder.
+- **To keep them**: do nothing. If you reinstall this tool later, the old backups are still there for restoring.
+- **To delete them completely**: manually delete the `.sodamcontext` folder in each project (just like deleting any other folder in your file explorer). This folder only holds backup files and a "last checkup time" record — your actual `CLAUDE.md`/`AGENTS.md` originals are never stored inside it, so it's safe to remove.
+
 ---
 
 ## 4. Quick Start

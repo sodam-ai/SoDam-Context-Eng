@@ -354,6 +354,35 @@ cd SoDam-Context-Eng</code></pre></li>
 <code>powershell -ExecutionPolicy Bypass -File install.ps1</code>로 1회
 실행하세요. 자세한 안내는 <code>codex/README.ko.md</code>.</p>
 </blockquote>
+<h3 id="3-3-제거uninstall-방법">3-3. 제거(Uninstall) 방법</h3>
+<p><strong>클로드코드</strong></p>
+<ol type="1">
+<li>입력창에 <code>/plugin uninstall sodam-context</code> 를 치고
+Enter.</li>
+<li>클로드코드를 완전히 껐다 켜세요(재시작) — 그래야 명령어 목록에서도
+깔끔히 사라져요.</li>
+</ol>
+<p><strong>코덱스</strong></p>
+<ul>
+<li>3-2에서 <code>git clone</code>으로 받은 저장소 <strong>폴더를 그냥
+삭제</strong>하면 끝입니다(레지스트리·설정 파일 등 다른 곳엔 아무것도 안
+남아요).</li>
+</ul>
+<p><strong>백업(<code>.sodamcontext/backups/</code>)은 어떻게
+되나요?</strong></p>
+<ul>
+<li>플러그인을 지워도 <strong>여러분 프로젝트 폴더 안의 백업은 그대로
+남습니다</strong>(플러그인은 클로드코드 쪽에서만 지워지고, 백업은 여러분
+프로젝트 폴더에 있는 별개의 파일이라서요).</li>
+<li><strong>보존하고 싶다면</strong>: 아무것도 안 하면 됩니다. 나중에 이
+도구를 다시 설치해도 옛 백업을 그대로 되돌리기(restore)에 쓸 수
+있어요.</li>
+<li><strong>완전히 지우고 싶다면</strong>: 각 프로젝트 폴더의
+<code>.sodamcontext</code> 폴더를 직접 삭제하세요(탐색기에서 폴더 하나
+지우는 것과 같아요). 이 폴더에는 백업 파일과 "마지막 점검 시각" 기록만
+있고, 여러분의 <code>CLAUDE.md</code>·<code>AGENTS.md</code> 원본은
+들어있지 않으니 안심하고 지워도 됩니다.</li>
+</ul>
 <hr />
 <h2 id="4-빠른-시작">4. 빠른 시작</h2>
 <p>설치·재시작이 끝났다면, 딱 두 가지만 기억하세요.</p>
@@ -543,18 +572,19 @@ cd SoDam-Context-Eng</code></pre></li>
 <li><strong>보안 점검에서 실제 문제 하나 더 발견해 바로
 고쳤어요:</strong> "백업(backup)"을 뜰 때 대상 경로가 자격증명
 폴더(<code>.ssh</code>·<code>.aws</code> 등)인지 확인하지 않던 결함을
-발견해, 처방·되돌리기와 동일한 민감 경로 검사를 백업에도 추가했습니다.</li>
+발견해, 처방·되돌리기와 동일한 민감 경로 검사를 백업에도
+추가했습니다.</li>
 <li><strong>처방 적용(apply) 자체에 백업을 강제로 내장:</strong> 백업
-절차 없이 적용(apply)만 직접 호출하면 원본이 백업 없이 그대로
-덮어써질 수 있던 결함을 발견해 수정했습니다 — 이제 적용 코드 자체가
-내부적으로 반드시 먼저 백업을 만든 뒤에만 진행합니다(대화 안내 문구가
-아니라 코드 레벨로 강제).</li>
+절차 없이 적용(apply)만 직접 호출하면 원본이 백업 없이 그대로 덮어써질
+수 있던 결함을 발견해 수정했습니다 — 이제 적용 코드 자체가 내부적으로
+반드시 먼저 백업을 만든 뒤에만 진행합니다(대화 안내 문구가 아니라 코드
+레벨로 강제).</li>
 <li><strong>임시파일 정리 결함 수정:</strong> 되돌리기·백업·적용 도중
 파일 이름 바꾸기가 실패하면 임시파일이 폴더에 그대로 남던 문제를 고쳐,
 실패해도 흔적 없이 정리되게 했습니다.</li>
-<li><strong>정기 점검 알림 문구 정확도 개선:</strong> 변화가 없어
-조용히 있어야 할 때 "어제 점검했다"처럼 부정확하게 말한 사례를 발견해,
-안내 문구를 더 명확하게 다듬었습니다.</li>
+<li><strong>정기 점검 알림 문구 정확도 개선:</strong> 변화가 없어 조용히
+있어야 할 때 "어제 점검했다"처럼 부정확하게 말한 사례를 발견해, 안내
+문구를 더 명확하게 다듬었습니다.</li>
 <li>회귀테스트 포함 <code>npm test</code> <strong>153개</strong> 전부
 통과, <code>selftest</code> 60개 전부 통과.</li>
 </ul>
@@ -794,8 +824,8 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 중단</strong>합니다.</li>
 <li><strong>적용(apply) 자체가 백업을 강제합니다(2026-07-27
 강화):</strong> 대화 안내 문구에만 기대지 않고, 처방을 적용하는 코드
-자체가 내부적으로 반드시 백업을 먼저 만든 뒤에만 원본을 바꿉니다 —
-어떤 경로로 호출되어도 백업 없이 덮어써지지 않습니다.</li>
+자체가 내부적으로 반드시 백업을 먼저 만든 뒤에만 원본을 바꿉니다 — 어떤
+경로로 호출되어도 백업 없이 덮어써지지 않습니다.</li>
 <li><strong>안전키워드 보존:</strong>
 "절대/금지/never/must/항상/secret/force push" 같은 중요 규칙이 든 줄은
 <strong>자동 보존</strong>(정리에서 제외).</li>

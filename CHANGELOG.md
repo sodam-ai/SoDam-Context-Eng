@@ -7,6 +7,15 @@
 
 ## [Unreleased] — 2026-07-27
 
+### 문서 (2026-08-02 추가)
+- **README(한/영, md+html) "제거(Uninstall)" 섹션 신규 추가**: `01_PRD.md §5`·`11_DOCS_README_GUIDE.md §1`이
+  Must로 요구하는 "제거 방법 + 백업 보존/삭제 선택" 항목이 README.md·README.en.md 어디에도 없었던 걸
+  발견(GUIDE.md 통합 이전부터 원래 없었음, git 이력으로 확인). `3-3. 제거(Uninstall) 방법`(영문:
+  `3-3. Uninstalling`) 신설 — 클로드코드(`/plugin uninstall`)·코덱스(폴더 삭제)·백업 폴더
+  보존/삭제 선택지를 명시. HTML 4종은 `pandoc -f gfm`으로 재생성(첫 시도 시 `-f gfm` 플래그 누락으로
+  목차 앵커 ID·따옴표·lang 속성이 원본과 달라지는 회귀를 자체 발견·재수정, 단어 단위 diff로 신규 섹션
+  외 100% 동일함을 확인 후 확정).
+
 ### 수정
 - **`checkup-cli.mjs` 알 수 없는 `--action` 값 조용한 폴백**: `--action`에 오타 등 인식 못 하는 값을
   주면 에러 없이 **기본 검진 경로로 조용히 폴백**하던 결함 — 처방·백업을 요청한 줄 알았는데 실제로는
