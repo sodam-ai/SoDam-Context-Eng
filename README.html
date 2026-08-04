@@ -479,6 +479,26 @@ Enter.</li>
 보존·되돌리기 정확성 확인). 그래도 처음 쓸 땐 중요한 파일은 따로 복사해
 두는 걸 권장합니다.</p>
 </blockquote>
+<h3 id="6-4-깊은-검진선택-기능--white_check_mark-작동">6-4. 깊은
+검진(선택 기능) — <code>✅ 작동</code></h3>
+<p>일반 검진(6-1)이 "이런 것도 더 볼 수 있어요"로만 소개하고 넘어가는
+5가지 항목(모순·맥락 없는 참조·예시 없는 규칙·부풀림·RE 스코프 누락)을
+<strong>AI가 실제로 판단</strong>하게 하고 싶을 때 씁니다.</p>
+<ol type="1">
+<li><code>/sodam-context:checkup-deep</code> 입력.</li>
+<li>이 기능은 <strong>일반 검진과 다르게 AI가 설명서 내용을 직접
+읽습니다</strong>(비밀키로 보이는 줄은 자동으로 가려지지만, 마스킹이
+100% 완벽하진 않을 수 있어요) — 그래서 <strong>실행 전 매번 동의를 먼저
+구합니다.</strong> "네" 또는 "계속해줘"라고 답해야 진행돼요(이번
+대화에서만 다시 안 묻길 원하시면 그렇게 말씀하실 수 있어요).</li>
+<li>5가지 항목을 하나씩 실제로 판단해 알려줍니다. 판정은 항상
+<strong>"확정"이 아니라 "의심"</strong> 으로만 표시되고(오탐 가능성
+있음), 문제를 못 찾으면 "5가지 다 봤지만 못 찾았어요"라고 명확히
+알려줘요 (조용히 넘어가지 않아요 — "안 봄"과 "봤는데 없음"을 구분하기
+위해서예요).</li>
+<li>일반 검진보다 <strong>토큰(비용)을 더 씁니다.</strong> 매번 필요할
+때만 선택적으로 쓰는 걸 권장해요.</li>
+</ol>
 <hr />
 <h2 id="7-작동-방법">7. 작동 방법</h2>
 <ul>
@@ -507,6 +527,12 @@ Enter.</li>
 의심 항목은 -5점, 100점 만점)로 그 자리에서 계산해요. 계산 방법을 전부
 공개하는 <strong>투명한 뺄셈식</strong>이라 "왜 이 점수예요?"라고 물으면
 그대로 풀어서 설명할 수 있어요.</li>
+<li><strong>깊은 검진(선택, 2026-08-03 추가):</strong> 위 검진과 달리 이
+기능은 <strong>동의를 구한 뒤에만</strong> 설명서 내용을 AI가 직접
+읽습니다(비밀키로 보이는 줄은 읽기 전에 미리 통째로 가려서 전달). 판정은
+항상 "의심"으로만 표시되고, 원문을 그대로 리포트에 인용하지 않습니다.
+일반 검진(도구가 원본을 직접 안 읽는 방식)의 <strong>유일한
+예외</strong>로, 명시적으로 선택해야만 켜지는 기능입니다.</li>
 </ul>
 <hr />
 <h2 id="8-명령어-목록">8. 명령어 목록</h2>
@@ -553,6 +579,13 @@ Enter.</li>
 <td>✅ 작동(2026-07-17 실사용 세션에서 확인창이 실제로 뜨는 것까지
 확인)</td>
 </tr>
+<tr>
+<td><code>/sodam-context:checkup-deep</code></td>
+<td>깊은 검진(선택)</td>
+<td>규칙으로 못 잡는 5종(모순·맥락 없는 참조·예시 없는 규칙·부풀림·RE
+스코프 누락)을 AI가 직접 판단(실행 전 매번 동의 필요, 토큰을 더 씀)</td>
+<td>✅ 작동(2026-08-03 실사용 세션 검증)</td>
+</tr>
 </tbody>
 </table>
 <blockquote>
@@ -567,6 +600,26 @@ Enter.</li>
 <details>
 <summary><b>📋 눌러서 펼치기 — 버전별 변경 이력</b></summary>
 
+<p><strong>0.1.0 이후 (진행 중, 2026-08-02~08-03)</strong></p>
+<ul>
+<li><strong>깊은 검진(<code>/sodam-context:checkup-deep</code>)
+추가:</strong> 일반 검진이 규칙만으로 못 잡던 5가지(모순·맥락 없는
+참조·예시 없는 규칙·부풀림·RE 스코프 누락)를 AI가 직접 내용을 읽고
+판단하는 새 선택 기능을 추가했습니다. 일반 검진은 원본을 직접 안 읽는 게
+원칙이라, 이 기능만 예외적으로 <strong>매번 동의를 구한 뒤</strong>
+비밀키로 보이는 줄을 자동으로 가린 상태로 내용을 읽습니다. 판정은 항상
+"확정"이 아니라 "의심"으로만 표시됩니다.</li>
+<li><strong>보안 점검에서 실제 문제 하나 더 발견해 바로
+고쳤어요:</strong> 위 신규 기능을 만드는 과정에서, 이 기능이
+백업·처방·되돌리기와 달리 자격증명 폴더(<code>.ssh</code> 등) 경로
+검사를 빠뜨리고 있던 걸 발견해 즉시 같은 검사를 추가했습니다.</li>
+<li><strong>실사용 세션 2회로 라이브 검증 완료:</strong> 새 창을 열어
+재설치 후 검진·동기화·깊은 검진을 전부 직접 실행해 확인 — 동의 절차가
+실제로 먼저 뜨는지, "의심" 톤이 지켜지는지, 실제 문제(테스트용 더미
+텍스트)를 정확히 찾아내는지까지 확인했습니다.</li>
+<li>회귀테스트 포함 <code>npm test</code> <strong>162개</strong> 전부
+통과, <code>selftest</code> 60개 전부 통과.</li>
+</ul>
 <p><strong>0.1.0 이후 (진행 중, 2026-07-27)</strong></p>
 <ul>
 <li><strong>보안 점검에서 실제 문제 하나 더 발견해 바로
@@ -781,20 +834,21 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 내보내는 <strong>요약 JSON만</strong> 봅니다. 비밀키 '값'은 어떤
 결과·로그에도 들어가지 않아요.</li>
 <li><strong>엔진(lib) 구성:</strong> <code>scan-secrets</code>(비밀키
-탐지) · <code>checkup-rules</code>(크기·린트중복·의심 탐지) ·
+탐지 + <code>maskSecretsInLines</code>로 깊은 검진용 줄 단위 마스킹) ·
+<code>checkup-rules</code>(크기·린트중복·의심 탐지) ·
 <code>intake-verify</code>(생성물 안전 게이트) ·
 <code>treat</code>+<code>treat-verify</code>(정리·안전키워드
 보존·회귀검증) · <code>backup</code>(원자적 백업·복구) ·
 <code>codex-merge</code>(코덱스 병합체인·32KiB) ·
 <code>path-safety</code>(민감 경로 쓰기 차단) ·
 <code>checkup-cli</code>(오케스트레이터:
-검진/백업/미리보기/적용/복구).</li>
+검진/백업/미리보기/적용/복구/깊은검진).</li>
 <li><strong>의존성 0:</strong> 외부 npm 패키지를 쓰지 않습니다(공급망
 위험 최소화). <strong>Node 18+ ESM</strong>, <strong>100%
 로컬</strong>(네트워크 전송 0).</li>
-<li><strong>진입점(명령) 4종:</strong>
-<code>sodam-context:intake</code>·<code>sodam-context:checkup</code>·<code>sodam-context:treat</code>·<code>sodam-context:sync</code>
-— 클로드코드는 슬래시 명령, 코덱스는 자연어(같은 내용을
+<li><strong>진입점(명령) 5종:</strong>
+<code>sodam-context:intake</code>·<code>sodam-context:checkup</code>·<code>sodam-context:treat</code>·<code>sodam-context:sync</code>·<code>sodam-context:checkup-deep</code>(2026-08-03
+추가) — 클로드코드는 슬래시 명령, 코덱스는 자연어(같은 내용을
 <code>commands/*.md</code>에서 읽음).</li>
 <li><strong>자연어 자동탐색 없음(2026-07-18, 의도적 설계):</strong>
 클로드코드 쪽엔 예전에 있던 "스킬"(자연어로 자동 찾아지는 기능 등록
@@ -877,6 +931,17 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 <li><strong>정직한 한계:</strong> 정해진 패턴만 잡으므로 <strong>"100%
 안전·완벽 탐지"는 보장하지 않습니다</strong>(참고용). 중요한 키는 직접
 재발급/관리하세요.</li>
+<li><strong>깊은 검진만의 예외(2026-08-03 추가):</strong> 위 "비밀키
+미열람" 원칙의 <strong>유일한 예외</strong>입니다.
+<code>/sodam-context:checkup-deep</code>은 규칙만으로 못 잡는 5가지
+항목을 판단하기 위해 AI가 설명서 내용을 직접 읽습니다 — 그래서
+<strong>실행 전 매번 명시적 동의</strong>를 구하고, 넘기기 전에 비밀키로
+보이는 줄은 통째로 가려서 전달합니다(마스킹이 100% 완벽하지 않을 수
+있다는 한계도 함께 안내합니다). 판정은 항상 "의심"으로만 표시하고
+"확정"이라 말하지 않으며, 리포트에 원문을 그대로 인용하지 않습니다. 이
+예외 경로가 자격증명 폴더(<code>.ssh</code>·<code>.aws</code> 등)를
+대상으로 지정돼도, 처방·백업·되돌리기와 동일하게 실행 전 자동으로
+거부됩니다.</li>
 </ul>
 <p><strong>데이터 흐름(검진):</strong></p>
 <pre><code>[원본 설명서 파일]
@@ -1004,6 +1069,13 @@ md에서 생성). md는 GitHub에서 보기 좋고, html은 브라우저에서 �
 <p><strong>Q. 비용이 드나요?</strong> A. 이 도구 자체는 로컬에서 돌아
 별도 요금이 없지만, <strong>AI(클로드·코덱스) 사용에는 각 제공사의
 요금이 적용</strong>됩니다(우리 범위 밖).</p>
+<p><strong>Q. "깊은 검진"은 일반 검진과 뭐가 다른가요?</strong> A. 일반
+검진은 도구가 원본 파일을 직접 안 읽고 요약 결과만 보지만, 깊은
+검진(<code>/sodam-context:checkup-deep</code>)은 모순·부풀림처럼
+규칙만으론 못 잡는 걸 AI가 직접 판단해야 해서 예외적으로 내용을
+읽습니다. 그래서 <strong>매번 동의를 먼저 구하고</strong>, 비밀키로
+보이는 줄은 미리 가리며, 일반 검진보다 <strong>토큰(비용)도 더
+씁니다.</strong> 필요할 때만 선택적으로 쓰세요.</p>
 <hr />
 <h2 id="16-라이선스-저작권-상업적-사용-면책">16. 라이선스 저작권 상업적
 사용 면책</h2>

@@ -496,6 +496,29 @@ passwords") are <strong>auto-preserved</strong> (never removed).</li>
 (safe-keyword preservation and restore accuracy confirmed). Still, for
 your first use, keep a copy of important files.</p>
 </blockquote>
+<h3 id="6-4-deep-checkup-optional--white_check_mark-works">6-4. Deep
+Checkup (optional) — <code>✅ Works</code></h3>
+<p>Use this when you want the AI to actually <strong>judge</strong> the
+5 items that a regular checkup (6-1) only "introduces" (conflicts, blind
+references, missing examples, bloat, RE-scope gaps) rather than
+evaluate.</p>
+<ol type="1">
+<li>Type <code>/sodam-context:checkup-deep</code>.</li>
+<li>Unlike a regular checkup, <strong>the AI reads your manual's content
+directly for this one</strong> (any line that looks like a secret is
+auto-masked first, though masking isn't 100% guaranteed) — so it
+<strong>asks for your consent every single time before running.</strong>
+You must say "yes" or "continue" for it to proceed (you can also say you
+don't want to be asked again for the rest of this conversation).</li>
+<li>It judges each of the 5 items individually and reports back.
+Findings are always labeled <strong>"suspect", never
+"confirmed"</strong> (false positives are possible), and if it finds
+nothing, it says so explicitly ("checked all 5, found nothing") rather
+than staying silent — so you can tell "not checked" apart from "checked,
+nothing found".</li>
+<li>It uses <strong>more tokens (cost)</strong> than a regular checkup.
+Use it selectively, only when you need it.</li>
+</ol>
 <hr />
 <h2 id="7-how-it-works">7. How It Works</h2>
 <ul>
@@ -529,6 +552,14 @@ already found (confirmed problems −15 pts each, suspects −5 pts each,
 out of 100) and calculates on the spot. It's a fully transparent
 subtraction formula, so if you ask "why this score?", it can show its
 work.</li>
+<li><strong>Deep checkup (optional, added 2026-08-03):</strong> unlike
+the checkup above, this feature reads the manual's content directly
+<strong>only after asking for consent</strong> (any line that looks like
+a secret is masked out entirely before being read). Findings are always
+labeled "suspect", and the original text is never quoted verbatim in the
+report. It's the <strong>only exception</strong> to "the tool never
+reads the original directly" and only turns on when you explicitly
+choose it.</li>
 </ul>
 <hr />
 <h2 id="8-command-list">8. Command List</h2>
@@ -578,6 +609,14 @@ natural-language trigger</td>
 <td>✅ Works (confirmed live in a real session on 2026-07-17, including
 the confirmation prompt actually firing)</td>
 </tr>
+<tr>
+<td><code>/sodam-context:checkup-deep</code></td>
+<td>Deep checkup (optional)</td>
+<td>AI directly judges 5 items rules can't catch (conflicts, blind
+references, missing examples, bloat, RE-scope gaps) — asks for consent
+every time, uses more tokens</td>
+<td>✅ Works (verified live 2026-08-03)</td>
+</tr>
 </tbody>
 </table>
 <blockquote>
@@ -592,6 +631,30 @@ check", etc.) — that's always been true and still works.</p>
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+<p><strong>After 0.1.0 (in progress, 2026-08-02~08-03)</strong></p>
+<ul>
+<li><strong>Added Deep Checkup
+(<code>/sodam-context:checkup-deep</code>):</strong> a new opt-in
+feature where the AI directly reads and judges the 5 items a regular
+checkup could only introduce, not evaluate (conflicts, blind references,
+missing examples, bloat, RE-scope gaps). Since a regular checkup never
+reads the original file, this is the one deliberate exception — it
+<strong>asks for consent every time</strong> and reads content with any
+secret-looking line already masked out. Findings are always labeled
+"suspect", never "confirmed".</li>
+<li><strong>Found and fixed one more real issue while building
+it:</strong> discovered that this new feature — unlike
+backup/treatment/restore — was missing the credential-folder
+(<code>.ssh</code>, etc.) path check, and added the same safeguard
+immediately.</li>
+<li><strong>Live-verified across two fresh sessions:</strong> opened new
+windows, reinstalled, and personally ran checkup, sync, and deep checkup
+end to end — confirming the consent prompt genuinely appears first, the
+"suspect" tone is honored, and a real planted issue (test filler text)
+is found accurately.</li>
+<li>All <strong>162</strong> tests pass (<code>npm test</code>),
+including the new ones; <code>selftest</code> 60/60 pass.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-07-27)</strong></p>
 <ul>
 <li><strong>Found and fixed one more real issue during a security
@@ -821,22 +884,24 @@ reads <strong>only the summary JSON</strong> emitted by
 <code>lib/checkup-cli.mjs</code>. Secret "values" never appear in any
 result or log.</li>
 <li><strong>Engine (lib) parts:</strong> <code>scan-secrets</code>
-(secret detection) · <code>checkup-rules</code> (size, lint duplication,
+(secret detection + <code>maskSecretsInLines</code> for deep-checkup
+line masking) · <code>checkup-rules</code> (size, lint duplication,
 suspect detection) · <code>intake-verify</code> (output safety gate) ·
 <code>treat</code>+<code>treat-verify</code> (tidy, safe-keyword
 preservation, regression check) · <code>backup</code> (atomic
 backup/restore) · <code>codex-merge</code> (Codex merge chain, 32 KiB) ·
 <code>path-safety</code> (blocks writes to sensitive paths) ·
 <code>checkup-cli</code> (orchestrator:
-checkup/backup/preview/apply/restore).</li>
+checkup/backup/preview/apply/restore/deep-scan).</li>
 <li><strong>Zero dependencies:</strong> no external npm packages
 (minimizes supply-chain risk). <strong>Node 18+ ESM</strong>,
 <strong>100% local</strong> (no network).</li>
-<li><strong>Entry points (commands) ×4:</strong>
+<li><strong>Entry points (commands) ×5:</strong>
 <code>sodam-context:intake</code> · <code>sodam-context:checkup</code> ·
-<code>sodam-context:treat</code> · <code>sodam-context:sync</code> —
-Claude Code uses slash commands, Codex uses natural language (reads the
-same content from <code>commands/*.md</code>).</li>
+<code>sodam-context:treat</code> · <code>sodam-context:sync</code> ·
+<code>sodam-context:checkup-deep</code> (added 2026-08-03) — Claude Code
+uses slash commands, Codex uses natural language (reads the same content
+from <code>commands/*.md</code>).</li>
 <li><strong>No natural-language auto-discovery (2026-07-18, deliberate
 design):</strong> the Claude Code side intentionally has no "skills"
 (the mechanism that auto-registers a feature for natural-language
@@ -923,6 +988,19 @@ exact math.</li>
 patterns</strong>, so it does <strong>not guarantee "100% safe / perfect
 detection"</strong> (for reference only). Reissue/manage important keys
 yourself.</li>
+<li><strong>The one exception — Deep Checkup (added
+2026-08-03):</strong> this is the <strong>only</strong> exception to the
+"no secret reading" principle above.
+<code>/sodam-context:checkup-deep</code> reads your manual's content
+directly, because judging the 5 items rules can't catch requires it — so
+it <strong>asks for explicit consent every time before running</strong>,
+and any line that looks like a secret is masked out entirely before
+being read (with an honest caveat that masking isn't 100% guaranteed).
+Findings are always labeled "suspect", never "confirmed", and the report
+never quotes the original text verbatim. If this path's target resolves
+to a credential folder (<code>.ssh</code>, <code>.aws</code>, etc.),
+it's automatically rejected before running — same as treatment, backup,
+and restore.</li>
 </ul>
 <p><strong>Data flow (checkup):</strong></p>
 <pre><code>[original manual file]
@@ -1055,6 +1133,15 @@ working with plain language as before.</p>
 <p><strong>Q. Does it cost anything?</strong> A. The tool itself runs
 locally with no separate fee, but <strong>using AI (Claude · Codex) is
 subject to each provider's pricing</strong> (outside our scope).</p>
+<p><strong>Q. What's the difference between "Deep Checkup" and a regular
+checkup?</strong> A. A regular checkup never reads your original file
+directly — it only sees a summary. Deep Checkup
+(<code>/sodam-context:checkup-deep</code>) reads content directly
+because judging things like conflicts and bloat requires it, so it
+<strong>asks for consent every time first</strong>, masks anything that
+looks like a secret before reading, and uses <strong>more tokens
+(cost)</strong> than a regular checkup. Use it only when you actually
+need it.</p>
 <hr />
 <h2 id="16-license-copyright-commercial-use-disclaimer">16. License
 Copyright Commercial Use Disclaimer</h2>

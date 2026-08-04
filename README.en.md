@@ -175,6 +175,24 @@ This tool is **not a program you launch directly** — it works when you **call 
 
 > ⚠️ Treatment has been verified with live, real-session testing (safe-keyword preservation and restore accuracy confirmed). Still, for your first use, keep a copy of important files.
 
+### 6-4. Deep Checkup (optional) — `✅ Works`
+
+Use this when you want the AI to actually **judge** the 5 items that a regular checkup (6-1) only
+"introduces" (conflicts, blind references, missing examples, bloat, RE-scope gaps) rather than
+evaluate.
+
+1. Type `/sodam-context:checkup-deep`.
+2. Unlike a regular checkup, **the AI reads your manual's content directly for this one**
+   (any line that looks like a secret is auto-masked first, though masking isn't 100% guaranteed) —
+   so it **asks for your consent every single time before running.** You must say "yes" or
+   "continue" for it to proceed (you can also say you don't want to be asked again for the rest of
+   this conversation).
+3. It judges each of the 5 items individually and reports back. Findings are always labeled
+   **"suspect", never "confirmed"** (false positives are possible), and if it finds nothing, it says
+   so explicitly ("checked all 5, found nothing") rather than staying silent — so you can tell "not
+   checked" apart from "checked, nothing found".
+4. It uses **more tokens (cost)** than a regular checkup. Use it selectively, only when you need it.
+
 ---
 
 ## 7. How It Works
@@ -185,6 +203,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 - **Codex (`AGENTS.md`):** Codex reads the **merged chain** of parent-folder and global manuals. The checkup verifies that **combined size (32 KiB limit)** too. (Korean is 3 bytes per character, so byte size exceeds character count.)
 - **Freshness reminder:** every checkup records, per absolute file path, only "when was this last checked" as a timestamp (no content stored). The next checkup compares against that timestamp and only speaks up if it's been over 30 days. **There is no background alert** — comparison only happens the moment you run a checkup.
 - **Reference score:** it doesn't re-read the file to compute this — it uses the **problem counts** the checkup already found (confirmed problems −15 pts each, suspects −5 pts each, out of 100) and calculates on the spot. It's a fully transparent subtraction formula, so if you ask "why this score?", it can show its work.
+- **Deep checkup (optional, added 2026-08-03):** unlike the checkup above, this feature reads the manual's content directly **only after asking for consent** (any line that looks like a secret is masked out entirely before being read). Findings are always labeled "suspect", and the original text is never quoted verbatim in the report. It's the **only exception** to "the tool never reads the original directly" and only turns on when you explicitly choose it.
 
 ---
 
@@ -197,6 +216,7 @@ This tool is **not a program you launch directly** — it works when you **call 
 | `/sodam-context:treat` | Treat | Backup → preview → after confirmation, tidies duplicates/blank lines (restore supported) | ✅ Works |
 | `/sodam-context:sync` | Sync | Finds safety rules present in only one of the two manuals and reports the line numbers (does not merge). Slash command only, no natural-language trigger | ✅ Works |
 | (Prevention) | Prevent | Blocks secrets / excess length before saving | ✅ Works (confirmed live in a real session on 2026-07-17, including the confirmation prompt actually firing) |
+| `/sodam-context:checkup-deep` | Deep checkup (optional) | AI directly judges 5 items rules can't catch (conflicts, blind references, missing examples, bloat, RE-scope gaps) — asks for consent every time, uses more tokens | ✅ Works (verified live 2026-08-03) |
 
 > ⚠️ **In Claude Code, the 4 commands above must be typed exactly as slash commands** (natural language won't find them). **Codex** has no slash commands at all, so it calls the same features with **natural language** ("run a health check", etc.) — that's always been true and still works.
 
@@ -206,6 +226,13 @@ This tool is **not a program you launch directly** — it works when you **call 
 
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
+
+**After 0.1.0 (in progress, 2026-08-02~08-03)**
+
+- **Added Deep Checkup (`/sodam-context:checkup-deep`):** a new opt-in feature where the AI directly reads and judges the 5 items a regular checkup could only introduce, not evaluate (conflicts, blind references, missing examples, bloat, RE-scope gaps). Since a regular checkup never reads the original file, this is the one deliberate exception — it **asks for consent every time** and reads content with any secret-looking line already masked out. Findings are always labeled "suspect", never "confirmed".
+- **Found and fixed one more real issue while building it:** discovered that this new feature — unlike backup/treatment/restore — was missing the credential-folder (`.ssh`, etc.) path check, and added the same safeguard immediately.
+- **Live-verified across two fresh sessions:** opened new windows, reinstalled, and personally ran checkup, sync, and deep checkup end to end — confirming the consent prompt genuinely appears first, the "suspect" tone is honored, and a real planted issue (test filler text) is found accurately.
+- All **162** tests pass (`npm test`), including the new ones; `selftest` 60/60 pass.
 
 **After 0.1.0 (in progress, 2026-07-27)**
 
@@ -305,9 +332,9 @@ Internal structure for the technically curious. (You don't need this to use the 
 
 - **Data-driven:** checkup/treatment rules live in `rules/*.json`, not in code. To add a new check, add **one object to a JSON array** (no code change).
 - **CLI–JSON boundary (the core of safety):** the AI/skill **does not read the original file directly** — it reads **only the summary JSON** emitted by `lib/checkup-cli.mjs`. Secret "values" never appear in any result or log.
-- **Engine (lib) parts:** `scan-secrets` (secret detection) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `path-safety` (blocks writes to sensitive paths) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore).
+- **Engine (lib) parts:** `scan-secrets` (secret detection + `maskSecretsInLines` for deep-checkup line masking) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `path-safety` (blocks writes to sensitive paths) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore/deep-scan).
 - **Zero dependencies:** no external npm packages (minimizes supply-chain risk). **Node 18+ ESM**, **100% local** (no network).
-- **Entry points (commands) ×4:** `sodam-context:intake` · `sodam-context:checkup` · `sodam-context:treat` · `sodam-context:sync` — Claude Code uses slash commands, Codex uses natural language (reads the same content from `commands/*.md`).
+- **Entry points (commands) ×5:** `sodam-context:intake` · `sodam-context:checkup` · `sodam-context:treat` · `sodam-context:sync` · `sodam-context:checkup-deep` (added 2026-08-03) — Claude Code uses slash commands, Codex uses natural language (reads the same content from `commands/*.md`).
 - **No natural-language auto-discovery (2026-07-18, deliberate design):** the Claude Code side intentionally has no "skills" (the mechanism that auto-registers a feature for natural-language discovery) — having one caused `/sodam-context:checkup` (the correct form) and `/sodam-context-checkup` (an auto-exposed hyphenated duplicate) to appear **at the same time**, which was confusing. So in Claude Code, all 4 commands above must be called via the **exact slash form**. Codex never had the concept of "skills" to begin with (it works from natural language plus `AGENTS.md` guidance alone), so it's unaffected by this change.
 
 ---
@@ -328,6 +355,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 - **The freshness reminder stores no content either (added 2026-07-15):** the "when was this last checked" record keeps only the file's **absolute path string + a timestamp string**, in your project folder (`.sodamcontext/last-checkup.json`). The manual's actual content never enters this record.
 - **The reference score is not a black box (added 2026-07-15):** computing it reads no new files — it just subtracts from the "confirmed problem count" / "suspect count" the checkup already produced. The weights (−15 for confirmed, −5 for suspect) are written as data in `rules/thresholds.json`, not buried in code, so anyone can inspect them, and asking "why?" shows the exact math.
 - **Honest limits:** it only catches **known patterns**, so it does **not guarantee "100% safe / perfect detection"** (for reference only). Reissue/manage important keys yourself.
+- **The one exception — Deep Checkup (added 2026-08-03):** this is the **only** exception to the "no secret reading" principle above. `/sodam-context:checkup-deep` reads your manual's content directly, because judging the 5 items rules can't catch requires it — so it **asks for explicit consent every time before running**, and any line that looks like a secret is masked out entirely before being read (with an honest caveat that masking isn't 100% guaranteed). Findings are always labeled "suspect", never "confirmed", and the report never quotes the original text verbatim. If this path's target resolves to a credential folder (`.ssh`, `.aws`, etc.), it's automatically rejected before running — same as treatment, backup, and restore.
 
 **Data flow (checkup):**
 ```
@@ -393,6 +421,9 @@ A. That's expected, not a bug. Since 2026-07-18, Claude Code has no natural-lang
 
 **Q. Does it cost anything?**
 A. The tool itself runs locally with no separate fee, but **using AI (Claude · Codex) is subject to each provider's pricing** (outside our scope).
+
+**Q. What's the difference between "Deep Checkup" and a regular checkup?**
+A. A regular checkup never reads your original file directly — it only sees a summary. Deep Checkup (`/sodam-context:checkup-deep`) reads content directly because judging things like conflicts and bloat requires it, so it **asks for consent every time first**, masks anything that looks like a secret before reading, and uses **more tokens (cost)** than a regular checkup. Use it only when you actually need it.
 
 ---
 
