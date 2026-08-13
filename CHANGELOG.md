@@ -7,6 +7,22 @@
 
 ## [Unreleased] — 2026-07-27
 
+### 기능 (2026-08-03 추가)
+- **깊은 검진(`/sodam-context:checkup-deep`) 신설**: 규칙만으로 못 잡는 모순·맥락없는 참조·예시
+  부재·부풀림 등 5종을 AI가 직접 판단하는 기능. `commands/checkup-deep.md` 신설, `checkup-cli.mjs`에
+  `--action deep-scan` 추가, `scan-secrets.mjs`에 `maskSecretsInLines()` 신규(비밀키 줄을 마스킹한
+  뒤에만 AI에게 전달 — T1 "원본 미열람" 원칙 유지, `07_SECURITY.md §2.3` "부득이 읽으면 마스킹"
+  조항 근거). 항상 "의심" 톤 고정, 원문 인용 금지, 실행 전 매번 사용자 동의 필수.
+- **구현 중 자체 발견한 보안 결함 수정**: `deep-scan` 액션에 `isSensitiveWritePath()` 검사가 빠져
+  있어 `.ssh`·`.aws` 등 자격증명 폴더도 그대로 읽어 AI에게 전달될 수 있었음(T3와 동일 결함
+  클래스가 `backup` 아닌 `deep-scan` 경로에도 있었던 것). `checkup-cli.test.mjs`·`scan-secrets.test.mjs`에
+  회귀테스트 추가.
+- 전체 회귀: `npm test` 152→**162 PASS**(0 FAIL) · `selftest` **60 PASS**(0 FAIL, 변동 없음).
+
+### 문서 (2026-08-04 추가)
+- **README(한/영, md+html) "깊은 검진" 기능 반영**: 위 `checkup-deep` 신규 기능을 사용자 문서
+  4개 파일(`README.md`/`README.en.md`/`README.html`/`README.en.html`) 전부에 동기화 반영.
+
 ### 문서 (2026-08-02 추가)
 - **README(한/영, md+html) "제거(Uninstall)" 섹션 신규 추가**: `01_PRD.md §5`·`11_DOCS_README_GUIDE.md §1`이
   Must로 요구하는 "제거 방법 + 백업 보존/삭제 선택" 항목이 README.md·README.en.md 어디에도 없었던 걸
