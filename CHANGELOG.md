@@ -5,6 +5,15 @@
 
 ---
 
+## [0.1.0] — 2026-08-13
+
+아래 2026-07-16~2026-07-27 사이에 누적된 "[Unreleased]" 표기 10개 항목은
+[GitHub Release v0.1.0](https://github.com/sodam-ai/SoDam-Context-Eng/releases/tag/v0.1.0)
+(pre-release)으로 이 날짜에 한 번에 발행되었습니다. 개별 날짜 표기는 작업 이력 추적용으로
+그대로 유지합니다(구조 변경 없음).
+
+---
+
 ## [Unreleased] — 2026-07-27
 
 ### 기능 (2026-08-03 추가)
