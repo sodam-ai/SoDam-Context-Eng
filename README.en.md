@@ -94,7 +94,7 @@ Codex has no plugin marketplace, so you **clone the whole repository and run ins
 2. **Start Codex from this repository's root folder.** (The root has `AGENTS.md`, `skills`, `lib`, and `rules`.)
 3. For fuller steps + FAQ, see **`codex/README.ko.md`** in the repo, or **[How to Use](#6-how-to-use)** below.
 
-> 💡 **One-click install script (optional, Windows):** `codex/install.ps1` in the repo automates steps 1–2 above (prerequisite check, clone, `AGENTS.md` creation). Note the repository is **PRIVATE**, so you must do step 1 (`git clone`) manually once to get the script itself. If execution policy blocks it, right-click the file → **Run with PowerShell**, or run once with `powershell -ExecutionPolicy Bypass -File install.ps1`. Full guide: `codex/README.ko.md` (Korean).
+> 💡 **One-click install script (optional, Windows):** `codex/install.ps1` in the repo automates steps 1–2 above (prerequisite check, clone, `AGENTS.md` creation). Note the repository is public, but there is no standalone download link for the script alone, so you must do step 1 (`git clone`) manually once to get the script itself. If execution policy blocks it, right-click the file → **Run with PowerShell**, or run once with `powershell -ExecutionPolicy Bypass -File install.ps1`. Full guide: `codex/README.ko.md` (Korean).
 
 ### 3-3. Uninstalling
 

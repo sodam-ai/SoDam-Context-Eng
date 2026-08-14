@@ -94,7 +94,7 @@
 2. **코덱스를 이 저장소 루트 폴더에서 시작**하세요. (루트에 `AGENTS.md`·`skills`·`lib`·`rules`가 다 있어요.)
 3. 자세한 단계·FAQ는 저장소의 **`codex/README.ko.md`** 또는 이 문서 아래 **[사용 방법](#6-사용-방법)** 참고.
 
-> 💡 **원클릭 설치 스크립트(선택, Windows):** 저장소의 `codex/install.ps1`을 받아서 실행하면 위 1~2단계(준비물 확인·clone·AGENTS.md 생성)를 대신 해 줍니다. 단, 이 저장소는 **비공개(PRIVATE)** 라 스크립트 자체를 처음 손에 넣으려면 딱 한 번은 위 1단계(`git clone`)를 직접 해야 합니다. 실행 정책이 막으면(Windows 보안), 파일을 우클릭 → **PowerShell로 실행**하거나 `powershell -ExecutionPolicy Bypass -File install.ps1`로 1회 실행하세요. 자세한 안내는 `codex/README.ko.md`.
+> 💡 **원클릭 설치 스크립트(선택, Windows):** 저장소의 `codex/install.ps1`을 받아서 실행하면 위 1~2단계(준비물 확인·clone·AGENTS.md 생성)를 대신 해 줍니다. 이 저장소는 **공개(PUBLIC)** 저장소지만, 스크립트 파일 하나만 따로 받을 수 있는 링크는 준비돼 있지 않아서, 스크립트 자체를 처음 손에 넣으려면 딱 한 번은 위 1단계(`git clone`)를 직접 해야 합니다. 실행 정책이 막으면(Windows 보안), 파일을 우클릭 → **PowerShell로 실행**하거나 `powershell -ExecutionPolicy Bypass -File install.ps1`로 1회 실행하세요. 자세한 안내는 `codex/README.ko.md`.
 
 ### 3-3. 제거(Uninstall) 방법
 
