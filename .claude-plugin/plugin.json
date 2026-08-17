@@ -2,7 +2,7 @@
   "name": "sodam-context",
   "displayName": "SoDamContext",
   "description": "완전 초보자를 위한 AI 사용설명서(CLAUDE.md·AGENTS.md) 건강검진 — 군더더기·모순·비밀키를 쉬운 한국어로 점검하고 작게·안전하게 다듬어 줍니다. 클로드코드 + 코덱스.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "SoDam AI Studio"
   },
