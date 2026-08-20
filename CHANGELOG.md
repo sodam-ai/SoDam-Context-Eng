@@ -15,6 +15,13 @@
   담지 않음(T1 무관, 카테고리 id와 숫자만 기록). 산식(`rules/thresholds.json`) 자체는 이번에도
   변경 없음 — 튜닝에 쓸 데이터를 모으는 인프라만 추가.
 
+### 수정 (2026-08-20)
+- **검진 이력에 비밀키로 인한 감점 원인이 안 남던 결함**: `healthScore.breakdown`(highCount/
+  mediumCount)은 비밀키 발견분까지 포함해 계산하지만, `checkup-history.mjs`로 넘기는
+  `findingIds`는 rules/suspects만 매핑해 비밀키로 인한 감점을 빠뜨렸음(실사용 검증 중 실제
+  파일로 재현: mediumCount:1인데 findingIds:[]). 값 노출 없이(T1 무관) 고정 상수 `"secret"`으로
+  표시하도록 `checkup-cli.mjs` 수정, 회귀 테스트 1건 추가.
+
 ### 수정 (2026-08-19)
 - **처방(treat) 미리보기가 삭제 예정 줄에 비밀키 원문을 그대로 담던 문제(T1 원칙 위반 소지)**:
   `generateTreatPreview()`의 `removedItems`는 중복 제거로 삭제되는 줄의 원문을 그대로 저장했는데,
