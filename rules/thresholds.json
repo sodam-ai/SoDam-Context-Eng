@@ -11,8 +11,7 @@
     "_unit": "바이트(UTF-8 bytes)",
     "bytes_limit": 32768,
     "bytes_warn": 26214,
-    "cjk_bytes_per_char": 3,
-    "_source": "Codex project_doc_max_bytes 기본 32KiB(=32768). 한글 1자=3바이트라 글자 수가 적어도 한도 도달 가능"
+    "_source": "Codex project_doc_max_bytes 기본 32KiB(=32768). 한글 1자=3바이트라 글자 수가 적어도 한도 도달 가능 — 이 계산은 코드가 Buffer.byteLength()로 실제 UTF-8 바이트를 직접 재서 하므로, 별도 상수는 안 씀(★2026-08-20 정정: 예전엔 cjk_bytes_per_char:3이라는 미사용 상수가 여기 있었으나, 참조하는 코드가 없어 삭제)"
   },
   "freshness": {
     "_unit": "일수(days)",

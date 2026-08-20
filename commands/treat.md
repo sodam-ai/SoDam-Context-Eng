@@ -41,7 +41,10 @@ description: 검진(checkup)에서 찾은 문제를 안전하게 처방(다듬�
    ```
    node "${CLAUDE_PLUGIN_ROOT}/lib/checkup-cli.mjs" "<파일 절대경로>" --action preview
    ```
-   - 결과의 `preview` 필드를 쉬운 한국어로 설명합니다.
+   - 결과의 `originalLines`(원래 줄 수)·`proposedLines`(처방 후 줄 수)·`removedCount`(줄어드는
+     개수)·`shrunk`(작아졌는지)를 쉬운 한국어로 설명합니다. (★정정 2026-08-20: 예전엔 "`preview`
+     필드"라고 잘못 적혀 있었으나, 실제 응답엔 `preview`라는 중첩 필드가 없고 이 4개가 최상위에
+     그대로 담겨 있습니다 — `lib/checkup-cli.mjs`의 `preview` 액션 실제 코드로 확인.)
    - 예: "20줄 → 17줄로 줄어요. 중복된 규칙 3개를 뺄게요."
    - `safe: false`면: "이미 잘 정리돼 있어서 처방이 필요 없어요."
 
