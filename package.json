@@ -11,7 +11,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "test": "node lib/checkup-rules.test.mjs && node lib/scan-secrets.test.mjs && node lib/treat.test.mjs && node lib/path-safety.test.mjs && node lib/checkup-cli.test.mjs && node lib/prevent-write.test.mjs && node lib/sync-check.test.mjs && node lib/checkup-freshness.test.mjs && node lib/health-score.test.mjs && node lib/intake-verify.test.mjs && node lib/backup.test.mjs",
+    "test": "node lib/checkup-rules.test.mjs && node lib/scan-secrets.test.mjs && node lib/treat.test.mjs && node lib/path-safety.test.mjs && node lib/checkup-cli.test.mjs && node lib/prevent-write.test.mjs && node lib/sync-check.test.mjs && node lib/checkup-freshness.test.mjs && node lib/health-score.test.mjs && node lib/intake-verify.test.mjs && node lib/backup.test.mjs && node lib/checkup-history.test.mjs",
     "selftest": "node lib/_selftest.mjs"
   }
 }
