@@ -376,14 +376,18 @@ Internal structure for the technically curious. (You don't need this to use the 
 |---|---|---|
 | Commands not in the list | **Did not restart** after install | **Fully close and reopen** Claude Code |
 | Still not visible after restart | Installed copy not refreshed | Run `! claude plugin marketplace update sodamcontext-marketplace`, then restart |
+| Install shows an "unknown publisher" / "unverified developer" warning | Windows SmartScreen or macOS Gatekeeper blocking a first-run program (normal security behavior) | Windows: click "More info" → "Run anyway" · Mac: System Settings → Privacy & Security → "Open Anyway" |
 | "node not found" | Node.js missing/old | Install LTS from [nodejs.org](https://nodejs.org), then restart |
 | A different feature responds | A similarly-named plugin intercepts | Use the **`/sodam-context:...`** slash command instead of plain language |
 | Checks the wrong file | "which folder?" was ambiguous | Give the exact **absolute path** of the file |
+| Checkup says "manual file not found" | You haven't created an AI manual (CLAUDE.md/AGENTS.md) yet — **this is normal** | Just say "create my manual" and it **automatically guides you into intake** (5-6 easy questions) to make one |
 | Says there's a password | Something looks like a key in the manual | **Reissue** that key and remove it from the manual (use env vars) — the tool never deletes it automatically |
 | Codex says "Cannot find module" | Run from a folder that isn't the repo root | Re-run Codex from the **repo root folder** (`SoDam-Context-Eng`) |
 | Created/edited a file without asking | 🚨 Not normal | Stop and tell someone who can help (it should always ask first) |
 | Restore says "not a backup file location" and refuses | The file you pointed to isn't a real backup this tool made (this is a safety feature working correctly, not a bug) | Use the backup path shown to you during `/sodam-context:treat` — don't point restore at a file you made yourself |
 | Backup says "can't back up this location" and refuses | The target you gave is a sensitive location — a credential folder (`.ssh`/`.aws`) or a system folder (this is a safety feature working correctly, not a bug) | Only point backup at ordinary project files — credential/system folders are out of scope for this tool |
+| Installed several SoDam sibling plugins and it's confusing | More commands to keep track of (execution itself never mixes up) | Use the **`/sodam-context:...`** command exactly — this tool only reads and edits the `CLAUDE.md`/`AGENTS.md` you point it at; it never touches global settings or another plugin's files. Restore also always works from this tool's own backups (`.sodamcontext/backups/`) only |
+| Treatment (dedup/tidy) stops midway | Backup write failed (e.g. low disk space) — stops safely before touching the original (fail-closed) | Free up disk space and retry — since it stopped, the original file was never touched, so no separate recovery is needed |
 
 ---
 

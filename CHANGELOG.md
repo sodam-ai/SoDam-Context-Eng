@@ -5,6 +5,36 @@
 
 ---
 
+## [Unreleased]
+
+### 수정 (2026-08-19)
+- **처방(treat) 미리보기가 삭제 예정 줄에 비밀키 원문을 그대로 담던 문제(T1 원칙 위반 소지)**:
+  `generateTreatPreview()`의 `removedItems`는 중복 제거로 삭제되는 줄의 원문을 그대로 저장했는데,
+  그 줄이 비밀키였다면 사람이 읽는 미리보기 요약에 원문이 노출될 latent 위험이 있었음. `treat.mjs`에
+  `maskIfSecret()`/`SECRET_LINE_PLACEHOLDER`를 추가해 비밀키 패턴에 매칭되는 줄은 마스킹 문구로
+  대체하고, `checkup-cli.mjs`의 `preview`/`apply` 두 액션 모두 `loadSecretPatterns()`로 이 패턴을
+  전달하도록 배선.
+- **Harness로 백업한 파일을 이 도구의 `--action restore`로 되돌릴 수 없던 문제**: `backup.mjs`는
+  Harness(`sodamharness`)가 설치돼 있으면 백업 생성을 위임하지만, 되돌리기(`restoreBackup()`)는
+  2026-07-13에 고친 "임의 파일 읽기" 취약점 재발 방지를 위해 항상 자체 백업 폴더만 신뢰해 거부됐음
+  (PRD 재감사 중 `lib/backup.mjs` 대조로 발견). 검증 안 된 외부 CLI에 경로를 그대로 넘겨 되돌리기까지
+  위임하면 같은 취약점이 다른 경로로 재발할 수 있어 기능은 바꾸지 않고, `backup`/`apply` 응답과
+  되돌리기 실패 메시지에 "Harness 백업은 Harness로 복구" 안내를 추가.
+- **같은 파일을 1초 안에 두 번 백업하면 이전 백업이 조용히 덮어써지던 문제**(`07_SECURITY.md` §2.4
+  "충돌 방지" Must 요구사항 미구현 — 대조 감사로 발견): 타임스탬프를 밀리초 단위로 바꾸고, 그래도
+  겹치면 번호를 붙이는 `uniqueBackupPath()` 추가.
+
+### 테스트
+- 신규 회귀 테스트 4건(`checkup-cli.test.mjs` [26] + 신설 `backup.test.mjs` 3건, stamp를 고정해
+  충돌을 결정적으로 재현). 전체 `npm test` 164→**168 PASS**(0 FAIL). `package.json`에
+  `backup.test.mjs` 등록.
+
+### 문서
+- `.PRD/02_DATA_MODEL.md`·`05_AUDIT_AND_DECISIONS.md`·`11_DOCS_README_GUIDE.md`·
+  `RESEARCH_SOURCES.md`에 위 발견 내용 반영(★정정), `CHECKPOINT.md`에 경위 기록.
+
+---
+
 ## [0.1.1] — 2026-08-17
 
 ### 수정
