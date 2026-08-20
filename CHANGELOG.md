@@ -15,6 +15,24 @@
   담지 않음(T1 무관, 카테고리 id와 숫자만 기록). 산식(`rules/thresholds.json`) 자체는 이번에도
   변경 없음 — 튜닝에 쓸 데이터를 모으는 인프라만 추가.
 
+### 수정 (2026-08-20, 실사용 검증 라운드)
+- **처방(`treat`) 미리보기·적용에서 개발자 전용 에러 문구가 그대로 노출되던 문제**: 없는 파일을
+  `--action preview`/`apply`로 넘기면 `backup`/`restore`/`deep-scan`과 달리 파일 존재 확인이
+  없어 Node.js 원본 에러(`ENOENT: no such file or directory, open '...'`)가 그대로 노출됐음
+  (실제 CLI 실행으로 재현). `01_PRD.md`의 "한국어·비개발자 표현" 원칙 위반이라, 다른 액션과
+  동일한 방식(파일 존재 확인 → "처방할 파일을 찾을 수 없어요")으로 수정.
+- **`commands/treat.md`가 존재하지 않는 `preview` 필드를 설명하던 문제**: 실제 CLI 응답엔
+  `preview`라는 중첩 필드가 없고 `originalLines`/`proposedLines`/`removedCount`/`shrunk`가
+  최상위에 있음 — 정확한 필드명으로 정정.
+- **`rules/thresholds.json`의 미사용 설정값 `cjk_bytes_per_char` 제거**: 실제 바이트 계산은
+  `Buffer.byteLength()`로 직접 재기 때문에 이 상수를 참조하는 코드가 전혀 없었음(죽은 설정,
+  동작 영향 없음).
+
+이번 라운드는 병렬 서브에이전트 3개로 아직 안 써본 각도(슬래시 명령 문서 vs 실제 코드, 규칙
+데이터 파일 내부 정합성, 사용자 노출 메시지의 쉬운 한국어 준수)를 감사해 발견. 신규 회귀 테스트
+1건(`checkup-cli.test.mjs [10b]`, preview·apply 둘 다 검증). `npm test` 177→**178 PASS**
+(0 FAIL), `selftest` 60 PASS.
+
 ### 수정 (2026-08-20)
 - **검진 이력에 비밀키로 인한 감점 원인이 안 남던 결함**: `healthScore.breakdown`(highCount/
   mediumCount)은 비밀키 발견분까지 포함해 계산하지만, `checkup-history.mjs`로 넘기는
