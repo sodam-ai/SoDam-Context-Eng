@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+### 추가 (2026-08-20)
+- **건강점수 산식 정식화(E1 게이트)를 위한 로컬 이력 축적**: 낯선 베타 테스터 모집이 구조적으로
+  어려운 본인 단독 사용 환경에서도, 실사용을 반복하며 자연히 실제 점수·문제유형 데이터가 쌓이도록
+  `lib/checkup-history.mjs` 신설. 매 검진(`/checkup`)마다 점수·심각도별 개수·문제 카테고리 id를
+  프로젝트별 `.sodamcontext/checkup-history.jsonl`에 한 줄씩 append. 파일 원문·비밀키 값은 절대
+  담지 않음(T1 무관, 카테고리 id와 숫자만 기록). 산식(`rules/thresholds.json`) 자체는 이번에도
+  변경 없음 — 튜닝에 쓸 데이터를 모으는 인프라만 추가.
+
 ### 수정 (2026-08-19)
 - **처방(treat) 미리보기가 삭제 예정 줄에 비밀키 원문을 그대로 담던 문제(T1 원칙 위반 소지)**:
   `generateTreatPreview()`의 `removedItems`는 중복 제거로 삭제되는 줄의 원문을 그대로 저장했는데,
@@ -28,6 +36,10 @@
 - 신규 회귀 테스트 4건(`checkup-cli.test.mjs` [26] + 신설 `backup.test.mjs` 3건, stamp를 고정해
   충돌을 결정적으로 재현). 전체 `npm test` 164→**168 PASS**(0 FAIL). `package.json`에
   `backup.test.mjs` 등록.
+- 위 이력 축적 기능에 신규 회귀 테스트 8건(신설 `checkup-history.test.mjs`) 추가 — 누적 append·
+  T1 무관·손상 줄 fail-safe·`.git` 없는 폴더 폴백 등 검증. 전체 `npm test` 168→**176 PASS**
+  (0 FAIL). `package.json`에 `checkup-history.test.mjs` 등록. 실제 CLI를 두 번 연속 실행하는
+  end-to-end 확인도 별도로 수행(스크래치패드 격리 실행, 원본 프로젝트 미접촉).
 
 ### 문서
 - `.PRD/02_DATA_MODEL.md`·`05_AUDIT_AND_DECISIONS.md`·`11_DOCS_README_GUIDE.md`·
