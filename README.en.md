@@ -227,6 +227,15 @@ evaluate.
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+**After 0.1.0 (in progress, 2026-08-19~08-20)**
+
+- **Found and fixed a restore-guidance mismatch:** when a sibling SoDam tool (Harness) is installed, it takes over making backups — but restore, for safety, only ever trusts backups this tool made itself, so you could end up with "backup succeeded, but restore is refused." Fixed by adding "use that tool's own restore command instead" guidance to the backup response in that case (the backup logic itself was left untouched and safe; only the guidance was made honest).
+- **Added backup-collision protection:** found that treating the same file twice within one second could let the second backup silently overwrite the first — fixed by recording timestamps down to the millisecond and appending a number whenever two would collide, so nothing is ever silently overwritten.
+- **Strengthened secret masking in the treatment preview:** found that if a secret-looking line was among the lines about to be removed, the preview summary could show its raw text — fixed so any secret-looking line is automatically masked there too.
+- **Added history logging toward a real health-score formula:** every checkup now quietly appends its score and problem count to a file inside your project folder (`.sodamcontext/checkup-history.jsonl`), so that once enough real usage data accumulates over time, the reference-score formula can eventually be tuned with real evidence. It never records file content or secret values — only the score and counts.
+- **Fixed preview/apply showing a developer-only error for a missing file:** unified it with the other actions' friendly message, "couldn't find the file to treat."
+- All **178** tests pass (`npm test`), including the new regression tests; `selftest` 60/60 pass.
+
 **After 0.1.0 (in progress, 2026-08-02~08-03)**
 
 - **Added Deep Checkup (`/sodam-context:checkup-deep`):** a new opt-in feature where the AI directly reads and judges the 5 items a regular checkup could only introduce, not evaluate (conflicts, blind references, missing examples, bloat, RE-scope gaps). Since a regular checkup never reads the original file, this is the one deliberate exception — it **asks for consent every time** and reads content with any secret-looking line already masked out. Findings are always labeled "suspect", never "confirmed".
@@ -306,6 +315,7 @@ evaluate.
 | Check/create target | `CLAUDE.md` · `AGENTS.md` in **your working project folder** |
 | (Treatment) backup folder | `<project folder>\.sodamcontext\backups\` (created automatically when treatment runs) |
 | (Freshness reminder) last-checkup record | `<project folder>\.sodamcontext\last-checkup.json` (created/updated automatically on each checkup; stores only the path + timestamp) |
+| (For the reference score) checkup history | `<project folder>\.sodamcontext\checkup-history.jsonl` (one line appended per checkup; stores only score + problem counts, added 2026-08-20) |
 | This manual | The plugin folder's `README.md`·`README.html` (Korean), `README.en.md`·`README.en.html` (English) |
 | Codex install guide | `codex/README.ko.md` in the repo |
 
@@ -332,7 +342,7 @@ Internal structure for the technically curious. (You don't need this to use the 
 
 - **Data-driven:** checkup/treatment rules live in `rules/*.json`, not in code. To add a new check, add **one object to a JSON array** (no code change).
 - **CLI–JSON boundary (the core of safety):** the AI/skill **does not read the original file directly** — it reads **only the summary JSON** emitted by `lib/checkup-cli.mjs`. Secret "values" never appear in any result or log.
-- **Engine (lib) parts:** `scan-secrets` (secret detection + `maskSecretsInLines` for deep-checkup line masking) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `path-safety` (blocks writes to sensitive paths) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore/deep-scan).
+- **Engine (lib) parts:** `scan-secrets` (secret detection + `maskSecretsInLines` for deep-checkup line masking) · `checkup-rules` (size, lint duplication, suspect detection) · `intake-verify` (output safety gate) · `treat`+`treat-verify` (tidy, safe-keyword preservation, regression check) · `backup` (atomic backup/restore) · `codex-merge` (Codex merge chain, 32 KiB) · `path-safety` (blocks writes to sensitive paths) · `checkup-history` (append-only history for the reference score, added 2026-08-20) · `checkup-cli` (orchestrator: checkup/backup/preview/apply/restore/deep-scan).
 - **Zero dependencies:** no external npm packages (minimizes supply-chain risk). **Node 18+ ESM**, **100% local** (no network).
 - **Entry points (commands) ×5:** `sodam-context:intake` · `sodam-context:checkup` · `sodam-context:treat` · `sodam-context:sync` · `sodam-context:checkup-deep` (added 2026-08-03) — Claude Code uses slash commands, Codex uses natural language (reads the same content from `commands/*.md`).
 - **No natural-language auto-discovery (2026-07-18, deliberate design):** the Claude Code side intentionally has no "skills" (the mechanism that auto-registers a feature for natural-language discovery) — having one caused `/sodam-context:checkup` (the correct form) and `/sodam-context-checkup` (an auto-exposed hyphenated duplicate) to appear **at the same time**, which was confusing. So in Claude Code, all 4 commands above must be called via the **exact slash form**. Codex never had the concept of "skills" to begin with (it works from natural language plus `AGENTS.md` guidance alone), so it's unaffected by this change.
