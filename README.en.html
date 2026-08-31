@@ -172,8 +172,8 @@
 <header id="title-block-header">
 <h1 class="title">SoDamContext — README (English)</h1>
 </header>
-<h1 id="sodamcontext-ai-manual-health-check">SoDamContext — AI Manual
-Health Check 🩺</h1>
+<h1 id="sodamcontext--ai-manual-health-check-stethoscope">SoDamContext —
+AI Manual Health Check 🩺</h1>
 <blockquote>
 <p>A tool that <strong>checks, creates, and tidies</strong> your
 <strong>“AI manual”</strong> (<code>CLAUDE.md</code> /
@@ -184,26 +184,30 @@ your project well.</p>
 <strong>one step at a time</strong>.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ <strong>Honest current status (as of 2026-07-18)</strong> -
-<strong>Works (live-verified in real sessions):</strong> Checkup ·
+<p>⚠️ <strong>Honest current status (as of 2026-07-18)</strong></p>
+<ul>
+<li><strong>Works (live-verified in real sessions):</strong> Checkup ·
 Intake · Treatment · Codex checkup · Sync (compare the two files) ·
 Prevention (auto-block before saving) — <strong>confirmed on both Claude
-Code and Codex</strong> - <strong>Security hardening:</strong> writes to
-sensitive locations (system/credential folders) are now automatically
-rejected - <strong>Code complete, CLI-verified (live session
-confirmation pending):</strong> Freshness reminder (auto-notes how many
-days since the last checkup) · Reference health score — both are now
-automatically included in the checkup result, and their accuracy has
-been confirmed by unit tests and direct command-line runs. We just
-haven’t yet confirmed these appear naturally in a real conversational
-checkup session. - <strong>⚠️ How you call this changed in Claude Code
+Code and Codex</strong></li>
+<li><strong>Security hardening:</strong> writes to sensitive locations
+(system/credential folders) are now automatically rejected</li>
+<li><strong>Code complete, CLI-verified (live session confirmation
+pending):</strong> Freshness reminder (auto-notes how many days since
+the last checkup) · Reference health score — both are now automatically
+included in the checkup result, and their accuracy has been confirmed by
+unit tests and direct command-line runs. We just haven’t yet confirmed
+these appear naturally in a real conversational checkup session.</li>
+<li><strong>⚠️ How you call this changed in Claude Code
 (2026-07-18):</strong> natural language (“check my manual”) used to
 occasionally find it; now it works <strong>only</strong> when you type
-the <strong>exact slash command</strong>,
-e.g. <code>/sodam-context:checkup</code> (a structural change made to
-remove ambiguity). <strong>Codex is unaffected</strong> — natural
-language still works exactly as before. - We do not exaggerate. We do
-<strong>not</strong> claim “100% safe / perfect”.</p>
+the <strong>exact slash command</strong>, e.g.
+<code>/sodam-context:checkup</code> (a structural change made to remove
+ambiguity). <strong>Codex is unaffected</strong> — natural language
+still works exactly as before.</li>
+<li>We do not exaggerate. We do <strong>not</strong> claim “100% safe /
+perfect”.</li>
+</ul>
 </blockquote>
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -229,7 +233,7 @@ Locations</a></li>
 Copyright Commercial Use Disclaimer</a></li>
 </ol>
 <hr />
-<h2 id="what-is-this">1. What Is This</h2>
+<h2 id="1-what-is-this">1. What Is This</h2>
 <ul>
 <li>AI coding tools (<strong>Claude Code</strong> ·
 <strong>Codex</strong>) read a file called
@@ -260,14 +264,9 @@ Claude Code / Codex on a computer (Windows · macOS)</strong>. It is
 cannot use it.</p>
 </blockquote>
 <hr />
-<h2 id="prerequisites-and-required-programs">2. Prerequisites and
+<h2 id="2-prerequisites-and-required-programs">2. Prerequisites and
 Required Programs</h2>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr>
 <th>Requirement</th>
@@ -286,7 +285,7 @@ href="https://claude.com/claude-code">claude.com/claude-code</a></td>
 <td><strong>Node.js 18+</strong></td>
 <td>The checkup tool runs Node internally</td>
 <td>Type <code>!node --version</code> — if it shows <code>v18</code> or
-higher (e.g. v20, v22), you’re set. Otherwise install
+higher (e.g. v20, v22), you’re set. Otherwise install
 <strong>LTS</strong> from <a href="https://nodejs.org">nodejs.org</a>
 and restart your computer</td>
 </tr>
@@ -314,8 +313,8 @@ out).</li>
 Code. In this doc, “type ~ in the input box” means typing there.</li>
 </ul>
 <hr />
-<h2 id="download-and-install">3. Download and Install</h2>
-<h3 id="claude-code-automatic-install-recommended">3-1. Claude Code
+<h2 id="3-download-and-install">3. Download and Install</h2>
+<h3 id="3-1-claude-code-automatic-install-recommended">3-1. Claude Code
 (automatic install, recommended)</h3>
 <p>Paste the following <strong>two lines, one at a time</strong>, into
 the Claude Code <strong>input box</strong>, pressing Enter after
@@ -332,24 +331,24 @@ find SoDamContext, and click <strong>Install</strong>.</li>
 <p>💡 <strong>Using a local folder directly</strong>
 (development/testing): replace <code>sodam-ai/SoDam-Context-Eng</code>
 on the first line with <strong>the absolute path of that
-folder</strong>.
-e.g. <code>/plugin marketplace add D:\...\SoDam-Context-Eng</code></p>
+folder</strong>. e.g.
+<code>/plugin marketplace add D:\...\SoDam-Context-Eng</code></p>
 </blockquote>
-<h3 id="codex-manual-install">3-2. Codex (manual install)</h3>
+<h3 id="3-2-codex-manual-install">3-2. Codex (manual install)</h3>
 <p>Codex has no plugin marketplace, so you <strong>clone the whole
 repository and run inside it</strong>. (If you copy only the skill
 folders, the <code>lib</code> and <code>rules</code> folders the checker
 needs are missing, and you’ll get a “file not found” error.)</p>
 <ol type="1">
-<li><p>In a terminal, one line at a time:</p>
+<li>In a terminal, one line at a time:
 <pre><code>git clone https://github.com/sodam-ai/SoDam-Context-Eng.git
 cd SoDam-Context-Eng</code></pre></li>
-<li><p><strong>Start Codex from this repository’s root folder.</strong>
+<li><strong>Start Codex from this repository’s root folder.</strong>
 (The root has <code>AGENTS.md</code>, <code>skills</code>,
-<code>lib</code>, and <code>rules</code>.)</p></li>
-<li><p>For fuller steps + FAQ, see
+<code>lib</code>, and <code>rules</code>.)</li>
+<li>For fuller steps + FAQ, see
 <strong><code>codex/README.ko.md</code></strong> in the repo, or
-<strong><a href="#6-how-to-use">How to Use</a></strong> below.</p></li>
+<strong><a href="#6-how-to-use">How to Use</a></strong> below.</li>
 </ol>
 <blockquote>
 <p>💡 <strong>One-click install script (optional, Windows):</strong>
@@ -362,28 +361,37 @@ right-click the file → <strong>Run with PowerShell</strong>, or run once
 with <code>powershell -ExecutionPolicy Bypass -File install.ps1</code>.
 Full guide: <code>codex/README.ko.md</code> (Korean).</p>
 </blockquote>
-<h3 id="uninstalling">3-3. Uninstalling</h3>
-<p><strong>Claude Code</strong> 1. Type
-<code>/plugin uninstall sodam-context</code> in the input box and press
-Enter. 2. Fully quit and restart Claude Code — this makes the command
-disappear from the list too.</p>
-<p><strong>Codex</strong> - Just <strong>delete the folder</strong> you
-cloned in 3-2 (nothing else is written anywhere else — no registry, no
-other config files).</p>
+<h3 id="3-3-uninstalling">3-3. Uninstalling</h3>
+<p><strong>Claude Code</strong></p>
+<ol type="1">
+<li>Type <code>/plugin uninstall sodam-context</code> in the input box
+and press Enter.</li>
+<li>Fully quit and restart Claude Code — this makes the command
+disappear from the list too.</li>
+</ol>
+<p><strong>Codex</strong></p>
+<ul>
+<li>Just <strong>delete the folder</strong> you cloned in 3-2 (nothing
+else is written anywhere else — no registry, no other config
+files).</li>
+</ul>
 <p><strong>What happens to backups
-(<code>.sodamcontext/backups/</code>)?</strong> - Uninstalling the
-plugin <strong>does not touch backups in your project folder</strong> —
-the plugin is removed on Claude Code’s side, while backups are separate
-files living in your own project folder. - <strong>To keep
-them</strong>: do nothing. If you reinstall this tool later, the old
-backups are still there for restoring. - <strong>To delete them
-completely</strong>: manually delete the <code>.sodamcontext</code>
-folder in each project (just like deleting any other folder in your file
-explorer). This folder only holds backup files and a “last checkup time”
-record — your actual <code>CLAUDE.md</code>/<code>AGENTS.md</code>
-originals are never stored inside it, so it’s safe to remove.</p>
+(<code>.sodamcontext/backups/</code>)?</strong></p>
+<ul>
+<li>Uninstalling the plugin <strong>does not touch backups in your
+project folder</strong> — the plugin is removed on Claude Code’s side,
+while backups are separate files living in your own project folder.</li>
+<li><strong>To keep them</strong>: do nothing. If you reinstall this
+tool later, the old backups are still there for restoring.</li>
+<li><strong>To delete them completely</strong>: manually delete the
+<code>.sodamcontext</code> folder in each project (just like deleting
+any other folder in your file explorer). This folder only holds backup
+files and a “last checkup time” record — your actual
+<code>CLAUDE.md</code>/<code>AGENTS.md</code> originals are never stored
+inside it, so it’s safe to remove.</li>
+</ul>
 <hr />
-<h2 id="quick-start">4. Quick Start</h2>
+<h2 id="4-quick-start">4. Quick Start</h2>
 <p>Once installed and restarted, remember just two things.</p>
 <ol type="1">
 <li><p><strong>You already have a manual → check it
@@ -406,25 +414,26 @@ it’s always called with natural language, and that still works exactly
 as before.</p>
 </blockquote>
 <hr />
-<h2 id="how-to-run">5. How to Run</h2>
+<h2 id="5-how-to-run">5. How to Run</h2>
 <p>This tool is <strong>not a program you launch directly</strong> — it
 works when you <strong>call it by command / natural language</strong>
 inside Claude Code · Codex.</p>
 <ul>
 <li><strong>Claude Code:</strong> type a slash command in the input box.
-e.g. <code>/sodam-context:checkup</code>,
+e.g. <code>/sodam-context:checkup</code>,
 <code>/sodam-context:intake</code>,
 <code>/sodam-context:treat</code>.</li>
 <li><strong>Codex:</strong> there are no slash commands, so you call it
-with <strong>natural language</strong>. e.g. “check my AGENTS.md”, “fix
+with <strong>natural language</strong>. e.g. “check my AGENTS.md”, “fix
 my manual”. (Always run Codex from the <strong>repository root
 folder</strong>.)</li>
 <li>Giving the file to check as an <strong>absolute path</strong> is the
-most accurate. e.g. <code>C:\MyProject\CLAUDE.md</code>.</li>
+most accurate. e.g. <code>C:\MyProject\CLAUDE.md</code>.</li>
 </ul>
 <hr />
-<h2 id="how-to-use">6. How to Use</h2>
-<h3 id="checkup-works">6-1. Checkup — <code>✅ Works</code></h3>
+<h2 id="6-how-to-use">6. How to Use</h2>
+<h3 id="6-1-checkup--white_check_mark-works">6-1. Checkup —
+<code>✅ Works</code></h3>
 <ol type="1">
 <li>Type <code>/sodam-context:checkup</code>.</li>
 <li>When asked “which file?”, give the absolute path.</li>
@@ -440,7 +449,7 @@ caveat).</li>
 <li><strong>Wholesale paste-ins</strong> (an overly long code block
 pasted in as-is) can be judged from structure alone (length), so it’s
 flagged as a <strong>confirmed</strong> problem.</li>
-<li>A <strong>reference score</strong> (e.g. “85 pts”) is added after
+<li>A <strong>reference score</strong> (e.g. “85 pts”) is added after
 the count, always paired with the <strong>“reference only
 (unvalidated)”</strong> label — meaning it hasn’t been tuned against
 real, diverse user data yet (prevents inflated claims — see §9).</li>
@@ -454,8 +463,8 @@ the reason and evidence (including how the reference score was
 calculated).</li>
 </ul></li>
 </ol>
-<h3 id="intake-create-works">6-2. Intake (create) —
-<code>✅ Works</code></h3>
+<h3 id="6-2-intake-create--white_check_mark-works">6-2. Intake (create)
+— <code>✅ Works</code></h3>
 <ol type="1">
 <li>Type <code>/sodam-context:intake</code>.</li>
 <li>When asked “which folder?”, give the path or answer <strong>“this
@@ -468,8 +477,8 @@ the files created.</li>
 <li>The result is <strong>under 200 lines, 0 secrets</strong>. Say
 <code>yes</code> to “shall I run a checkup too?” to also check it.</li>
 </ol>
-<h3 id="treatment-tidy-works-live-verified">6-3. Treatment (tidy) —
-<code>✅ Works (live-verified)</code></h3>
+<h3 id="6-3-treatment-tidy--white_check_mark-works-live-verified">6-3.
+Treatment (tidy) — <code>✅ Works (live-verified)</code></h3>
 <ol type="1">
 <li>When the checkup finds problems, type
 <code>/sodam-context:treat</code>.</li>
@@ -479,7 +488,7 @@ what it will change</strong>.</li>
 (removes duplicate lines / unnecessary blank lines).</li>
 <li><strong>Restore is supported</strong> — roll back to the backup if
 you don’t like it.</li>
-<li><strong>Safety/forbidden rule lines</strong> (e.g. “never”, “no
+<li><strong>Safety/forbidden rule lines</strong> (e.g. “never”, “no
 passwords”) are <strong>auto-preserved</strong> (never removed).</li>
 </ol>
 <blockquote>
@@ -487,8 +496,8 @@ passwords”) are <strong>auto-preserved</strong> (never removed).</li>
 (safe-keyword preservation and restore accuracy confirmed). Still, for
 your first use, keep a copy of important files.</p>
 </blockquote>
-<h3 id="deep-checkup-optional-works">6-4. Deep Checkup (optional) —
-<code>✅ Works</code></h3>
+<h3 id="6-4-deep-checkup-optional--white_check_mark-works">6-4. Deep
+Checkup (optional) — <code>✅ Works</code></h3>
 <p>Use this when you want the AI to actually <strong>judge</strong> the
 5 items that a regular checkup (6-1) only “introduces” (conflicts, blind
 references, missing examples, bloat, RE-scope gaps) rather than
@@ -511,7 +520,7 @@ nothing found”.</li>
 Use it selectively, only when you need it.</li>
 </ol>
 <hr />
-<h2 id="how-it-works">7. How It Works</h2>
+<h2 id="7-how-it-works">7. How It Works</h2>
 <ul>
 <li><strong>Checkup:</strong> the tool <strong>does not open your
 original file directly.</strong> It runs an internal checker
@@ -553,14 +562,8 @@ reads the original directly” and only turns on when you explicitly
 choose it.</li>
 </ul>
 <hr />
-<h2 id="command-list">8. Command List</h2>
+<h2 id="8-command-list">8. Command List</h2>
 <table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr>
 <th>Command</th>
@@ -624,11 +627,28 @@ same features with <strong>natural language</strong> (“run a health
 check”, etc.) — that’s always been true and still works.</p>
 </blockquote>
 <hr />
-<h2 id="update-summary">9. Update Summary</h2>
+<h2 id="9-update-summary">9. Update Summary</h2>
 <details>
-<summary>
-<b>📋 Click to expand — version history</b>
-</summary>
+<summary><b>📋 Click to expand — version history</b></summary>
+
+<p><strong>After 0.1.0 (in progress, 2026-08-31)</strong></p>
+<ul>
+<li><strong>Found and fixed the tool mistaking example API-key formats
+for real secrets and blocking the save:</strong> writing a normal
+explanatory sentence in CLAUDE.md like “API keys look like this (starts
+with AKIA…)” could get flagged as a real secret and blocked by the
+checkup and pre-save safeguard. Fixed it to recognize standard example
+keys from official docs (like AWS’s) and common placeholder styles
+(repeated x/X, EXAMPLE, YOUR_…_HERE, etc.) as not being real
+values.</li>
+<li><strong>Double-checked that real secrets are still caught:</strong>
+reproduced a realistic fake key with none of those placeholder markers
+to confirm the fix didn’t loosen detection too far — it’s still caught
+correctly.</li>
+<li>All <strong>186</strong> tests pass (<code>npm test</code>),
+including the new regression tests; <code>selftest</code> 60/60
+pass.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-08-19~08-20)</strong></p>
 <ul>
 <li><strong>Found and fixed a restore-guidance mismatch:</strong> when a
@@ -751,7 +771,7 @@ tests, all passing.</li>
 remembers “when was this last checked”, and if it’s been <strong>over 30
 days</strong>, gently suggests checking again. It’s not a background
 notification — it only compares the moment you run a checkup, so it
-doesn’t overlap with other tools’ (e.g. SoDamLoop’s) scheduled-alert
+doesn’t overlap with other tools’ (e.g. SoDamLoop’s) scheduled-alert
 features.</li>
 <li><strong>Added a reference health score:</strong> the checkup report
 now shows a supplementary score like “85 pts”. Since it isn’t a formula
@@ -775,9 +795,9 @@ raw content straight into the manual. Fixed: restore now only accepts
 sources that are actually inside the tool’s own backup folder, with
 symlink-escape protection added on top.</li>
 <li><strong>Fixed restore failing across drives:</strong> If your
-project lives on a different drive than the system temp folder
-(e.g. drive D on Windows), Treatment/Restore could fail. Reported by a
-real user, reproduced, and fixed — now works regardless of drive.</li>
+project lives on a different drive than the system temp folder (e.g.
+drive D on Windows), Treatment/Restore could fail. Reported by a real
+user, reproduced, and fixed — now works regardless of drive.</li>
 <li><strong>Documentation honesty cleanup:</strong> Prevention
 (auto-block) was described inconsistently across documents (“in
 progress” in one place, “already works” in another) — unified to “code
@@ -819,7 +839,7 @@ as-is), unrefined auto-generation, skill leakage” as
 phrase). Extend by editing JSON only (no code change), secret-safety
 (T1) preserved.</li>
 <li><strong>Treatment restore fix:</strong> the <code>restore</code>
-command’s argument order was reversed vs. the code, which could make
+command’s argument order was reversed vs. the code, which could make
 restore fail — corrected (automated e2e passes).</li>
 <li><strong>Codex run-path &amp; install docs cleanup:</strong> added
 run-path guidance so skills actually run in Codex, and unified two
@@ -847,14 +867,11 @@ preview → safe-keyword preservation → atomic write.</li>
 Apache-2.0 + NOTICE.</li>
 </ul>
 </details>
+
 <hr />
-<h2 id="file-and-document-locations">10. File and Document
+<h2 id="10-file-and-document-locations">10. File and Document
 Locations</h2>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr>
 <th>What</th>
@@ -902,7 +919,7 @@ added 2026-08-20)</td>
 opens directly in a browser.</p>
 </blockquote>
 <hr />
-<h2 id="workflow">11. Workflow</h2>
+<h2 id="11-workflow">11. Workflow</h2>
 <pre><code>Install → Restart → [Do you have a manual?]
                      ├─ No  → /sodam-context:intake → preview &amp; confirm → create a small manual
                      └─ Yes → /sodam-context:checkup → problem report
@@ -910,7 +927,7 @@ opens directly in a browser.</p>
                                      └─ has problems → /sodam-context:treat
                                                         → backup → preview → confirm → tidy safely (restore possible)</code></pre>
 <hr />
-<h2 id="architecture">12. Architecture</h2>
+<h2 id="12-architecture">12. Architecture</h2>
 <p>Internal structure for the technically curious. (You don’t need this
 to use the tool.)</p>
 <ul>
@@ -955,7 +972,7 @@ of “skills” to begin with (it works from natural language plus
 change.</li>
 </ul>
 <hr />
-<h2 id="security-and-data-flow">13. Security and Data Flow</h2>
+<h2 id="13-security-and-data-flow">13. Security and Data Flow</h2>
 <ul>
 <li><strong>No secret reading (T1):</strong> the tool never
 <strong>reads or prints</strong> a secret’s “value”. It only confirms
@@ -1051,13 +1068,8 @@ and restore.</li>
       ▼
 [AI / skill] → plain-language report (&quot;N problems&quot;, masked keys)</code></pre>
 <hr />
-<h2 id="troubleshooting">14. Troubleshooting</h2>
+<h2 id="14-troubleshooting">14. Troubleshooting</h2>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr>
 <th>Symptom</th>
@@ -1156,7 +1168,7 @@ only</td>
 </tr>
 <tr>
 <td>Treatment (dedup/tidy) stops midway</td>
-<td>Backup write failed (e.g. low disk space) — stops safely before
+<td>Backup write failed (e.g. low disk space) — stops safely before
 touching the original (fail-closed)</td>
 <td>Free up disk space and retry — since it stopped, the original file
 was never touched, so no separate recovery is needed</td>
@@ -1164,13 +1176,13 @@ was never touched, so no separate recovery is needed</td>
 </tbody>
 </table>
 <hr />
-<h2 id="faq">15. FAQ</h2>
+<h2 id="15-faq">15. FAQ</h2>
 <p><strong>Q. What exactly is an “AI manual”?</strong> A. The
 <code>CLAUDE.md</code> (for Claude Code) / <code>AGENTS.md</code> (for
 Codex) file that AI coding tools read before starting — a note that says
 “handle this project like this.”</p>
 <p><strong>Q. Does my file content go out to the internet?</strong> A.
-No. Checkup, intake, and treatment run <strong>100% on your
+No. Checkup, intake, and treatment run <strong>100% on your
 computer</strong>. Internet is only needed for install.</p>
 <p><strong>Q. Does it delete passwords automatically?</strong> A.
 <strong>No.</strong> It only confirms one <strong>exists</strong> and
@@ -1205,7 +1217,7 @@ folder.</p>
 and it wasn’t found.</strong> A. That’s expected, not a bug. Since
 2026-07-18, Claude Code has no natural-language auto-discovery (skills)
 for this tool anymore — it’s <strong>slash-command only</strong>. Type
-it exactly, e.g. <code>/sodam-context:checkup</code>. Codex was always
+it exactly, e.g. <code>/sodam-context:checkup</code>. Codex was always
 natural-language-only and is unaffected by this change — it keeps
 working with plain language as before.</p>
 <p><strong>Q. Does it cost anything?</strong> A. The tool itself runs
@@ -1221,7 +1233,7 @@ looks like a secret before reading, and uses <strong>more tokens
 (cost)</strong> than a regular checkup. Use it only when you actually
 need it.</p>
 <hr />
-<h2 id="license-copyright-commercial-use-disclaimer">16. License
+<h2 id="16-license-copyright-commercial-use-disclaimer">16. License
 Copyright Commercial Use Disclaimer</h2>
 <blockquote>
 <p>⚖️ <strong>This is not legal advice.</strong> The following is

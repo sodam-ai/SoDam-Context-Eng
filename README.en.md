@@ -227,6 +227,12 @@ evaluate.
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+**After 0.1.0 (in progress, 2026-08-31)**
+
+- **Found and fixed the tool mistaking example API-key formats for real secrets and blocking the save:** writing a normal explanatory sentence in CLAUDE.md like "API keys look like this (starts with AKIA...)" could get flagged as a real secret and blocked by the checkup and pre-save safeguard. Fixed it to recognize standard example keys from official docs (like AWS's) and common placeholder styles (repeated x/X, EXAMPLE, YOUR_..._HERE, etc.) as not being real values.
+- **Double-checked that real secrets are still caught:** reproduced a realistic fake key with none of those placeholder markers to confirm the fix didn't loosen detection too far — it's still caught correctly.
+- All **186** tests pass (`npm test`), including the new regression tests; `selftest` 60/60 pass.
+
 **After 0.1.0 (in progress, 2026-08-19~08-20)**
 
 - **Found and fixed a restore-guidance mismatch:** when a sibling SoDam tool (Harness) is installed, it takes over making backups — but restore, for safety, only ever trusts backups this tool made itself, so you could end up with "backup succeeded, but restore is refused." Fixed by adding "use that tool's own restore command instead" guidance to the backup response in that case (the backup logic itself was left untouched and safe; only the guidance was made honest).
