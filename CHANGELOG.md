@@ -7,6 +7,27 @@
 
 ## [Unreleased]
 
+### 수정 (2026-08-31, C-G2 실측 발견·수정)
+- **예방 hook(`prevent-write.mjs`)·검진·문진이 문서용 예시/플레이스홀더 키까지 '확정 비밀키'로
+  오탐해 정상적인 설명서 저장을 막던 결함**: AWS 공식 문서가 튜토리얼 전역에서 쓰는 표준 예시 키
+  (`AKIAIOSFODNN7EXAMPLE`)와 흔한 플레이스홀더 표기(`sk-ant-xxxx...`, `ghp_XXXX...`)를 실제로
+  `evaluateWrite()`에 넣어 재현한 결과 셋 다 `deny`로 확정됨을 확인(2026-08-23 CHECKPOINT가
+  "미측정"으로 남겨둔 C-G2 항목의 실측). CLAUDE.md에 "API 키 형식은 이래요" 같은 정상 설명 문장을
+  적기만 해도 저장이 막히는, 초보자 대상 도구로서 실질적인 사용성 결함.
+- **수정**: `rules/secret-patterns.json`에 `allowlist`(EXAMPLE 표기·YOUR_..._HERE·x/X 6+ 반복·
+  REDACTED — 전부 실사용 문서의 '진짜 값 아님' 관례) 신설. `scan-secrets.mjs`의 `scanText()`가
+  같은 줄에 allowlist 마커가 있으면 확정/의심 매칭이 있어도 finding에서 제외하도록 수정.
+  `loadSecretPatterns()`가 반환 배열에 `.allowlist`를 얹는 방식이라 `prevent-write.mjs`·
+  `checkup-cli.mjs`·`intake-verify.mjs` 등 기존 호출부 코드 변경 0건으로 전부 일관되게 적용됨
+  (새 판정 로직을 여러 곳에 따로 심지 않음, `09_EXTENSIBILITY_AND_UPGRADE.md §1` 원칙 준수).
+- **회귀 방지 확인(중요)**: 플레이스홀더 마커가 전혀 없는, 실제 형태의 가짜 키(예:
+  `sk-ant-api03-A1b2C3d4...`)는 수정 후에도 여전히 `deny`/`확정` 판정됨을 직접 재현해 확인 —
+  allowlist가 과도하게 넓어져 진짜 유출까지 눈감아주는 회귀는 없음.
+- **검증**: 신규 유닛테스트 8건(`scan-secrets.test.mjs` +5, `prevent-write.test.mjs` +3) +
+  실제 CLI 라이브 재현 2종(`checkup-cli.mjs` 직접 실행 → `secret.count:0`·`healthScore:100`
+  확인, `prevent-write.mjs`의 실제 stdin/stdout hook 프로토콜에 동일 시나리오를 흘려 `{}`(allow)
+  확인). 전체 `npm test` 178→**186 PASS**(0 FAIL), `selftest` 60 PASS(0 FAIL), 회귀 0.
+
 ### 추가 (2026-08-20)
 - **건강점수 산식 정식화(E1 게이트)를 위한 로컬 이력 축적**: 낯선 베타 테스터 모집이 구조적으로
   어려운 본인 단독 사용 환경에서도, 실사용을 반복하며 자연히 실제 점수·문제유형 데이터가 쌓이도록
