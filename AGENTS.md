@@ -21,8 +21,10 @@
 |------|------------|
 | AI 사용설명서 만들기 (문진) | `sodam-context:intake` |
 | AI 사용설명서 건강검진 | `sodam-context:checkup` |
+| 규칙만으로 못 잡는 문제(모순·낡음 등)를 AI가 직접 판단(선택, 매번 동의 필요) | `sodam-context:checkup-deep` |
 | 발견된 문제 안전하게 고치기 (처방) | `sodam-context:treat` |
 | 두 설명서 동기화 점검 | `sodam-context:sync` |
+| (저장 시도 시 자동) 200줄/32KiB 초과·확정 비밀키 사전 차단 | hook, 명령 아님 — 아래 "예방 hook" 참조 |
 
 ---
 
@@ -61,22 +63,31 @@ SoDamContext/
 ├── .claude-plugin/plugin.json    ← 플러그인 메타데이터 (수정 금지)
 ├── commands/                     ← 클로드코드 슬래시 진입점(`/sodam-context:*`) + 코덱스 자연어가 읽는 본문
 │   ├── checkup.md                ← 건강검진
+│   ├── checkup-deep.md           ← 깊은 검진(Phase3, AI 직접 판단·선택 기능)
 │   ├── intake.md                 ← 문진(처음 만들기)
 │   ├── treat.md                  ← 처방(다듬기)
 │   └── sync.md                   ← 두 설명서 동기화 점검
+├── hooks/                        ← Phase2 예방(저장 전 자동 차단) — Write|Edit만 감지, Bash 아님
+│   └── hooks.json                ← PreToolUse 등록 → `lib/prevent-write.mjs` 호출
 ├── lib/                          ← 번들 스크립트 (Node.js ESM)
-│   ├── checkup-cli.mjs           ← 검진/백업/미리보기/처방/복구 오케스트레이터(JSON 출력)
+│   ├── checkup-cli.mjs           ← 검진/백업/미리보기/처방/복구/동기화/심층검진 오케스트레이터(JSON 출력)
 │   ├── checkup-rules.mjs         ← 규칙 기반 검진 로직(줄수/바이트·린트중복)
-│   ├── scan-secrets.mjs          ← 비밀키 탐지 (값 미출력·마스킹)
+│   ├── scan-secrets.mjs          ← 비밀키 탐지 (값 미출력·마스킹, allowlist로 예시키 오탐 제외)
+│   ├── prevent-write.mjs         ← 예방 hook 판정 로직(저장 전 deny/ask/allow)
+│   ├── path-safety.mjs           ← 민감 경로(.ssh·.aws 등) 쓰기/복원 차단, 심볼릭링크 해석
+│   ├── sync-check.mjs            ← 두 설명서 안전규칙 불일치 리포트(읽기전용)
 │   ├── intake-verify.mjs         ← 생성 텍스트 안전 검증(쓰기 전 게이트)
 │   ├── treat.mjs                 ← 처방(중복제거·빈줄압축·안전키워드 보존)
 │   ├── treat-verify.mjs          ← 처방 회귀검증(안전키워드 100% 보존)
 │   ├── backup.mjs                ← 원자적 백업·복구(.gitignore 자동·Harness 위임/폴백)
+│   ├── checkup-freshness.mjs     ← 정기 점검 알림(30일 경과 시 안내, Phase3)
+│   ├── checkup-history.mjs       ← 검진 이력 축적(.jsonl, 점수·개수만·원문 없음, Phase3)
+│   ├── health-score.mjs          ← 참고 점수 계산("검증 전" 라벨 항상 동반, Phase3)
 │   └── codex-merge.mjs           ← 코덱스 AGENTS.md 병합체인·32KiB·config.toml 감지
 ├── rules/                        ← 설정 파일 (JSON) — 하드코딩 금지, 데이터 주도
 │   ├── checkup-rules.json        ← 검진 항목 정의
-│   ├── thresholds.json           ← 임계 수치 (줄수·바이트)
-│   ├── secret-patterns.json      ← 비밀키 패턴
+│   ├── thresholds.json           ← 임계 수치 (줄수·바이트·건강점수·낡음 일수)
+│   ├── secret-patterns.json      ← 비밀키 패턴 + allowlist(예시/플레이스홀더 오탐 제외)
 │   └── safe-keywords.json        ← 처방 시 보존할 안전키워드
 ├── AGENTS.md                     ← 이 파일 (코덱스용)
 ├── CLAUDE.md                     ← 클로드코드용 (첫 줄 @AGENTS.md)
@@ -91,6 +102,8 @@ SoDamContext/
 - **비밀키**: `lib/scan-secrets.mjs` — 값은 절대 읽지 않고 있다·없다만
 - **백업**: `.sodamcontext/backups/` — `.gitignore` 자동 추가, 타임스탬프 파일명
 - **임계 수치**: `rules/thresholds.json` 에서만 읽음 (코드에 하드코딩 금지)
+- **예방(Phase2)**: `hooks/hooks.json`+`lib/prevent-write.mjs` — `CLAUDE.md`/`AGENTS.md` 저장 시도(Write·Edit)를 가로채 확정 비밀키·크기초과를 사전 차단(새 판정 로직 없이 위 규칙 재사용, fail-open 설계)
+- **민감 경로 보호**: `lib/path-safety.mjs` — `.ssh`·`.aws` 등 자격증명 폴더·시스템 경로에 쓰기/복원 시도를 차단(심볼릭 링크 우회도 해석)
 
 ---
 
@@ -102,6 +115,7 @@ SoDamContext/
 |-----------|-----------|---------|
 | `sodam-context:intake` | `commands/intake.md` | AI 사용설명서 처음 만들 때 |
 | `sodam-context:checkup` | `commands/checkup.md` | 건강검진 할 때 |
+| `sodam-context:checkup-deep` | `commands/checkup-deep.md` | 규칙으로 못 잡는 문제까지 AI가 직접 판단할 때(선택, 매번 동의 필요) |
 | `sodam-context:treat` | `commands/treat.md` | 문제 고칠 때 |
 | `sodam-context:sync` | `commands/sync.md` | 두 설명서 동기화 점검할 때 |
 
