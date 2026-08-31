@@ -64,13 +64,15 @@ if (Test-Path "AGENTS.md") {
     $template = @'
 # SoDamContext — Codex 설정
 
-이 프로젝트에는 AI 사용설명서(AGENTS.md·CLAUDE.md) 건강검진 스킬이 있습니다.
+이 프로젝트에는 AI 사용설명서(AGENTS.md·CLAUDE.md) 건강검진 명령이 있습니다.
 
-## 사용 가능한 스킬
+## 사용 가능한 기능
 
-- `sodam-context-checkup` — 설명서 건강검진 (commands/checkup.md)
-- `sodam-context-treat` — 발견한 문제 처방 (commands/treat.md)
-- `sodam-context-intake` — 설명서 초기 생성 (commands/intake.md)
+- 건강검진 — 설명서 문제점 점검 (commands/checkup.md)
+- 깊은 검진 — 규칙으로 못 잡는 문제(모순·낡음 등)까지 AI가 직접 판단, 선택 기능 (commands/checkup-deep.md)
+- 처방 — 발견한 문제 안전하게 다듬기 (commands/treat.md)
+- 문진 — 설명서 처음부터 만들기 (commands/intake.md)
+- 동기화 점검 — CLAUDE.md·AGENTS.md 안전 규칙 차이 확인 (commands/sync.md)
 '@
     Set-Content -Path "AGENTS.md" -Value $template -Encoding UTF8
     Write-Ok "AGENTS.md 생성 완료"

@@ -83,7 +83,7 @@ Codex는 프로젝트 루트의 `AGENTS.md` 파일을 자동으로 읽습니다.
 ```markdown
 # SoDamContext — Codex 설정
 
-이 프로젝트에는 AI 사용설명서(AGENTS.md·CLAUDE.md) 건강검진 스킬이 있습니다.
+이 프로젝트에는 AI 사용설명서(AGENTS.md·CLAUDE.md) 건강검진 명령이 있습니다.
 
 ## 사용 가능한 기능
 
