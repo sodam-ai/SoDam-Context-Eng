@@ -89,6 +89,7 @@ SoDamContext/
 │   ├── thresholds.json           ← 임계 수치 (줄수·바이트·건강점수·낡음 일수)
 │   ├── secret-patterns.json      ← 비밀키 패턴 + allowlist(예시/플레이스홀더 오탐 제외)
 │   └── safe-keywords.json        ← 처방 시 보존할 안전키워드
+├── .github/workflows/test.yml    ← CI(2026-09-01 추가) — push·PR 시 새 clone 상태에서 npm test+selftest 자동 실행
 ├── AGENTS.md                     ← 이 파일 (코덱스용)
 ├── CLAUDE.md                     ← 클로드코드용 (첫 줄 @AGENTS.md)
 ├── LICENSE                       ← Apache-2.0

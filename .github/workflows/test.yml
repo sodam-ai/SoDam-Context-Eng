@@ -1,0 +1,25 @@
+name: Test
+
+# 새로 clone한 상태(원격 저장소 그대로)에서 npm test·selftest가 실제로 통과하는지 자동 확인한다.
+# 배경(2026-09-01): lib/_selftest.mjs가 .gitignore로 배포 제외돼 원격엔 없던 결함이 오래
+# 안 걸린 근본 원인이 CI 부재였음 — 로컬에만 있는 파일이라 로컬 실행에서는 항상 통과했다.
+# 이 워크플로우가 있었다면 다음 push 때 바로 "Cannot find module" 실패로 잡혔을 것.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm test
+      - run: npm run selftest
