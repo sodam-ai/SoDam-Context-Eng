@@ -4,9 +4,6 @@ node_modules/
 # 백업·리포트(런타임 산출물) — 비밀키 복사본이 git에 올라가는 사고 방지 (PRD 07 §2.3 C2)
 .sodamcontext/
 
-# 자가 테스트(배포 제외 — PRD 07_SECURITY §2.5)
-lib/_selftest.mjs
-
 # 개발 내부 문서
 DEVELOPMENT.md
 TESTING.md
