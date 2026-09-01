@@ -631,6 +631,38 @@ check”, etc.) — that’s always been true and still works.</p>
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+<p><strong>After 0.1.0 (in progress, 2026-09-01)</strong></p>
+<ul>
+<li><strong>Added a fix-command pointer to the size-limit save
+warning:</strong> when a manual gets too long to save, the message only
+said “please shorten it” without pointing to this tool’s own fix
+(<code>/sodam-context:treat</code>) command — leaving people stuck. It
+now also says “use this command and it’ll shorten it safely, with a
+backup.”</li>
+<li><strong>Found and fixed history data that could get contaminated by
+accident:</strong> checking up a file that isn’t actually an AI manual
+would still get recorded into the “real usage history” meant for tuning
+the reference score later, skewing it. Fixed so only real
+<code>CLAUDE.md</code>/<code>AGENTS.md</code> files get recorded.</li>
+<li><strong>Found and fixed a published self-check command that never
+actually worked for anyone but this dev machine:</strong>
+<code>npm run selftest</code> was documented, but the file it depends on
+had accidentally been excluded from the public repository — so it failed
+for everyone who freshly cloned the project. It now works normally for
+everyone.</li>
+<li><strong>Found and fixed sensitive-folder protection (e.g.
+<code>.ssh</code>, system folders) that had never actually been verified
+on other operating systems:</strong> it always worked on this Windows
+dev machine, but a new automated check uncovered a bug hiding in the
+logic that simulates other OSes (Mac/Linux) — fixed, and Mac/Linux-side
+test coverage that didn’t exist before was added.</li>
+<li><strong>Added continuous integration (CI):</strong> every change to
+this project now automatically runs the full test suite on both Windows
+and Linux, catching problems a person could miss.</li>
+<li>All <strong>197</strong> tests pass (<code>npm test</code>),
+including the new regression tests; <code>selftest</code> 60/60
+pass.</li>
+</ul>
 <p><strong>After 0.1.0 (in progress, 2026-08-31)</strong></p>
 <ul>
 <li><strong>Found and fixed the tool mistaking example API-key formats

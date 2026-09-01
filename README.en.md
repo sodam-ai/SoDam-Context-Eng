@@ -227,6 +227,15 @@ evaluate.
 <details>
 <summary><b>📋 Click to expand — version history</b></summary>
 
+**After 0.1.0 (in progress, 2026-09-01)**
+
+- **Added a fix-command pointer to the size-limit save warning:** when a manual gets too long to save, the message only said "please shorten it" without pointing to this tool's own fix (`/sodam-context:treat`) command — leaving people stuck. It now also says "use this command and it'll shorten it safely, with a backup."
+- **Found and fixed history data that could get contaminated by accident:** checking up a file that isn't actually an AI manual would still get recorded into the "real usage history" meant for tuning the reference score later, skewing it. Fixed so only real `CLAUDE.md`/`AGENTS.md` files get recorded.
+- **Found and fixed a published self-check command that never actually worked for anyone but this dev machine:** `npm run selftest` was documented, but the file it depends on had accidentally been excluded from the public repository — so it failed for everyone who freshly cloned the project. It now works normally for everyone.
+- **Found and fixed sensitive-folder protection (e.g. `.ssh`, system folders) that had never actually been verified on other operating systems:** it always worked on this Windows dev machine, but a new automated check uncovered a bug hiding in the logic that simulates other OSes (Mac/Linux) — fixed, and Mac/Linux-side test coverage that didn't exist before was added.
+- **Added continuous integration (CI):** every change to this project now automatically runs the full test suite on both Windows and Linux, catching problems a person could miss.
+- All **197** tests pass (`npm test`), including the new regression tests; `selftest` 60/60 pass.
+
 **After 0.1.0 (in progress, 2026-08-31)**
 
 - **Found and fixed the tool mistaking example API-key formats for real secrets and blocking the save:** writing a normal explanatory sentence in CLAUDE.md like "API keys look like this (starts with AKIA...)" could get flagged as a real secret and blocked by the checkup and pre-save safeguard. Fixed it to recognize standard example keys from official docs (like AWS's) and common placeholder styles (repeated x/X, EXAMPLE, YOUR_..._HERE, etc.) as not being real values.
